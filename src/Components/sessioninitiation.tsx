@@ -1,7 +1,9 @@
 import React from 'react';
 
-type SIProps = {};
-type SIState = {
+type SIProps = {
+    onSubmit: any;
+};
+export type SIState = {
     inputStartingBalance: number,
     inputNumBots:         number,
     inputStockYear:       number,
@@ -29,7 +31,7 @@ class SIForm extends React.Component<SIProps, SIState> {
 
     handleSubmit(event : any) {
         //function that executes when the "Create" button is pressed - ideally this will update the DB accordingly
-        alert("Session created with: $" + this.state.inputStartingBalance + ", Bots: " + this.state.inputNumBots + ", Year: " + this.state.inputStockYear);
+        this.props.onSubmit(this.state);
         event.preventDefault(); //prevents native submit event
     }
 
@@ -49,7 +51,9 @@ class SIForm extends React.Component<SIProps, SIState> {
     }
 }
 
-type SessionInitiationProps = {};
+type SessionInitiationProps = {
+    onSubmit: any; //function
+};
 type SessionInitiationState = {};
 class SessionInitiation extends React.Component<SessionInitiationProps, SessionInitiationState> {
     constructor(props : any) {
@@ -64,7 +68,7 @@ class SessionInitiation extends React.Component<SessionInitiationProps, SessionI
             <div>
                 <h1>Session Initiation</h1>
                 <div>
-                    <SIForm />
+                    <SIForm onSubmit={this.props.onSubmit} />
                 </div>
             </div>
         );
