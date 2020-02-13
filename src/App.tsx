@@ -1,5 +1,9 @@
 import React from 'react';
 import './App.scss';
+import SessionInitiation from './Components/sessioninitiation';
+import EventInjection from './Components/eventinjection';
+import Buy from './Components/buy';
+import Sell from './Components/sell';
 
 interface IAppComponentProps {}
 interface IAppComponentState { apiTestResponse: string }
@@ -25,6 +29,11 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
     return (
       <div className="App">
         <p className="App-intro">{this.state.apiTestResponse}</p>
+        {/*uncomment below to view pages*/}
+        {/* <SessionInitiation /> */}
+        {/* <EventInjection /> */}
+        {/* <Buy /> */}
+        {/* <Sell /> */}
       </div>
     );
   }
