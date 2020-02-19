@@ -5,6 +5,8 @@ import EventInjection from './Components/eventinjection';
 import Buy from './Components/buy';
 import Sell from './Components/sell';
 import SIState from './Components/sessioninitiation';
+import SignUp from './Components/signup';
+import LogIn from './Components/login';
 
 interface IAppComponentProps {}
 interface IAppComponentState { apiTestResponse: string }
@@ -41,9 +43,12 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
          <SessionInitiation onSubmit={(formData: SIState)=>{
            this.createSession();
          }} />
-        {/* <EventInjection /> */}
-        {/* <Buy /> */}
-        {/* <Sell /> */}
+        { <EventInjection /> }
+        { <Buy /> }
+        { <Sell /> }
+        { <SignUp/>}
+        { <LogIn/> }
+        {}
       </div>
     );
   }
