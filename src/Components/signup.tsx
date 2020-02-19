@@ -37,14 +37,19 @@ handleSubmit(event : any) {
 
 render() {
     return (
-        <form onSubmit={this.handleSubmit}>
-        <label>Email <input type="email" name="userEmail" onChange={this.handleChange}/></label>
-        <br/>
-        <label>Password <input type="password" name="userPassword" onChange={this.handleChange}/></label>
-        <br/>
-        <br/>
-        <input type="submit" value="Sign Up"/>
-    </form>
+      <div> 
+          <h1>Sign Up</h1>
+          <form onSubmit={this.handleSubmit}>
+            <label>Email <input type="email" name="userEmail" onChange={this.handleChange}/></label>
+            <br/>
+            <label>Username <input type="text" name = "username" onChange = {this.handleChange}/></label>
+            <br/>
+            <label>Password <input type="password" name="userPassword" onChange={this.handleChange}/></label>
+            <br/>
+            <br/>
+            <input type="submit" value="Sign Up"/>
+          </form>
+      </div>
     );
 }
 

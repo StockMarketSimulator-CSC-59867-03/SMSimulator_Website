@@ -16,6 +16,7 @@ class LogIn extends React.Component<LogInProps, LogInState> {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+
   }
 
 handleChange(event : any) {
@@ -32,14 +33,19 @@ handleSubmit(event : any) {
 
 render() {
     return (
-        <form onSubmit={this.handleSubmit}>
-        <label>Email <input type="email" name="userEmail" onChange={this.handleChange}/></label>
-        <br/>
-        <label>Password <input type="password" name="userPassword" onChange={this.handleChange}/></label>
-        <br/>
-        <br/>
-        <input type="submit" value="Create"/>
-    </form>
+      <div> 
+          <h1>Login</h1>
+          <form onSubmit={this.handleSubmit}>
+            <label>Email <input type="email" name="userEmail" onChange={this.handleChange}/></label>
+            <br/>
+            <label>Password <input type="password" name="userPassword" onChange={this.handleChange}/></label>
+            <br/>
+            <br/>
+            <input type="submit" value="Create"/>
+            <br/>
+         </form>
+      </div>
+
     );
 }
 
