@@ -38,11 +38,11 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
       <div className="App">
         <p className="App-intro">{this.state.apiTestResponse}</p>
         {/*uncomment below to view pages*/}
-         <SessionInitiation onSubmit={(formData: SIState)=>{
+       { /* <SessionInitiation onSubmit={(formData: SIState)=>{
            this.createSession();
-         }} />
+         }} />*/}
         {/* <EventInjection /> */}
-        {/* <Buy /> */}
+        { <Buy /> }
         {/* <Sell /> */}
       </div>
     );
