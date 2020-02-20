@@ -1,9 +1,7 @@
 import React from 'react';
 import './App.scss';
 import SessionInitiation from './Components/sessioninitiation';
-import EventInjection from './Components/eventinjection';
-import Buy from './Components/buy';
-import Sell from './Components/sell';
+import MarketWindow from './Components/marketwindow';
 import SIState from './Components/sessioninitiation';
 
 interface IAppComponentProps {}
@@ -41,9 +39,7 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
          <SessionInitiation onSubmit={(formData: SIState)=>{
            this.createSession();
          }} />
-        {/* <EventInjection /> */}
-        {/* <Buy /> */}
-        {/* <Sell /> */}
+        <MarketWindow />
       </div>
     );
   }

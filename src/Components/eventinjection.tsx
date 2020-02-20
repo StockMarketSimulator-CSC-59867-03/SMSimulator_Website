@@ -56,7 +56,10 @@ class EIForm extends React.Component<EIProps, EIState> {
     }
 }
 
-type EventInjectionProps = {};
+type EventInjectionProps = {
+    show: boolean,
+    handleClose: any
+};
 type EventInjectionState = {};
 class EventInjection extends React.Component<EventInjectionProps, EventInjectionState>{
     constructor(props : any){
@@ -67,12 +70,14 @@ class EventInjection extends React.Component<EventInjectionProps, EventInjection
     }
 
     render() {
+        const display = this.props.show ? "block" : "none";
         return (
-            <div>
+            <div style={{display: display, border: "solid"}}>
                 <h1>Event Injection</h1>
                 <div>
                     <EIForm />
                 </div>
+                <button onClick={this.props.handleClose}>Close</button>
             </div>
         );
     }
