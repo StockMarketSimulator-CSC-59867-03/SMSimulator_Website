@@ -14,7 +14,7 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
     this.state = {
         email:          "",
         password:       "",
-        username:       "",
+        username:       "",  
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -31,7 +31,16 @@ handleChange(event : any) {
 }
 
 handleSubmit(event : any) {
-    alert("Order submitted");
+    alert("Successfully Signed Up!");
+    const email = event.target.elements.userEmail.current.value;
+    const username = event.target.elements.username.current.value;
+    const password = event.target.elements.userPassword.current.value;
+    /*firebase.auth().createUserWithEmailAndPassword(email,password).catch(
+      function(error){
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      }
+    );*/
     event.preventDefault();
 }
 

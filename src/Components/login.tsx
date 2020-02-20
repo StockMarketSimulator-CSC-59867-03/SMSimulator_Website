@@ -27,7 +27,15 @@ handleChange(event : any) {
 }
 
 handleSubmit(event : any) {
-    alert("Order submitted");
+    alert("Succesfully Loggeed In!");
+    const email = event.target.elements.userEmail.current.value;
+    const password = event.target.elements.userPassword.current.value;
+    /*firebase.auth().signInWithEmailAndPassword(email,password).catch(
+      function(error){
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      }
+    );*/
     event.preventDefault();
 }
 
