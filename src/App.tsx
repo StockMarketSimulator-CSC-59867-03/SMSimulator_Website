@@ -34,11 +34,11 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
     return (
       <div className="App">
         {/*uncomment below to view pages*/}
-         <SessionInitiation onSubmit={(formData: SIState)=>{
-         //   this.createSession();
-         }} />
+       { /* <SessionInitiation onSubmit={(formData: SIState)=>{
+           this.createSession();
+         }} />*/}
         {/* <EventInjection /> */}
-        {/* <Buy /> */}
+        { <Buy /> }
         {/* <Sell /> */}
         <Market Window />
         <div>
