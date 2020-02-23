@@ -40,7 +40,7 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
         {/* <EventInjection /> */}
         { <Buy /> }
         {/* <Sell /> */}
-        <Market Window />
+        <MarketWindow />
         <div>
           <ul>
             <li> 
