@@ -6,8 +6,6 @@ type sbState = {
     stocks: object[]
 };
 
-
-
 class scrollableButtonList extends React.Component<sbProps,sbState> {
     constructor(props : any) {
         super(props);
