@@ -5,6 +5,9 @@ import EventInjection from './Components/eventinjection';
 import Buy from './Components/buy';
 import Sell from './Components/sell';
 import SIState from './Components/sessioninitiation';
+import SessionSearch from './Components/sessionSearch';
+import GeneralButton from './Components/generalButton';
+import ScrollableButtonList from './Components/scrollableButtonList';
 
 interface IAppComponentProps {}
 interface IAppComponentState { apiTestResponse: string }
@@ -41,9 +44,12 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
          <SessionInitiation onSubmit={(formData: SIState)=>{
            this.createSession();
          }} />
-        {/* <EventInjection /> */}
-        {/* <Buy /> */}
-        {/* <Sell /> */}
+            {/*<EventInjection />*/}
+            {/*<Buy />*/ }
+            {/*<Sell /> */}
+            {<SessionSearch />}
+            {<GeneralButton />}
+            {<ScrollableButtonList />}
       </div>
     );
   }
