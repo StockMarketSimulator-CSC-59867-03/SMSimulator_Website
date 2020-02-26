@@ -7,6 +7,8 @@ import Buy from './Components/buy';
 import Sell from './Components/sell';
 import SIState from './Components/sessioninitiation';
 import MarketWindow from './Components/marketwindow';
+import SignUp from './Components/signup';
+import LogIn from './Components/login';
 
 interface IAppComponentProps { }
 interface IAppComponentState { }
