@@ -1,5 +1,10 @@
 import React from 'react';
 
+
+type SGprops = {
+    text: string;
+}
+
 class generalButton extends React.Component {
     constructor(props : any) {
         super(props);
@@ -16,9 +21,9 @@ class generalButton extends React.Component {
     render() {
         return (
             <div>
-                <button
-                    style={{ height: "56px", width: "30%" }}
-                    onClick={this.handleClick}>
+                <button 
+                    style={{ height: "56px", width: "100%" }}
+                    onClick={this.handleClick}> test
                 </button>
              </div>
                );
