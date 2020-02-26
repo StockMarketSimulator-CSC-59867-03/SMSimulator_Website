@@ -7,6 +7,8 @@ import Buy from './Components/buy';
 import Sell from './Components/sell';
 import SIState from './Components/sessioninitiation';
 import MarketWindow from './Components/marketwindow';
+import Home from './HPage/home';
+
 
 interface IAppComponentProps { }
 interface IAppComponentState { }
@@ -38,22 +40,10 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
            this.createSession();
          }} />*/}
                 {/* <EventInjection /> */}
-                {<Buy />}
+                {/*<Buy />*/}
                 {/* <Sell /> */}
-                <MarketWindow />
-                <div>
-                    <ul>
-                        <li>
-                            <Link to="/login"> Login </Link>
-                        </li>
-                        <li>
-                            <Link to="/marketwindow"> Market Window </Link>
-                        </li>
-                        <li>
-                            <Link to="/marketdata"> Market Data </Link>
-                        </li>
-                    </ul>
-                </div>
+                <Home/>
+
             </div>
         );
     }

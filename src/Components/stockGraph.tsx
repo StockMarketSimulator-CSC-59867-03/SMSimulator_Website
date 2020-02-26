@@ -21,6 +21,15 @@ class StockGraph extends React.Component<SGProps, SGState> {
 
     }
 
+    static defaultProps = {
+        width: 500,
+        height: 300,
+        data: [{ name: "9:30 AM", price: 911.12 }, { name: "9:35 AM", price: 899.36 },
+            { name: "9:40 AM", price: 902.45 }, { name: "9:45 AM", price: 909.07 },
+            { name: "9:45 AM", price: 906.17 }, { name: "9:50 AM", price: 908.23 },
+            { name: "9:55 AM", price: 903.42 }]
+    }
+
     
     render() {
 
