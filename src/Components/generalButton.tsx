@@ -1,33 +1,40 @@
 import React from 'react';
+import MarketWindow from '../Components/marketwindow';
+import { Link } from 'react-router-dom';
 
 
-type SGprops = {
-    onClick?: any;
+type gBprops = {
+    sessionID?: string
 }
 
-class generalButton extends React.Component<SGprops> {
-    constructor(props : any) {
-        super(props);
-        this.state = { };
+type gBstate = {
+    showMarketWindow: boolean
+}
 
+class generalButton extends React.Component<gBprops,gBstate> {
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            showMarketWindow : false,
+        }
         // This binding is necessary to make `this` work in the callback
         this.handleClick = this.handleClick.bind(this);
     }
-    // Need to create usable functions to bind
+    
     handleClick() {
-        if(this.props.onClick){
-            this.props.onClick();
-        }
-        this.setState(state => ({/* bind to action*/ }));
+        this.setState({ showMarketWindow: !this.state.showMarketWindow });
+        console.log(this.props.sessionID);
     }
-
     render() {
         return (
             <div>
-                <button 
-                    style={{ height: "56px", width: "100%" }}
-                    onClick={this.handleClick}> test
-                </button>
+                <Link  to="../marketwindow">
+                    <button 
+                        style={{ height: "56px", width: "100%" }}
+                        onClick={this.handleClick}>
+                        {this.props.sessionID}
+                    </button>
+                </Link>
              </div>
                );
     }

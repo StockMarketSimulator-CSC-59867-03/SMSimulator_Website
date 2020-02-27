@@ -1,5 +1,6 @@
 import React from 'react';
 import GeneralButton from './generalButton';
+import firebase from 'firebase';
 
 type sbProps = {};
 type sbState = {
@@ -11,25 +12,37 @@ class scrollableButtonList extends React.Component<sbProps,sbState> {
     constructor(props : any) {
         super(props);
         this.state = {
-            stocks: this.getStocks()
+            stocks: []
             
         }
 
         // This binding is necessary to make `this` work in the callbac
         this.handleClick = this.handleClick.bind(this);
     }
-    getStocks() {
-        var stockSymbols: string[];
-        var toButtons: object[];
-        stockSymbols = ["tsla", "ba", "mcst", "fb","a","b","c","d","e","f","g","h","i"];
-        toButtons = [];
-        for (let i in stockSymbols) {
-            toButtons.push(<GeneralButton/>)
-        }
-        return toButtons;
 
-
+    // runs first every time component is called
+    componentDidMount() {
+        this.getSessions();
     }
+
+    getSessions() {
+        const db = firebase.firestore()
+        let sessions = db.collection('Sessions');
+
+        var sessionList: string[] = [];
+        var toButtons: object[] = [];
+
+        sessions.get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                sessionList.push(doc.id);
+            });
+            for (let i in sessionList) {
+                console.log(sessionList[i]);
+                toButtons.push(<GeneralButton sessionID={sessionList[i]} />)
+            };
+            this.setState({ stocks: toButtons });
+        });
+        }
     // Need to create usable functions to bind
     handleClick() {
         this.setState(state => ({/* bind to action*/ }));
