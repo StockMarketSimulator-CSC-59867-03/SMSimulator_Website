@@ -22,7 +22,7 @@ import Page1 from "./CreateSessionForm1";
 import Page2 from "./CreateSessionStockSelecter";
 
 type sessionModalProps = {
-  onSessionCreate: any
+  onSessionCreate: any;
 };
 type sessionModalState = {
   open: boolean;
@@ -31,10 +31,13 @@ type sessionModalState = {
   sessionType: any;
   pageNumber: number;
 };
-export default class sessionModal extends React.Component<
+export default class SessionModal extends React.Component<
   sessionModalProps,
   sessionModalState
 > {
+
+  selectedStocks = new Set();
+
   constructor(props: any) {
     super(props);
     this.state = {
@@ -46,8 +49,7 @@ export default class sessionModal extends React.Component<
     };
   }
 
-
-  createSession(){}
+  createSession() {}
 
   render() {
     const styles = {
@@ -84,16 +86,21 @@ export default class sessionModal extends React.Component<
       console.log("Handle Submit");
       console.log(this.state);
 
-      this.props.onSessionCreate(this.state.sessionName,this.state.sessionBalance, this.state.sessionType)
-      .then(()=>{
-        this.setState({
-          ...this.state,
-          pageNumber: 2
+      this.props
+        .onSessionCreate(
+          this.state.sessionName,
+          this.state.sessionBalance,
+          this.state.sessionType
+        )
+        .then(() => {
+          this.setState({
+            ...this.state,
+            pageNumber: 2
+          });
+        })
+        .catch((err: any) => {
+          console.log(err);
         });
-      })
-      .catch((err: any) => {
-        console.log(err);
-      });
       event.preventDefault();
     };
     let checked = false;
@@ -121,27 +128,33 @@ export default class sessionModal extends React.Component<
           <Fade in={this.state.open}>
             <div className="modal__background " onClick={() => {}}>
               <Grid
+              style={{height:"100%"}}
                 container
                 direction="column"
                 justify="center"
                 alignItems="center"
               >
-                <Fade in={this.state.pageNumber == 1}>
-                  <div>
-                    <Page1
-                      handleSubmit={handleSubmit}
-                      handleClose={handleClose}
-                      handleChange={handleChange}
-                      values={this.state}
-                    ></Page1>
+                {this.state.pageNumber == 2 ? (
+                  <Fade in={this.state.pageNumber == 2}>
+                    <div>
+                      <Page1
+                        handleSubmit={handleSubmit}
+                        handleClose={handleClose}
+                        handleChange={handleChange}
+                        values={this.state}
+                      ></Page1>
+                    </div>
+                  </Fade>
+                ) : (
+                  <div></div>
+                )}
+
+                <Fade style={{height:"100%"}} in={this.state.pageNumber == 1}>
+                  <div style={{height:"100%"}}>
+                    <Page2 selectedStocks={this.selectedStocks}></Page2>
                   </div>
                 </Fade>
 
-                <Fade in={this.state.pageNumber == 2}>
-                  <div>
-                    <Page2></Page2>
-                  </div>
-                </Fade>
 
               </Grid>
             </div>
