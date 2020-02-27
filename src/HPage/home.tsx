@@ -33,6 +33,10 @@ class Home extends React.Component<MWProps, MWState> {
                 body: JSON.stringify(data),
             })
                 .then((response) => {
+                    if(response.status != 200){
+                        throw "ERROR: Status is not 200";
+                        
+                    }
                     resolve(response);
                     console.log(response);
                 })
