@@ -4,6 +4,7 @@ import Sell from './sell';
 import firebase from 'firebase';
 import { stringify } from 'querystring';
 import StockGraph from './stockGraph';
+import BuyModal from './BuyModal/BuyModal';
 
 type MDProps = {};
 type MDState = {
@@ -74,7 +75,7 @@ class MarketData extends React.Component<MDProps, MDState> {
                 <div><StockGraph width={500} height={300} data={this.data} /></div>
                 <p>Stock Data Goes Here</p>
                 <button onClick={this.showBuyModal}>Buy</button>
-                <Buy show={this.state.showBuyModal} handleClose={this.hideBuyModal}/>
+                <BuyModal show={this.state.showBuyModal} handleClose={this.hideBuyModal}/>
                 <button onClick={this.showSellModal}>Sell</button>
                 <Sell show={this.state.showSellModal} handleClose={this.hideSellModal}/>
             </div>
