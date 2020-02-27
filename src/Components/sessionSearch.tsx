@@ -21,11 +21,12 @@ class SearchBar extends React.Component<{}, ISearchBarState> {
         const { inputValue } = this.state;
         return (
             <div className='input-wrapper'>
-                <h1>Session ID Search</h1>
+                
                 <input
                     placeholder='Search...'
                     value={inputValue}
                     spellCheck={false}
+                    
                 />
                 <span className='input-highlight'>
                     {inputValue.replace(/ /g, "\u00a0")}

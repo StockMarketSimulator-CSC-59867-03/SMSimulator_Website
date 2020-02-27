@@ -8,7 +8,7 @@ class Login extends React.Component {
         return (
             <div>
                 <h1>Log in page</h1>
-                <Link to="/"> Back to home </Link>
+                <Link to="../Hpage/home"> Back to home </Link>
             </div>
         );
     }
