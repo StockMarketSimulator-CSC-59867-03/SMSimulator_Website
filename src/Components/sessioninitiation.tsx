@@ -6,7 +6,6 @@ type SIProps = {
 export type SIState = {
     inputStartingBalance: number,
     inputNumBots:         number,
-    inputStockYear:       number,
 };
 class SIForm extends React.Component<SIProps, SIState> {
     constructor(props : any) {
@@ -14,7 +13,6 @@ class SIForm extends React.Component<SIProps, SIState> {
         this.state = {
             inputStartingBalance: 0,
             inputNumBots:         0,
-            inputStockYear:       0,
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -41,9 +39,6 @@ class SIForm extends React.Component<SIProps, SIState> {
                 <label>Starting Balance <input type="number" name="inputStartingBalance" onChange={this.handleChange}/></label>
                 <br/>
                 <label>Number of Bots <input type="number" name="inputNumBots" onChange={this.handleChange}/></label>
-                <br/>
-                <label>Stock Year <input type="number" name="inputStockYear" onChange={this.handleChange}/></label>
-                <br/>
                 <br/>
                 <input type="submit" value="Create"/>
             </form>

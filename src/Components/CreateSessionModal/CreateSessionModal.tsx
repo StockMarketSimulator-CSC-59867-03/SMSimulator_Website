@@ -9,12 +9,27 @@ import "../../App.scss";
 import TextField from "@material-ui/core/TextField";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import { RadioGroup, FormControlLabel, Radio, Grid } from "@material-ui/core";
+import {
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Grid,
+  FormControl
+} from "@material-ui/core";
+import Pagination from "@material-ui/lab/Pagination";
+import Page1 from "./CreateSessionForm1";
 
-type sessionModalProps = {};
+import Page2 from "./CreateSessionStockSelecter";
+
+type sessionModalProps = {
+  onSessionCreate: any
+};
 type sessionModalState = {
   open: boolean;
-  value: any;
+  sessionName: string;
+  sessionBalance: number;
+  sessionType: any;
+  pageNumber: number;
 };
 export default class sessionModal extends React.Component<
   sessionModalProps,
@@ -24,9 +39,15 @@ export default class sessionModal extends React.Component<
     super(props);
     this.state = {
       open: false,
-      value: "public"
+      sessionBalance: 0,
+      sessionName: "",
+      sessionType: "public",
+      pageNumber: 1
     };
   }
+
+
+  createSession(){}
 
   render() {
     const styles = {
@@ -41,13 +62,6 @@ export default class sessionModal extends React.Component<
       });
     };
 
-    const setvalue = (param: any) => {
-      this.setState({
-        open: true,
-        value: param
-      });
-    };
-
     const handleOpen = () => {
       setOpen(true);
     };
@@ -56,14 +70,37 @@ export default class sessionModal extends React.Component<
       setOpen(false);
     };
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setvalue((event.target as HTMLInputElement).value);
+    const handleChange = (event: any) => {
+      const name = event.target.name;
+      const value = event.target.value;
+
+      this.setState({
+        ...this.state,
+        [name]: value
+      });
     };
 
+    const handleSubmit = (event: any) => {
+      console.log("Handle Submit");
+      console.log(this.state);
+
+      this.props.onSessionCreate(this.state.sessionName,this.state.sessionBalance, this.state.sessionType)
+      .then(()=>{
+        this.setState({
+          ...this.state,
+          pageNumber: 2
+        });
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
+      event.preventDefault();
+    };
+    let checked = false;
     return (
       <div>
         <Button color="secondary" variant="contained" onClick={handleOpen}>
-          Create Session
+          Create Session{" "}
         </Button>
         <Modal
           aria-labelledby="simple-modal-title"
@@ -89,37 +126,23 @@ export default class sessionModal extends React.Component<
                 justify="center"
                 alignItems="center"
               >
-                <h2>Create A Session:</h2>
-                <TextField
-                  id="outlined-basic"
-                  label="Name"
-                  variant="outlined"
-                />
-                <TextField
-                  id="outlined-basic"
-                  label="Starting Balance"
-                  variant="outlined"
-                />
-                <RadioGroup
-                  aria-label="Session Type:"
-                  name="sessionType"
-                  value={this.state.value}
-                  onChange={handleChange}
-                >
-                  <FormControlLabel
-                    value="public"
-                    control={<Radio />}
-                    label="Public"
-                  />
-                  <FormControlLabel
-                    value="private"
-                    control={<Radio />}
-                    label="Private"
-                  />
-                </RadioGroup>
-                <Button variant="contained" color="primary">
-                  Next
-                </Button>
+                <Fade in={this.state.pageNumber == 1}>
+                  <div>
+                    <Page1
+                      handleSubmit={handleSubmit}
+                      handleClose={handleClose}
+                      handleChange={handleChange}
+                      values={this.state}
+                    ></Page1>
+                  </div>
+                </Fade>
+
+                <Fade in={this.state.pageNumber == 2}>
+                  <div>
+                    <Page2></Page2>
+                  </div>
+                </Fade>
+
               </Grid>
             </div>
           </Fade>
