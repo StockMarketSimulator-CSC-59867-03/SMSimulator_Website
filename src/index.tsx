@@ -7,8 +7,8 @@ import * as firebase from 'firebase';
 
 import App from './App';
 import Login from './RouteComponents/login';
-import MarketWindow from './RouteComponents/marketwindow';
-import MarketData from './RouteComponents/marketdata';
+import MarketWindow from './Components/marketwindow';
+import MarketData from './Components/marketdata';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCWFa5caoShYrHxcLFlVeHyIzM3mXWgJo0",
