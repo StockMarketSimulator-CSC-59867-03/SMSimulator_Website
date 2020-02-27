@@ -9,6 +9,7 @@ import App from './App';
 import Login from './RouteComponents/login';
 import MarketWindow from './RouteComponents/marketwindow';
 import MarketData from './RouteComponents/marketdata';
+import SignUp from './RouteComponents/signup'
 
 const firebaseConfig = {
     apiKey: "AIzaSyCWFa5caoShYrHxcLFlVeHyIzM3mXWgJo0",
@@ -22,11 +23,13 @@ const firebaseConfig = {
   };
 
   firebase.initializeApp(firebaseConfig);
+  
 
 const routing = (
     <Router>
         <div>
             <Route exact path="/" component={App} />
+            <Route path="/signup" component={SignUp}/>
             <Route path="/login" component={Login} />
             <Route path="/marketwindow" component={MarketWindow} />
             <Route path="/marketdata" component={MarketData} />
