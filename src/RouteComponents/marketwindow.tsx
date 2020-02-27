@@ -2,7 +2,16 @@ import { Link } from 'react-router-dom';
 
 import React from 'react';
 
-class MarketWindow extends React.Component {
+type MProps = {
+    test: boolean
+};
+type MState = {
+
+};
+class MarketWindow extends React.Component<MProps, MState> {
+    constructor(props: any) {
+        super(props);
+    }
     render() {
         return (
             <div>
