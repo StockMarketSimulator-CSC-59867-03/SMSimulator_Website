@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import StockGraph from '../Components/stockGraph';
 import SessionSearch from '../Components/sessionSearch';
 import ScrollableButtonList from '../Components/scrollableButtonList';
-
+import GeneralButton from '../Components/generalButton';
+import Button from '@material-ui/core/Button';
+import CreateSessionModal from '../Components/CreateSessionModal/CreateSessionModal'
 
 type MWProps = {};
 type MWState = {
@@ -17,7 +19,26 @@ class Home extends React.Component<MWProps, MWState> {
 
         }
     }
- 
+
+    createSession(sessionName: string, startingBalance: number, type: string) {
+        console.log("Creating Session");
+        const data = { name: sessionName, balance: startingBalance, type: type};
+
+        fetch('/createSession', {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+
     render() {
         return (
             <div>
@@ -31,7 +52,11 @@ class Home extends React.Component<MWProps, MWState> {
                     <div className="sessionResults">
                         <ScrollableButtonList />
                     </div>
+                    
                 </div>
+
+                <CreateSessionModal></CreateSessionModal>
+               
             </div>
         );
     }

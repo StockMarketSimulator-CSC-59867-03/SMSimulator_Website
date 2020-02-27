@@ -2,10 +2,10 @@ import React from 'react';
 
 
 type SGprops = {
-    text: string;
+    onClick?: any;
 }
 
-class generalButton extends React.Component {
+class generalButton extends React.Component<SGprops> {
     constructor(props : any) {
         super(props);
         this.state = { };
@@ -15,6 +15,9 @@ class generalButton extends React.Component {
     }
     // Need to create usable functions to bind
     handleClick() {
+        if(this.props.onClick){
+            this.props.onClick();
+        }
         this.setState(state => ({/* bind to action*/ }));
     }
 
