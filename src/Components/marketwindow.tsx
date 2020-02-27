@@ -1,5 +1,6 @@
 import React from 'react';
 import EventInjection from './eventinjection';
+import { Link } from 'react-router-dom';
 
 type MWProps = {};
 type MWState = {
@@ -45,7 +46,7 @@ class MarketWindow extends React.Component<MWProps, MWState> {
     }
 
     render() {
-        let current_user = "user"; //the view should change depending on if a regular user or admin is viewing it
+        let current_user = "admin"; //the view should change depending on if a regular user or admin is viewing it
         const isViewingPortfolio = this.state.showPortfolio;
         let button;
         if(current_user === "admin") {
@@ -60,6 +61,7 @@ class MarketWindow extends React.Component<MWProps, MWState> {
         return (
             <div>
                 <h1>Market Window</h1>
+                <Link to="/"> Back to home </Link>
                 <h3>{this.state.sessionTitle}</h3>
                 <EventInjection show={this.state.showModal} handleClose={this.hideInjectionModal}/>
                 <div>

@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import Buy from './Components/buy';
 import Sell from './Components/sell';
 import SIState from './Components/sessioninitiation';
-import MarketWindow from './Components/marketwindow';
 
 interface IAppComponentProps { }
 interface IAppComponentState { }
@@ -38,9 +37,7 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
            this.createSession();
          }} />*/}
                 {/* <EventInjection /> */}
-                {<Buy />}
                 {/* <Sell /> */}
-                <MarketWindow />
                 <div>
                     <ul>
                         <li>

@@ -1,6 +1,9 @@
 import React from 'react';
 
-type SellProps = {};
+type SellProps = {
+    show: boolean,
+    handleClose: any,
+};
 type SellState = {
     inputNumShares : number,
     inputAsk       : number,
@@ -35,8 +38,9 @@ class Sell extends React.Component<SellProps, SellState>{
 
     render() {
         let var_total = this.state.inputNumShares * this.state.inputAsk;
+        const display = this.props.show ? "block" : "none";
         return (
-            <div>
+            <div style={{display: display, border: "solid"}}>
                 <h1>Sell Shares</h1>
                 <div>
                     <form onSubmit={this.handleSubmit}>
@@ -50,6 +54,7 @@ class Sell extends React.Component<SellProps, SellState>{
                         <input type="submit" value="Place Order"/>
                     </form>
                 </div>
+                <button onClick={this.props.handleClose}>Close</button>
             </div>
         );
     }
