@@ -7,6 +7,7 @@ import ScrollableButtonList from '../Components/scrollableButtonList';
 import GeneralButton from '../Components/generalButton';
 import Button from '@material-ui/core/Button';
 import CreateSessionModal from '../Components/CreateSessionModal/CreateSessionModal'
+import MarketWindow from '../Components/marketwindow';
 
 type MWProps = {};
 type MWState = {
@@ -44,16 +45,15 @@ class Home extends React.Component<MWProps, MWState> {
             <div>
                 
                 <h1 className="title"> Home page </h1>
-                <Link className="login" to="../RouteComponents/login"> Login </Link>
+                <Link className="login" to="../login"> Login</Link>
                 <div className="sessions">
                     <h2>Session Search</h2>
                     <SessionSearch />
                     <h2>Session List</h2>
                     <div className="sessionResults">
                         <ScrollableButtonList />
-                    </div>
-                    
-                </div>
+                    </div>   
+                </div>               
 
                 <CreateSessionModal></CreateSessionModal>
                

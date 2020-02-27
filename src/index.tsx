@@ -7,7 +7,7 @@ import * as firebase from 'firebase';
 
 import App from './App';
 import Login from './RouteComponents/login';
-import MarketWindow from './RouteComponents/marketwindow';
+import MarketWindow from './Components/marketwindow';
 import MarketData from './RouteComponents/marketdata';
 
 const firebaseConfig = {
@@ -21,7 +21,7 @@ const firebaseConfig = {
     measurementId: "G-6SR01THDJM"
   };
 
-  firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 const routing = (
     <Router>
