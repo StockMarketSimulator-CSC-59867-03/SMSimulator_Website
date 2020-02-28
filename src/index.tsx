@@ -40,6 +40,7 @@ const routing = (
             <Route path="/login" component={Login} />
             <Route path="/marketwindow" render={(props)=> <MarketWindow {...props} sessionService={sessionService}/>} />
             <Route path="/stockdata" component={StockData} />
+            <Route path="/signup" component={SignUp} />
         </div>
     </Router>
 )

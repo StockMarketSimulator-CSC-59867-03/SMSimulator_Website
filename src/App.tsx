@@ -10,7 +10,8 @@ import Home from './HPage/home';
 import SessionService from './Services/sessionService';
 
 interface IAppComponentProps { 
-    sessionService: SessionService
+    sessionService: SessionService,
+    history: any
 }
 interface IAppComponentState { }
 
@@ -57,7 +58,7 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
                         </li>
                     </ul>
                 </div>
-                <Home sessionService={this.sessionService}/>
+                <Home history={this.props.history} sessionService={this.sessionService}/>
             </div>
         );
     }
