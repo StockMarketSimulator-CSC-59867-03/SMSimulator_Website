@@ -8,6 +8,7 @@ import * as firebase from 'firebase';
 import App from './App';
 import Login from './RouteComponents/login';
 import MarketWindow from './RouteComponents/MarketWindow/marketwindow';
+import SignUp from './RouteComponents/signup'
 
 import SessionService from './Services/sessionService';
 import { Session } from 'inspector';
