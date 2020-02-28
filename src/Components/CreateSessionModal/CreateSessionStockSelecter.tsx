@@ -2,6 +2,7 @@ import React from "react";
 import { FormControlLabel, Button } from "@material-ui/core";
 import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
 import Grid from "@material-ui/core/Grid";
+import "../../App.scss";
 
 export default function StockSelecter(props: any) {
   let defaultStocks = ["AMZN", "GOOGL", "AAPL", "MSFT", "TSLA"];
