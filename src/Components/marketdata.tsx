@@ -1,17 +1,18 @@
 import React from 'react';
+import Buy from './buy';
+import Sell from './sell';
 import firebase from 'firebase';
-import StockGraph from '../../Components/stockGraph';
-import BuyModal from '../../Components/BuyModal/BuyModal';
-import SellModal from '../../Components/SellModal/SellModal';
-import { Link } from 'react-router-dom';
+import { stringify } from 'querystring';
+import StockGraph from './stockGraph';
+import BuyModal from './BuyModal/BuyModal';
 
-type SDProps = {};
-type SDState = {
+type MDProps = {};
+type MDState = {
     showBuyModal: boolean,
     showSellModal: boolean,
     stockName: string,
 };
-class StockData extends React.Component<SDProps, SDState> {
+class MarketData extends React.Component<MDProps, MDState> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -76,10 +77,9 @@ class StockData extends React.Component<SDProps, SDState> {
                 <button onClick={this.showBuyModal}>Buy</button>
                 <BuyModal show={this.state.showBuyModal} handleClose={this.hideBuyModal}/>
                 <button onClick={this.showSellModal}>Sell</button>
-                <SellModal show={this.state.showSellModal} handleClose={this.hideSellModal}/>
-                <Link to="/"> Back to home </Link>
+                <Sell show={this.state.showSellModal} handleClose={this.hideSellModal}/>
             </div>
         );
     }
 }
-export default StockData;
+export default MarketData;

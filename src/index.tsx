@@ -9,9 +9,10 @@ import App from './App';
 import Login from './RouteComponents/login';
 import MarketWindow from './RouteComponents/MarketWindow/marketwindow';
 
+import MarketData from './RouteComponents/marketdata';
+
 import SessionService from './Services/sessionService';
 import { Session } from 'inspector';
-import StockData from './RouteComponents/StockData/stockdata';
 
 
 const firebaseConfig = {
@@ -38,7 +39,7 @@ const routing = (
             <Route exact path="/" render={(props)=> <App {...props} sessionService={sessionService}/>}/>
             <Route path="/login" component={Login} />
             <Route path="/marketwindow" render={(props)=> <MarketWindow {...props} sessionService={sessionService}/>} />
-            <Route path="/stockdata" component={StockData} />
+            <Route path="/marketdata" component={MarketData} />
         </div>
     </Router>
 )

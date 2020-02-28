@@ -1,10 +1,3 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-import MarketWindowModel from './MarketWindow.model'
-import SessionService from '../../Services/sessionService';
-import EventInjectionModal from '../../Components/EventInjectionModal/EventInjectionModal';
-
 import React from "react";
 import EventInjection from "../../Components/eventinjection";
 import { Link } from "react-router-dom";
@@ -93,23 +86,6 @@ class MarketWindow extends React.Component<MWProps, MWState> {
         if(price > max){
             max = price;
         }
-        return (
-            <div>
-                <h1>Market Window</h1>
-                <Link to="/"> Back to home </Link>
-                <h3>{this.state.sessionTitle}</h3>
-                <EventInjectionModal show={this.state.showModal} handleClose={this.hideInjectionModal}/>
-                <div>
-                    {isViewingPortfolio ? (<p>Showing Portfolio Graph</p>) : (<p>Showing Market Graph</p>)}
-                </div>
-                <div>
-                    <p>The List of Stocks Should Go Here</p>
-                </div>
-                <div>
-                    {button}
-                </div>
-            </div>
-        );
     }
     return [min - 20, max + 20];
   }
@@ -145,7 +121,7 @@ class MarketWindow extends React.Component<MWProps, MWState> {
         <h1>Market Window</h1>
         <Link to="/"> Back to home </Link>
         <h3>{this.state.sessionTitle}</h3>
-        <EventInjectionModal
+        <EventInjection
           show={this.state.showModal}
           handleClose={this.hideInjectionModal}
         />
