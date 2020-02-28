@@ -44,6 +44,9 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
                 <div>
                     <ul>
                         <li>
+                            <Link to="/signup">Sign Up</Link>
+                        </li>
+                        <li>
                             <Link to="/login"> Login </Link>
                         </li>
                         <li>
