@@ -14,7 +14,8 @@ import {
   FormControlLabel,
   Radio,
   Grid,
-  FormControl
+  FormControl,
+  Icon
 } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
 import Page1 from "./CreateSessionForm1";
@@ -117,8 +118,10 @@ export default class SessionModal extends React.Component<
     let checked = false;
     return (
       <div>
-        <Button color="secondary" variant="contained" onClick={handleOpen}>
-          Create Session{" "}
+            <Button color="primary"
+                variant="contained"
+                onClick={handleOpen}>
+         New Session{" "}
         </Button>
         <Modal
           aria-labelledby="simple-modal-title"

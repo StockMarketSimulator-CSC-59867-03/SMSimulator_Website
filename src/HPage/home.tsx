@@ -108,13 +108,15 @@ class Home extends React.Component<MWProps, MWState> {
                 <div className="sessions">
                     <h2>Session Search</h2>
                     <SessionSearch />
+                    <Button className = "sessionButton">
+                        <CreateSessionModal onSessionCreate={this.createSession} onStocksSelected={this.addStocksToSession}></CreateSessionModal>
+                    </Button>
                     <h2>Session List</h2>
                     <div className="sessionResults">
                         <ScrollableButtonList />
                     </div>   
                 </div>               
 
-                <CreateSessionModal onSessionCreate={this.createSession} onStocksSelected={this.addStocksToSession}></CreateSessionModal>
                
             </div>
         );
