@@ -33,6 +33,7 @@ handleChange(event : any) {
 }
 
 handleSubmit(event : any) {
+    event.preventDefault();
     alert("Successfully Signed Up!");
     const email = event.target.elements.userEmail.current.value;
     const username = event.target.elements.username.current.value;
