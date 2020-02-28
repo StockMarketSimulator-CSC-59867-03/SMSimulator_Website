@@ -30,15 +30,13 @@ handleChange(event : any) {
 
 handleSubmit(event : any) {
     alert("Succesfully Loggeed In!");
-    const email = event.target.elements.userEmail.current.value;
-    const password = event.target.elements.userPassword.current.value;
-    firebase.auth().signInWithEmailAndPassword(email,password).catch(
+    event.preventDefault();
+    firebase.auth().signInWithEmailAndPassword(this.state.email,this.state.password).catch(
       function(error){
         const errorCode = error.code;
         const errorMessage = error.message;
       }
     );
-    event.preventDefault();
 }
 
 render() {
@@ -47,9 +45,9 @@ render() {
           <h1>Login Page</h1>
           <form onSubmit={this.handleSubmit}>
             <br/>
-            <label>Email <input type="email" name="userEmail" onChange={this.handleChange}/></label>
+            <label>Email <input type="email" name="email" onChange={this.handleChange}/></label>
             <br/>
-            <label>Password <input type="password" name="userPassword" onChange={this.handleChange}/></label>
+            <label>Password <input type="password" name="password" onChange={this.handleChange}/></label>
             <br/>
             <br/>
             <input type="submit" value="Create"/>
@@ -62,5 +60,16 @@ render() {
 }
 
 }
-
+/* User Login Listener
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in. Username can be retrieved here
+    var displayName = user.displayName;
+    
+  } else {
+    // User is signed out.
+    
+  }
+});
+*/
 export default LogIn;

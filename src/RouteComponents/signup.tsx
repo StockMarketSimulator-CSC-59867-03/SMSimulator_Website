@@ -35,10 +35,19 @@ handleChange(event : any) {
 handleSubmit(event : any) {
     event.preventDefault();
     alert("Successfully Signed Up!");
-    const email = event.target.elements.userEmail.current.value;
-    const username = event.target.elements.username.current.value;
-    const password = event.target.elements.userPassword.current.value;
-    firebase.auth().createUserWithEmailAndPassword(email,password).catch(
+    const username = this.state.username;
+    const email = this.state.email;
+    const password = this.state.password;
+    firebase.auth().createUserWithEmailAndPassword(email,password)
+    .then(function(user){
+      const currentUser = firebase.auth().currentUser;
+      if(user && currentUser!= null){
+        currentUser.updateProfile({
+        displayName : username
+        });
+      }
+
+    }).catch(
       function(error){
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -47,10 +56,12 @@ handleSubmit(event : any) {
     const db = firebase.firestore();
     db.collection('User').add({
       id: username,
-      sessions: ["asdjkaijidaksj"]
+      sessions: [""]
     });
     event.preventDefault();
 }
+
+
 
 render() {
     return (
@@ -58,11 +69,11 @@ render() {
           <h1>Sign Up</h1>
           <form onSubmit={this.handleSubmit}>
             <br/>
-            <label>Email <input type="email" name="userEmail" onChange={this.handleChange}/></label>
+            <label>Email <input type="email" name="email" onChange={this.handleChange}/></label>
             <br/>
             <label>Username <input type="text" name = "username" onChange = {this.handleChange}/></label>
             <br/>
-            <label>Password <input type="password" name="userPassword" onChange={this.handleChange}/></label>
+            <label>Password <input type="password" name="password" onChange={this.handleChange}/></label>
             <br/>
             <br/>
             <input type="submit" value="Sign Up"/>
