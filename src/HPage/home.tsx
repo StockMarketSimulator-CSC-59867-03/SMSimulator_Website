@@ -9,19 +9,25 @@ import Button from '@material-ui/core/Button';
 import CreateSessionModal from '../Components/CreateSessionModal/CreateSessionModal'
 import MarketWindow from '../RouteComponents/MarketWindow/marketwindow';
 import SessionService from '../Services/sessionService';
-
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 type MWProps = {
     sessionService: SessionService
 };
 type MWState = {
-
+    openDialog: boolean;
+    clickedSessionID: string;
 };
 class Home extends React.Component<MWProps, MWState> {
     private sessionService: SessionService
     constructor(props: any) {
         super(props);
         this.state = {
-
+            openDialog: false,
+            clickedSessionID: ""
         }
         this.sessionService = props.sessionService;
     }
@@ -100,25 +106,79 @@ class Home extends React.Component<MWProps, MWState> {
     }
 
     render() {
-        return (
-            <div>
-                
-                <h1 className="title"> Home page </h1>
-                <Link className="login" to="../login"> Login</Link>
-                <div className="sessions">
-                    <h2>Session Search</h2>
-                    <SessionSearch />
-                    <Button className = "sessionButton">
-                        <CreateSessionModal onSessionCreate={this.createSession} onStocksSelected={this.addStocksToSession}></CreateSessionModal>
-                    </Button>
-                    <h2>Session List</h2>
-                    <div className="sessionResults">
-                        <ScrollableButtonList />
-                    </div>   
-                </div>               
+        const handleClickOpen = (sessionID: string) => {
+            this.setState({
+                ...this.setState,
+                clickedSessionID: sessionID,
+                openDialog: true
+            });
+          };
+        
+          const handleClose = () => {
+            this.setState({
+                ...this.setState,
+                openDialog: false
+            });
+          };
 
-               
+          const clickedYes = () => {
+            this.sessionService.setSessionID(this.state.clickedSessionID);
+            handleClose();
+          };
+
+
+        
+        return (
+          <div>
+            <h1 className="title"> Home page </h1>
+            <Link className="login" to="../login">
+              {" "}
+              Login
+            </Link>
+            <div className="sessions">
+              <h2>Session Search</h2>
+              <SessionSearch />
+              <Button className="sessionButton">
+                <CreateSessionModal
+                  onSessionCreate={this.createSession}
+                  onStocksSelected={this.addStocksToSession}
+                ></CreateSessionModal>
+              </Button>
+              <h2>Session List</h2>
+              <div className="sessionResults">
+                <ScrollableButtonList
+                  onButtonClick={(sessionID: string) => {
+                    if (sessionID != null || sessionID != "") {
+                        handleClickOpen(sessionID);
+                    }
+                  }}
+                />
+              </div>
             </div>
+            <Dialog
+              open={this.state.openDialog}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Join session?"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Switch session to {this.state.clickedSessionID}?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={clickedYes} color="primary">
+                  Yes
+                </Button>
+                <Button onClick={handleClose} color="primary" autoFocus>
+                  No
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
         );
     }
 }

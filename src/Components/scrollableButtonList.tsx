@@ -2,7 +2,9 @@ import React from 'react';
 import GeneralButton from './generalButton';
 import firebase from 'firebase';
 
-type sbProps = {};
+type sbProps = {
+    onButtonClick: any;
+};
 type sbState = {
     stocks: object[]
 
@@ -32,13 +34,13 @@ class scrollableButtonList extends React.Component<sbProps,sbState> {
         var sessionList: string[] = [];
         var toButtons: object[] = [];
 
-        sessions.get().then((querySnapshot) => {
+        sessions.where("type", "==", "public").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 sessionList.push(doc.id);
             });
             for (let i in sessionList) {
                 console.log(sessionList[i]);
-                toButtons.push(<GeneralButton sessionID={sessionList[i]} />)
+                toButtons.push(<GeneralButton onClick={this.props.onButtonClick} sessionID={sessionList[i]} />)
             };
             this.setState({ stocks: toButtons });
         });

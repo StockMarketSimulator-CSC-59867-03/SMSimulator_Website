@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 type gBprops = {
     sessionID?: string
+    onClick: any;
 }
 
 type gBstate = {
@@ -22,19 +23,18 @@ class generalButton extends React.Component<gBprops,gBstate> {
     }
     
     handleClick() {
-        this.setState({ showMarketWindow: !this.state.showMarketWindow });
-        console.log(this.props.sessionID);
+        this.props.onClick(this.props.sessionID);
+        //this.setState({ showMarketWindow: !this.state.showMarketWindow });
+        //console.log(this.props.sessionID);
     }
     render() {
         return (
             <div>
-                <Link  to="../marketwindow">
-                    <button 
-                        style={{ height: "56px", width: "100%" }}
-                        onClick={this.handleClick}>
-                        {this.props.sessionID}
-                    </button>
-                </Link>
+                <button 
+                    style={{ height: "56px", width: "100%" }}
+                    onClick={this.handleClick}>
+                    {this.props.sessionID}
+                </button>
              </div>
                );
     }
