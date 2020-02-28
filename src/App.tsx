@@ -50,7 +50,7 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
                             <Link to="/marketwindow"> Market Window </Link>
                         </li>
                         <li>
-                            <Link to="/marketdata"> Market Data </Link>
+                            <Link to="/stockdata"> Stock Data </Link>
                         </li>
                     </ul>
                 </div>
