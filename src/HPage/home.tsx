@@ -14,8 +14,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { useHistory } from "react-router-dom";
+
 type MWProps = {
-    sessionService: SessionService
+    sessionService: SessionService,
+    history: any
 };
 type MWState = {
     openDialog: boolean;
@@ -97,6 +100,8 @@ class Home extends React.Component<MWProps, MWState> {
                     }
                     resolve(response);
                     console.log("Successfully Added stocks to session");
+                    this.props.history.push("/marketwindow");
+
                 })
                 .catch((error) => {
                     reject(error);
@@ -124,6 +129,7 @@ class Home extends React.Component<MWProps, MWState> {
           const clickedYes = () => {
             this.sessionService.setSessionID(this.state.clickedSessionID);
             handleClose();
+            this.props.history.push("/marketwindow");
           };
 
 
