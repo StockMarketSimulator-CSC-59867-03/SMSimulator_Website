@@ -1,14 +1,21 @@
 import React from 'react';
-import EventInjection from './eventinjection';
+import EventInjection from '../../Components/eventinjection';
 import { Link } from 'react-router-dom';
 
-type MWProps = {};
+import MarketWindowModel from './MarketWindow.model'
+import SessionService from '../../Services/sessionService';
+
+type MWProps = {
+    sessionService: SessionService;
+};
 type MWState = {
     sessionTitle: string
     showModal: boolean,
     showPortfolio: boolean
 };
 class MarketWindow extends React.Component<MWProps, MWState> {
+    private marketWindowModel: MarketWindowModel;
+    private sessionService: SessionService;
     constructor(props: any) {
         super(props);
         this.state = {
@@ -16,6 +23,9 @@ class MarketWindow extends React.Component<MWProps, MWState> {
             showModal: false,
             showPortfolio: false,
         }
+
+        this.sessionService = props.sessionService;
+        this.marketWindowModel = new MarketWindowModel(this.sessionService.getSessionID());
 
         this.showInjectionModal = this.showInjectionModal.bind(this);
         this.hideInjectionModal = this.hideInjectionModal.bind(this);

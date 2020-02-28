@@ -7,13 +7,18 @@ import Buy from './Components/buy';
 import Sell from './Components/sell';
 import SIState from './Components/sessioninitiation';
 import Home from './HPage/home';
+import SessionService from './Services/sessionService';
 
-interface IAppComponentProps { }
+interface IAppComponentProps { 
+    sessionService: SessionService
+}
 interface IAppComponentState { }
 
 class App extends React.Component<IAppComponentProps, IAppComponentState> {
+    private sessionService: SessionService
     constructor(props: any) {
         super(props);
+        this.sessionService = props.sessionService;
     }
 
     callTestAPI() {
@@ -49,7 +54,7 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
                         </li>
                     </ul>
                 </div>
-                <Home/>
+                <Home sessionService={this.sessionService}/>
             </div>
         );
     }

@@ -7,9 +7,12 @@ import * as firebase from 'firebase';
 
 import App from './App';
 import Login from './RouteComponents/login';
-import MarketWindow from './Components/marketwindow';
+import MarketWindow from './RouteComponents/MarketWindow/marketwindow';
 
 import MarketData from './RouteComponents/marketdata';
+
+import SessionService from './Services/sessionService';
+import { Session } from 'inspector';
 
 
 const firebaseConfig = {
@@ -25,12 +28,17 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+
+
+const sessionService = new SessionService();
+
+
 const routing = (
     <Router>
         <div>
-            <Route exact path="/" component={App} />
+            <Route exact path="/" render={(props)=> <App {...props} sessionService={sessionService}/>}/>
             <Route path="/login" component={Login} />
-            <Route path="/marketwindow" component={MarketWindow} />
+            <Route path="/marketwindow" render={(props)=> <MarketWindow {...props} sessionService={sessionService}/>} />
             <Route path="/marketdata" component={MarketData} />
         </div>
     </Router>

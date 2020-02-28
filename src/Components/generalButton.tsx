@@ -1,5 +1,5 @@
 import React from 'react';
-import MarketWindow from '../Components/marketwindow';
+import MarketWindow from '../RouteComponents/MarketWindow/marketwindow';
 import { Link } from 'react-router-dom';
 
 

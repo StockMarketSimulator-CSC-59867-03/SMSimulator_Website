@@ -7,19 +7,23 @@ import ScrollableButtonList from '../Components/scrollableButtonList';
 import GeneralButton from '../Components/generalButton';
 import Button from '@material-ui/core/Button';
 import CreateSessionModal from '../Components/CreateSessionModal/CreateSessionModal'
-import MarketWindow from '../Components/marketwindow';
+import MarketWindow from '../RouteComponents/MarketWindow/marketwindow';
+import SessionService from '../Services/sessionService';
 
-type MWProps = {};
+type MWProps = {
+    sessionService: SessionService
+};
 type MWState = {
 
 };
 class Home extends React.Component<MWProps, MWState> {
-    private sessionID: string = ""
+    private sessionService: SessionService
     constructor(props: any) {
         super(props);
         this.state = {
 
         }
+        this.sessionService = props.sessionService;
     }
 
     createSession = (sessionName: string, startingBalance: number, type: string) : Promise<any> => {
@@ -45,7 +49,7 @@ class Home extends React.Component<MWProps, MWState> {
                     console.log(data);
                     if(typeof data == "string"){
                         resolve(data);
-                        this.sessionID = data;
+                        this.sessionService.setSessionID(data);
                     }
                     else{
                         reject("Error: Response wasn't a string for the session id");
@@ -63,11 +67,11 @@ class Home extends React.Component<MWProps, MWState> {
     addStocksToSession = (stocks: [string]): Promise<any> => {
         
         console.log("Creating Session");
-        const data = { sessionID:this.sessionID, stocks:stocks};
+        const data = { sessionID:this.sessionService.getSessionID(), stocks:stocks};
 
         return new Promise((resolve,reject)=>{
 
-            if(this.sessionID = ""){
+            if(this.sessionService.getSessionID() == ""){
                 console.log("Error: No SessionID");
                 reject("Error: No SessionID");
                 return;
