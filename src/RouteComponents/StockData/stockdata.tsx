@@ -5,7 +5,8 @@ import BuyModal from '../../Components/BuyModal/BuyModal';
 import SellModal from '../../Components/SellModal/SellModal';
 import { Link } from 'react-router-dom';
 
-type SDProps = {};
+type SDProps = {
+};
 type SDState = {
     showBuyModal: boolean,
     showSellModal: boolean,

@@ -2,6 +2,7 @@
 import React from 'react';
 import EventInjection from './eventinjection';
 import { LineChart, XAxis, YAxis, CartesianGrid, Line, Tooltip } from 'recharts';
+import { Link } from 'react-router-dom';
 
 import {
     RadioGroup,
@@ -17,6 +18,7 @@ type SGProps = {
     width: number;
     height: number;
     data: any;
+    handleClick?: any;
 };
 type SGState = {
     data: any;
@@ -41,14 +43,13 @@ class StockGraph extends React.Component<SGProps, SGState> {
             { name: "9:45 AM", price: 906.17 }, { name: "9:50 AM", price: 908.23 },
             { name: "9:55 AM", price: 903.42 }]
     }
-
     
     render() {
 
         let colorArray = [];
 
         return (
-           <div style={{border: '0px solid black'}}>
+           <div style={{border: '0px solid black'}} onClick={this.props.handleClick}>
                 <Grid
                     
                     container

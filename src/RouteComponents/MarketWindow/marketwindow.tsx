@@ -15,6 +15,7 @@ import { Grid } from "@material-ui/core";
 
 type MWProps = {
   sessionService: SessionService;
+  history: any,
 };
 type MWState = {
   sessionTitle: string;
@@ -91,6 +92,10 @@ class MarketWindow extends React.Component<MWProps, MWState> {
     return [min - 20, max + 20];
   }
 
+  handleClick = () => {
+    this.props.history.push("/stockdata");
+  }
+
   render() {
     let stockGraphs = [];
     for (const [key, value] of this.state.stockData.entries()) {
@@ -100,7 +105,7 @@ class MarketWindow extends React.Component<MWProps, MWState> {
 
       stockGraphs.push(
         <div >
-          <StockGraph name={key} domain={domain} data={value}></StockGraph>
+          <StockGraph name={key} domain={domain} data={value} handleClick={this.handleClick}></StockGraph>
         </div>
       );
     }
