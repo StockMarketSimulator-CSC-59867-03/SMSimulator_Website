@@ -23,6 +23,7 @@ import Page2 from "./CreateSessionStockSelecter";
 
 type sessionModalProps = {
   onSessionCreate: any;
+  onStocksSelected: any;
 };
 type sessionModalState = {
   open: boolean;
@@ -82,7 +83,7 @@ export default class SessionModal extends React.Component<
       });
     };
 
-    const handleSubmit = (event: any) => {
+    const handleSubmitPage1 = (event: any) => {
       console.log("Handle Submit");
       console.log(this.state);
 
@@ -103,6 +104,16 @@ export default class SessionModal extends React.Component<
         });
       event.preventDefault();
     };
+
+    const handleSubmitPage2 = (event: any) => {
+      this.props.onStocksSelected(Array.from(this.selectedStocks)).then(()=>{
+        this.setState({
+          ...this.state,
+          pageNumber: 3
+        });
+      });
+    };
+
     let checked = false;
     return (
       <div>
@@ -134,11 +145,11 @@ export default class SessionModal extends React.Component<
                 justify="center"
                 alignItems="center"
               >
-                {this.state.pageNumber == 2 ? (
-                  <Fade in={this.state.pageNumber == 2}>
+                {this.state.pageNumber == 1 ? (
+                  <Fade in={this.state.pageNumber == 1}>
                     <div>
                       <Page1
-                        handleSubmit={handleSubmit}
+                        handleSubmit={handleSubmitPage1}
                         handleClose={handleClose}
                         handleChange={handleChange}
                         values={this.state}
@@ -149,11 +160,15 @@ export default class SessionModal extends React.Component<
                   <div></div>
                 )}
 
-                <Fade style={{height:"100%"}} in={this.state.pageNumber == 1}>
+            {this.state.pageNumber == 1 || this.state.pageNumber == 2 ? (
+                <Fade style={{height:"100%"}} in={this.state.pageNumber == 2}>
                   <div style={{height:"100%"}}>
-                    <Page2 selectedStocks={this.selectedStocks}></Page2>
+                    <Page2 selectedStocks={this.selectedStocks} handleSubmit={handleSubmitPage2}></Page2>
                   </div>
                 </Fade>
+            ): (<div>
+              <h2>Successfully Created Session with Stocks</h2>
+            </div>)}
 
 
               </Grid>

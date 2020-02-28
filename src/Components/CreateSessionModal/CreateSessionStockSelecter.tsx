@@ -154,7 +154,7 @@ export default function StockSelecter(props: any) {
             {[...stockComponents]}
           </Grid>
         </div>
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={props.handleSubmit}>
           Add Stocks
         </Button>
       </Grid>

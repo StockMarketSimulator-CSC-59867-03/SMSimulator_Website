@@ -14,6 +14,7 @@ type MWState = {
 
 };
 class Home extends React.Component<MWProps, MWState> {
+    private sessionID: string = ""
     constructor(props: any) {
         super(props);
         this.state = {
@@ -21,7 +22,7 @@ class Home extends React.Component<MWProps, MWState> {
         }
     }
 
-    createSession(sessionName: string, startingBalance: number, type: string) : Promise<any> {
+    createSession = (sessionName: string, startingBalance: number, type: string) : Promise<any> => {
         console.log("Creating Session");
         const data = { name: sessionName, balance: startingBalance, type: type};
 
@@ -38,8 +39,18 @@ class Home extends React.Component<MWProps, MWState> {
                         throw "ERROR: Status is not 200";
                         
                     }
-                    resolve(response);
-                    console.log(response);
+                    return response.text();
+                })
+                .then((data)=>{
+                    console.log(data);
+                    if(typeof data == "string"){
+                        resolve(data);
+                        this.sessionID = data;
+                    }
+                    else{
+                        reject("Error: Response wasn't a string for the session id");
+                    }
+                    
                 })
                 .catch((error) => {
                     reject(error);
@@ -47,6 +58,41 @@ class Home extends React.Component<MWProps, MWState> {
                 });
         });
 
+    }
+
+    addStocksToSession = (stocks: [string]): Promise<any> => {
+        
+        console.log("Creating Session");
+        const data = { sessionID:this.sessionID, stocks:stocks};
+
+        return new Promise((resolve,reject)=>{
+
+            if(this.sessionID = ""){
+                console.log("Error: No SessionID");
+                reject("Error: No SessionID");
+                return;
+            }
+
+            fetch('/addStocks', {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then((response) => {
+                    if(response.status != 200){
+                        throw "ERROR: Status is not 200";
+                        
+                    }
+                    resolve(response);
+                    console.log("Successfully Added stocks to session");
+                })
+                .catch((error) => {
+                    reject(error);
+                    console.error('Error:', error);
+                });
+        });
     }
 
     render() {
@@ -64,7 +110,7 @@ class Home extends React.Component<MWProps, MWState> {
                     </div>   
                 </div>               
 
-                <CreateSessionModal onSessionCreate={this.createSession}></CreateSessionModal>
+                <CreateSessionModal onSessionCreate={this.createSession} onStocksSelected={this.addStocksToSession}></CreateSessionModal>
                
             </div>
         );
