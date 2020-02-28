@@ -38,18 +38,23 @@ class StockGraph extends React.Component<SGProps, SGState> {
         height: 150,
         name: "",
         domain: [800,920],
+        handleClick: ()=>{},
         data: [{ name: "9:30 AM", price: 911.12 }, { name: "9:35 AM", price: 899.36 },
             { name: "9:40 AM", price: 902.45 }, { name: "9:45 AM", price: 909.07 },
             { name: "9:45 AM", price: 906.17 }, { name: "9:50 AM", price: 908.23 },
             { name: "9:55 AM", price: 903.42 }]
     }
+
+    clickedStock = () => {
+        this.props.handleClick({name:this.props.name, domain: this.props.domain, data: this.props.data})
+    };
     
     render() {
 
         let colorArray = [];
 
         return (
-           <div style={{border: '0px solid black'}} onClick={this.props.handleClick}>
+           <div style={{border: '0px solid black'}} onClick={this.clickedStock}>
                 <Grid
                     
                     container

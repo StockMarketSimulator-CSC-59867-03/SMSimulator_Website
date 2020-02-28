@@ -92,8 +92,10 @@ class MarketWindow extends React.Component<MWProps, MWState> {
     return [min - 20, max + 20];
   }
 
-  handleClick = () => {
-    this.props.history.push("/stockdata");
+  handleClick = (stockData: any) => {
+    console.log(stockData);
+    console.log(">>>>>>>>>>>>>>>>>>>>");
+    this.props.history.push({pathname:"/stockdata", stockData:stockData});
   }
 
   render() {
@@ -123,7 +125,8 @@ class MarketWindow extends React.Component<MWProps, MWState> {
         button = <button onClick={this.showPortfolio}>View Portfolio</button>;
     }
     return (
-      <div>
+      <div style={{textAlign:"center"}}>
+ 
         <h1>Market Window</h1>
         <Link to="/"> Back to home </Link>
         <h3>{this.state.sessionTitle}</h3>

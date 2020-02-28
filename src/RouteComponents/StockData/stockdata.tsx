@@ -6,6 +6,8 @@ import SellModal from '../../Components/SellModal/SellModal';
 import { Link } from 'react-router-dom';
 
 type SDProps = {
+    location: any,
+    stockName: string
 };
 type SDState = {
     showBuyModal: boolean,
@@ -21,6 +23,8 @@ class StockData extends React.Component<SDProps, SDState> {
             stockName: "",
 
         }
+
+        console.log(`${this.props.location.stockData} ?>>>>>>>>>>>>`);
 
         this.showBuyModal = this.showBuyModal.bind(this);
         this.hideBuyModal = this.hideBuyModal.bind(this);
@@ -72,7 +76,7 @@ class StockData extends React.Component<SDProps, SDState> {
             }}>
                 <h1>Market Data</h1>
                 <h3>{this.state.stockName}</h3>
-                <div><StockGraph width={500} height={300} data={this.data} /></div>
+                <div><StockGraph name={this.props.location.stockData.name} domain={this.props.location.stockData.domain} width={500} height={300} data={this.props.location.stockData.data} /></div>
                 <p>Stock Data Goes Here</p>
                 <button onClick={this.showBuyModal}>Buy</button>
                 <BuyModal show={this.state.showBuyModal} handleClose={this.hideBuyModal}/>
