@@ -8,9 +8,11 @@ import Sell from './Components/sell';
 import SIState from './Components/sessioninitiation';
 import Home from './HPage/home';
 import SessionService from './Services/sessionService';
+import {connect} from 'react-redux';
 
 interface IAppComponentProps { 
-    sessionService: SessionService
+    sessionService: SessionService,
+    history: any
 }
 interface IAppComponentState { }
 
@@ -44,6 +46,9 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
                 <div>
                     <ul>
                         <li>
+                            <Link to="/signup">Sign Up</Link>
+                        </li>
+                        <li>
                             <Link to="/login"> Login </Link>
                         </li>
                         <li>
@@ -54,7 +59,7 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
                         </li>
                     </ul>
                 </div>
-                <Home sessionService={this.sessionService}/>
+                <Home history={this.props.history} sessionService={this.sessionService}/>
             </div>
         );
     }

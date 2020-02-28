@@ -8,11 +8,13 @@ import * as firebase from 'firebase';
 import App from './App';
 import Login from './RouteComponents/login';
 import MarketWindow from './RouteComponents/MarketWindow/marketwindow';
+import SignUp from './RouteComponents/signup'
 
 import SessionService from './Services/sessionService';
 import { Session } from 'inspector';
 import StockData from './RouteComponents/StockData/stockdata';
 import { Provider } from 'react-redux';
+import store from "./redux/store";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCWFa5caoShYrHxcLFlVeHyIzM3mXWgJo0",
@@ -31,16 +33,18 @@ firebase.initializeApp(firebaseConfig);
 
 const sessionService = new SessionService();
 
-
 const routing = (
+    <Provider store={store}>
     <Router>
         <div>
             <Route exact path="/" render={(props)=> <App {...props} sessionService={sessionService}/>}/>
             <Route path="/login" component={Login} />
             <Route path="/marketwindow" render={(props)=> <MarketWindow {...props} sessionService={sessionService}/>} />
             <Route path="/stockdata" component={StockData} />
+            <Route path="/signup" component={SignUp} />
         </div>
     </Router>
+    </Provider>
 )
 
 ReactDOM.render(routing, document.getElementById('root'));

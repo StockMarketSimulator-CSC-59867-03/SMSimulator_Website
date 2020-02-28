@@ -43,6 +43,9 @@ export default class MarketWindowModel{
             else{
                 mainQuery = this.sessionStocks;
             }
+            if(mainQuery.length > 0){
+
+            
             this.db.collection("StockHistory").where(firebase.firestore.FieldPath.documentId(), "in", mainQuery).get()
             .then((querySnapshot : any)=>{
                 querySnapshot.forEach((doc : any) =>{
@@ -75,7 +78,7 @@ export default class MarketWindowModel{
             .catch((err: any)=>{
                 console.log(err);
             });
-
+        }
 
         });
 
