@@ -12,7 +12,7 @@ import MarketWindow from './RouteComponents/MarketWindow/marketwindow';
 import SessionService from './Services/sessionService';
 import { Session } from 'inspector';
 import StockData from './RouteComponents/StockData/stockdata';
-
+import { Provider } from 'react-redux';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCWFa5caoShYrHxcLFlVeHyIzM3mXWgJo0",
