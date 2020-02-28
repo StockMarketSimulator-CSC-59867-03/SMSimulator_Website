@@ -73,6 +73,11 @@ export default class SessionModal extends React.Component<
 
     const handleClose = () => {
       setOpen(false);
+      this.setState({
+        ...this.state,
+        open: false,
+        pageNumber: 1
+      });
     };
 
     const handleChange = (event: any) => {

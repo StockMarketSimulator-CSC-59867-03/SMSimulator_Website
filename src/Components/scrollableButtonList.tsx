@@ -32,15 +32,17 @@ class scrollableButtonList extends React.Component<sbProps,sbState> {
         let sessions = db.collection('Sessions');
 
         var sessionList: string[] = [];
+        var sessionNameList: string[] = [];
         var toButtons: object[] = [];
 
         sessions.where("type", "==", "public").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 sessionList.push(doc.id);
+                sessionNameList.push(doc.data()["name"]);
             });
             for (let i in sessionList) {
                 console.log(sessionList[i]);
-                toButtons.push(<GeneralButton onClick={this.props.onButtonClick} sessionID={sessionList[i]} />)
+                toButtons.push(<GeneralButton text={sessionNameList[i]} onClick={this.props.onButtonClick} sessionID={sessionList[i]} />)
             };
             this.setState({ stocks: toButtons });
         });

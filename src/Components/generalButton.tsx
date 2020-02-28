@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 
 
 type gBprops = {
-    sessionID?: string
+    text: string;
+    sessionID?: string;
     onClick: any;
 }
 
@@ -33,7 +34,7 @@ class generalButton extends React.Component<gBprops,gBstate> {
                 <button 
                     style={{ height: "56px", width: "100%" }}
                     onClick={this.handleClick}>
-                    {this.props.sessionID}
+                    {this.props.text}
                 </button>
              </div>
                );
