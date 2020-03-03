@@ -54,12 +54,12 @@ handleChange(event : any) {
 
 handleSubmit(event : any) {
     event.preventDefault();
-    alert("Successfully Signed Up!");
     const username = this.state.username;
     const email = this.state.email;
     const password = this.state.password;
     firebase.auth().createUserWithEmailAndPassword(email,password)
     .then(function(user){
+      alert("Successfully Signed Up!");
       const currentUser = firebase.auth().currentUser;
       if(user && currentUser!= null){
         currentUser.updateProfile({
@@ -71,6 +71,7 @@ handleSubmit(event : any) {
       function(error){
         const errorCode = error.code;
         const errorMessage = error.message;
+        alert(errorMessage);
       }
     );
     const db = firebase.firestore();
