@@ -52,17 +52,29 @@ handleChange(event : any) {
 
 handleSubmit(event : any) {
     event.preventDefault();
+    const loginModal = this;
     firebase.auth().signInWithEmailAndPassword(this.state.email,this.state.password)
     .then(function(user){
+      //to fetch user id:
+      const uid = firebase.auth().currentUser?.uid;
       alert("Succesfully Signed In!");
+      loginModal.setState({
+        email : '',
+        password : '',
+      });
     })
     .catch(
       function(error){
         const errorCode = error.code;
         const errorMessage = error.message;
         alert(errorMessage);
+        loginModal.setState({
+          email : '',
+          password : '',
+        });
       }
     );
+
 }
 
 render() {
@@ -80,6 +92,7 @@ render() {
   const handleClose = () =>{
     setOpen(false);
   }
+
     return (
       <div>
           <Button 
@@ -118,6 +131,7 @@ render() {
                         id = "standard-basic"
                         label = "Email"
                         name = "email"
+                        value = {this.state.email}
                         onChange= {this.handleChange}/>
                         
                         <br/>
@@ -128,6 +142,7 @@ render() {
                         type = "password"
                         label= "Password"
                         name = "password"
+                        value = {this.state.password}
                         onChange = {this.handleChange}/>
                         
                         <br/>

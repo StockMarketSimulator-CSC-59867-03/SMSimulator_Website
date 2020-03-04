@@ -57,6 +57,7 @@ handleSubmit(event : any) {
     const username = this.state.username;
     const email = this.state.email;
     const password = this.state.password;
+    const loginModal = this;
     firebase.auth().createUserWithEmailAndPassword(email,password)
     .then(function(user){
       alert("Successfully Signed Up!");
@@ -65,20 +66,30 @@ handleSubmit(event : any) {
         currentUser.updateProfile({
         displayName : username
         });
+        const db = firebase.firestore();
+        db.collection('User').add({
+          id : currentUser.uid,
+          username : username,
+          sessions: [""]
+        });
+        loginModal.setState({
+          username : '',
+          email : '',
+          password : '',
+        });
       }
-
     }).catch(
       function(error){
         const errorCode = error.code;
         const errorMessage = error.message;
         alert(errorMessage);
+        loginModal.setState({
+          username : '',
+          email : '',
+          password : '',
+        });
       }
     );
-    const db = firebase.firestore();
-    db.collection('User').add({
-      id: username,
-      sessions: [""]
-    });
     event.preventDefault();
 }
 
@@ -135,6 +146,7 @@ render() {
                         id = "standard-basic"
                         label = "Email"
                         name = "email"
+                        value = {this.state.email}
                         onChange= {this.handleChange}/>
                         
                         <br/>
@@ -143,6 +155,7 @@ render() {
                         id = "standard-basic"
                         label= "Username"
                         name = "username"
+                        value = {this.state.username}
                         onChange = {this.handleChange}/>
 
                         <br/>
@@ -153,6 +166,7 @@ render() {
                         type = "password"
                         label= "Password"
                         name = "password"
+                        value = {this.state.password}
                         onChange = {this.handleChange}/>
                         
                         <br/>
