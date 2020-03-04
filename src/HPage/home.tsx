@@ -9,7 +9,8 @@ import Button from '@material-ui/core/Button';
 import CreateSessionModal from '../Components/CreateSessionModal/CreateSessionModal'
 import MarketWindow from '../RouteComponents/MarketWindow/marketwindow';
 import SessionService from '../Services/sessionService';
-import LogInModal from '../Components/LogInModal/LogInModal'
+import LogInModal from '../Components/LogInModal/LogInModal';
+import SignUpModal from '../Components/SignUpModal/SignUpModal';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -140,6 +141,10 @@ class Home extends React.Component<MWProps, MWState> {
             <h1 className="title"> Home page </h1>
             <Button className="signInButton">
                 <LogInModal/>
+            </Button>
+
+            <Button className="signInButton">
+                <SignUpModal/>
             </Button>
 
             <div className="sessions">

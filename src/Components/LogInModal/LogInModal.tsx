@@ -51,16 +51,16 @@ handleChange(event : any) {
 }
 
 handleSubmit(event : any) {
-    alert("Succesfully Signed In!");
     event.preventDefault();
     firebase.auth().signInWithEmailAndPassword(this.state.email,this.state.password)
-    .then(function(){
-        
+    .then(function(user){
+      alert("Succesfully Signed In!");
     })
     .catch(
       function(error){
         const errorCode = error.code;
         const errorMessage = error.message;
+        alert(errorMessage);
       }
     );
 }
@@ -115,7 +115,7 @@ render() {
                         <h2>Log In</h2>
 
                         <TextField
-                        id = "outlined-basic"
+                        id = "standard-basic"
                         label = "Email"
                         name = "email"
                         onChange= {this.handleChange}/>
@@ -123,7 +123,9 @@ render() {
                         <br/>
                         
                         <TextField
-                        id = "outlined-basic"
+                        id = "standard-password-input"
+                        autoComplete = "current-password"
+                        type = "password"
                         label= "Password"
                         name = "password"
                         onChange = {this.handleChange}/>

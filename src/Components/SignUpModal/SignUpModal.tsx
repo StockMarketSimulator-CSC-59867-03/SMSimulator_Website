@@ -100,10 +100,10 @@ render() {
     return (
       <div>
           <Button 
-          variant = "contained"
+          variant = "outlined"
           color = "primary"
           onClick={handleOpen}>
-          Sign In
+          Sign Up
           </Button>
           <Modal
               aria-labelledby = "simple-modal-title"
@@ -129,10 +129,10 @@ render() {
                         justify = "center"
                         alignItems = "center">
 
-                        <h2>Sign In</h2>
+                        <h2>Sign Up</h2>
 
                         <TextField
-                        id = "outlined-basic"
+                        id = "standard-basic"
                         label = "Email"
                         name = "email"
                         onChange= {this.handleChange}/>
@@ -140,7 +140,17 @@ render() {
                         <br/>
                         
                         <TextField
-                        id = "outlined-basic"
+                        id = "standard-basic"
+                        label= "Username"
+                        name = "username"
+                        onChange = {this.handleChange}/>
+
+                        <br/>
+                        
+                        <TextField
+                        id = "standard-password-input"
+                        autoComplete = "current-password"
+                        type = "password"
                         label= "Password"
                         name = "password"
                         onChange = {this.handleChange}/>
@@ -150,11 +160,10 @@ render() {
                         
                         <div>
                           <Button 
-                          className = "sign_in_button"
                           variant="contained" 
                           color="primary" 
                           onClick={this.handleSubmit}>
-                              Sign 
+                          Sign Up
                           </Button>
                           &nbsp;&nbsp;&nbsp;
                           <Button
@@ -162,7 +171,7 @@ render() {
                           variant="contained"
                           color="secondary"
                           onClick={handleClose}>
-                              Cancle
+                          Cancle
                           </Button>
                         </div>
                         </Grid>
