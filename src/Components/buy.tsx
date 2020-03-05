@@ -1,5 +1,5 @@
 import React from 'react';
-import StockGraph from './stockGraph';
+import StockGraph from './StockGraph/stockGraph';
 
 type BuyProps = {
     show: boolean,

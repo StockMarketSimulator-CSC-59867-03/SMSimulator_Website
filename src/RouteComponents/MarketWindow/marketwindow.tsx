@@ -2,20 +2,21 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import MarketWindowModel from './MarketWindow.model'
-import SessionService from '../../Services/sessionService';
 import EventInjectionModal from '../../Components/EventInjectionModal/EventInjectionModal';
 
-import StockGraph from "../../Components/stockGraph";
+import StockGraph from "../../Components/StockGraph/stockGraph";
 
 import { Subject } from "rxjs";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 
 import { Grid } from "@material-ui/core";
+import { connect } from 'react-redux';
+
 
 type MWProps = {
-  sessionService: SessionService;
   history: any,
+  sessionData: any
 };
 type MWState = {
   sessionTitle: string;
@@ -25,19 +26,17 @@ type MWState = {
 };
 class MarketWindow extends React.Component<MWProps, MWState> {
   private marketWindowModel: MarketWindowModel;
-  private sessionService: SessionService;
   constructor(props: any) {
     super(props);
     this.state = {
-      sessionTitle: "session_id",
+      sessionTitle: props.sessionData.id,
       showModal: false,
       showPortfolio: false,
       stockData: new Map()
     };
 
-    this.sessionService = props.sessionService;
     this.marketWindowModel = new MarketWindowModel(
-      this.sessionService.getSessionID()
+      props.sessionData.id
     );
 
     this.marketWindowModel.stockDataSubject.subscribe(value => {
@@ -147,4 +146,9 @@ class MarketWindow extends React.Component<MWProps, MWState> {
     );
   }
 }
-export default MarketWindow;
+
+const mapStateToProps = (state: any) => ({
+  sessionData: state.sessionData
+});
+
+export default connect(mapStateToProps)(MarketWindow);

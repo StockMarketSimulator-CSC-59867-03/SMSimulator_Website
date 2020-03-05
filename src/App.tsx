@@ -7,19 +7,16 @@ import Buy from './Components/buy';
 import Sell from './Components/sell';
 import SIState from './Components/sessioninitiation';
 import Home from './HPage/home';
-import SessionService from './Services/sessionService';
+import {connect} from 'react-redux';
 
 interface IAppComponentProps { 
-    sessionService: SessionService,
     history: any
 }
 interface IAppComponentState { }
 
 class App extends React.Component<IAppComponentProps, IAppComponentState> {
-    private sessionService: SessionService
     constructor(props: any) {
         super(props);
-        this.sessionService = props.sessionService;
     }
 
     callTestAPI() {
@@ -49,7 +46,7 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
                         </li>
                     </ul>
                 </div>
-                <Home history={this.props.history} sessionService={this.sessionService}/>
+                <Home history={this.props.history}/>
             </div>
         );
     }

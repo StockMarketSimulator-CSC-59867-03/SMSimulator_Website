@@ -1,6 +1,6 @@
 import React from 'react';
 import firebase from 'firebase';
-import StockGraph from '../../Components/stockGraph';
+import StockGraph from '../../Components/StockGraph/stockGraph';
 import BuyModal from '../../Components/BuyModal/BuyModal';
 import SellModal from '../../Components/SellModal/SellModal';
 import { Link } from 'react-router-dom';

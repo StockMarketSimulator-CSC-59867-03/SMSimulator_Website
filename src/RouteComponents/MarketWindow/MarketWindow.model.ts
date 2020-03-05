@@ -1,5 +1,7 @@
 import firebase from 'firebase';
 import { Subject } from 'rxjs';
+import { collection } from 'rxfire/firestore';
+import { map } from 'rxjs/operators';
 
 
 export default class MarketWindowModel{
@@ -10,9 +12,8 @@ export default class MarketWindowModel{
 
     public stockDataSubject = new Subject<any>();
 
-
     constructor(sessionID: string){
-        console.log(sessionID);
+        console.log("CREATING NEW MARKETWINDOWMODLE");
         this.sessionStockData = new Map();
         this.db = firebase.firestore();
         this.changeCurrentSession(sessionID);
@@ -85,6 +86,9 @@ export default class MarketWindowModel{
 
 
 
+    }
+
+    addStockGraphListner(docID: string){
     }
 
 }
