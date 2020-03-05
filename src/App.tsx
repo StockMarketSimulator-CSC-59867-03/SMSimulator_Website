@@ -48,15 +48,6 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
                         <li>
                             <Link to="/signup">Sign Up</Link>
                         </li>
-                        <li>
-                            <Link to="/login"> Login </Link>
-                        </li>
-                        <li>
-                            <Link to="/marketwindow"> Market Window </Link>
-                        </li>
-                        <li>
-                            <Link to="/stockdata"> Stock Data </Link>
-                        </li>
                     </ul>
                 </div>
                 <Home history={this.props.history} sessionService={this.sessionService}/>
