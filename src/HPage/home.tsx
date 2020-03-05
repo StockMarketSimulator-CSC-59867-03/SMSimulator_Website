@@ -1,7 +1,7 @@
 import React from 'react';
 import "./h.css";
 import { Link } from 'react-router-dom';
-import StockGraph from '../Components/stockGraph';
+import StockGraph from '../Components/StockGraph/stockGraph';
 import SessionSearch from '../Components/sessionSearch';
 import ScrollableButtonList from '../Components/scrollableButtonList';
 import GeneralButton from '../Components/generalButton';

@@ -12,9 +12,8 @@ export default class MarketWindowModel{
 
     public stockDataSubject = new Subject<any>();
 
-
     constructor(sessionID: string){
-        console.log(sessionID);
+        console.log("CREATING NEW MARKETWINDOWMODLE");
         this.sessionStockData = new Map();
         this.db = firebase.firestore();
         this.changeCurrentSession(sessionID);
@@ -89,7 +88,7 @@ export default class MarketWindowModel{
 
     }
 
-    addStockGraphObserver(docID: string){
+    addStockGraphListner(docID: string){
     }
 
 }

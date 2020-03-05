@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import EventInjection from './eventinjection';
+import EventInjection from '../eventinjection';
 import { LineChart, XAxis, YAxis, CartesianGrid, Line, Tooltip } from 'recharts';
 import { Link } from 'react-router-dom';
 

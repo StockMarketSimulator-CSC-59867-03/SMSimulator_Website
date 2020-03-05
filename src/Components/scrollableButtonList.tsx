@@ -1,33 +1,16 @@
-import React from 'react';
+import React , {useState, useEffect }from 'react';
 import GeneralButton from './generalButton';
 import firebase from 'firebase';
 
 type sbProps = {
     onButtonClick: any;
 };
-type sbState = {
-    stocks: object[]
 
-};
+function ScrollableButtonList(props: sbProps){
+    const [stocks, setStocks] = useState([] as any);
 
-class scrollableButtonList extends React.Component<sbProps,sbState> {
-    constructor(props : any) {
-        super(props);
-        this.state = {
-            stocks: []
-            
-        }
 
-        // This binding is necessary to make `this` work in the callbac
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    // runs first every time component is called
-    componentDidMount() {
-        this.getSessions();
-    }
-
-    getSessions() {
+    function getSessions() {
         const db = firebase.firestore()
         let sessions = db.collection('Sessions');
 
@@ -42,23 +25,22 @@ class scrollableButtonList extends React.Component<sbProps,sbState> {
             });
             for (let i in sessionList) {
                 console.log(sessionList[i]);
-                toButtons.push(<GeneralButton text={sessionNameList[i]} onClick={this.props.onButtonClick} sessionID={sessionList[i]} />)
+                toButtons.push(<GeneralButton text={sessionNameList[i]} onClick={props.onButtonClick} sessionID={sessionList[i]} />)
             };
-            this.setState({ stocks: toButtons });
+            setStocks(toButtons);
         });
         }
-    // Need to create usable functions to bind
-    handleClick() {
-        this.setState(state => ({/* bind to action*/ }));
-    }
 
-    render() {
- 
-        return (
-            <div>
-                {this.state.stocks}
-             </div>
-               );
-    }
+    useEffect(()=>{
+        getSessions();
+    },[]);
+
+    return (
+        <div>
+            {stocks}
+         </div>
+    );
 }
-export default scrollableButtonList;
+
+
+export default ScrollableButtonList;
