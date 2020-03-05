@@ -3,7 +3,7 @@ import "./h.css";
 import { Link } from 'react-router-dom';
 import StockGraph from '../Components/StockGraph/stockGraph';
 import SessionSearch from '../Components/sessionSearch';
-import ScrollableButtonList from '../Components/scrollableButtonList';
+import ScrollableButtonList from '../Components/SessionList/scrollableButtonList';
 import GeneralButton from '../Components/generalButton';
 import Button from '@material-ui/core/Button';
 import CreateSessionModal from '../Components/CreateSessionModal/CreateSessionModal'
