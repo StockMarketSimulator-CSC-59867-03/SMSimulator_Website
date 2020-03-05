@@ -1,6 +1,6 @@
 # Stock Market Simulator
 
-This is the repo for the website of the stock market simulator.
+This is the repo for the website of the stock market simulator
 
 ## Available Scripts
 
