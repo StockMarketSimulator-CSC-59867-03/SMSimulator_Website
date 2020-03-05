@@ -8,7 +8,6 @@ import GeneralButton from '../Components/generalButton';
 import Button from '@material-ui/core/Button';
 import CreateSessionModal from '../Components/CreateSessionModal/CreateSessionModal'
 import MarketWindow from '../RouteComponents/MarketWindow/marketwindow';
-import SessionService from '../Services/sessionService';
 import LogInModal from '../Components/LogInModal/LogInModal';
 import SignUpModal from '../Components/SignUpModal/SignUpModal';
 import Dialog from '@material-ui/core/Dialog';
@@ -19,9 +18,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { useHistory } from "react-router-dom";
 import { connect } from 'react-redux';
 import changeSession from '../redux/actions';
+import changeSessionID from '../redux/actions';
 
 type MWProps = {
-    sessionService: SessionService,
     history: any,
     sessionData: any,
     dispatch: any
@@ -31,14 +30,14 @@ type MWState = {
     clickedSessionID: string;
 };
 class Home extends React.Component<MWProps, MWState> {
-    private sessionService: SessionService
+    private dispatch: any
     constructor(props: any) {
         super(props);
         this.state = {
             openDialog: false,
             clickedSessionID: ""
         }
-        this.sessionService = props.sessionService;
+        this.dispatch = props.dispatch;
     }
 
     createSession = (sessionName: string, startingBalance: number, type: string) : Promise<any> => {
@@ -64,7 +63,7 @@ class Home extends React.Component<MWProps, MWState> {
                     console.log(data);
                     if(typeof data == "string"){
                         resolve(data);
-                        this.sessionService.setSessionID(data);
+                        this.dispatch(changeSessionID(data));
                     }
                     else{
                         reject("Error: Response wasn't a string for the session id");
@@ -82,11 +81,11 @@ class Home extends React.Component<MWProps, MWState> {
     addStocksToSession = (stocks: [string]): Promise<any> => {
         
         console.log("Creating Session");
-        const data = { sessionID:this.sessionService.getSessionID(), stocks:stocks};
+        const data = { sessionID:this.props.sessionData.id, stocks:stocks};
 
         return new Promise((resolve,reject)=>{
 
-            if(this.sessionService.getSessionID() == ""){
+            if(this.props.sessionData.id == ""){
                 console.log("Error: No SessionID");
                 reject("Error: No SessionID");
                 return;
@@ -133,7 +132,7 @@ class Home extends React.Component<MWProps, MWState> {
           };
 
           const clickedYes = () => {
-            this.sessionService.setSessionID(this.state.clickedSessionID);
+            this.dispatch(changeSessionID(this.state.clickedSessionID));
             handleClose();
             this.props.history.push("/marketwindow");
           };
@@ -142,7 +141,7 @@ class Home extends React.Component<MWProps, MWState> {
         
         return (
           <div>
-            <h1 className="title"> Home page: {this.props.sessionData.id} </h1>
+            <h1 className="title"> Home page </h1>
             <Button className="signInButton">
                 <LogInModal/>
             </Button>
@@ -150,12 +149,7 @@ class Home extends React.Component<MWProps, MWState> {
             <Button className="signInButton">
                 <SignUpModal/>
             </Button>
-            <Button onClick={()=>{
-              console.log("Clicked");
-              this.props.dispatch(changeSession("New Session 234"));
-            }}>
-              click
-            </Button>
+
 
             <div className="sessions">
               <h2>Session Search</h2>
