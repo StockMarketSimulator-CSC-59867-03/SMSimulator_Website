@@ -6,12 +6,12 @@ import * as serviceWorker from './serviceWorker';
 import * as firebase from 'firebase';
 
 import App from './App';
-import Login from './RouteComponents/login';
-import MarketWindow from './RouteComponents/MarketWindow/marketwindow';
-import SignUp from './RouteComponents/signup'
+import Login from './Pages/OldPages/login';
+import MarketWindow from './Pages/OldPages/MarketWindow/marketwindow';
+import SignUp from './Pages/OldPages/signup'
 
 import { Session } from 'inspector';
-import StockData from './RouteComponents/StockData/stockdata';
+import StockData from './Pages/OldPages/StockData/stockdata';
 import { Provider } from 'react-redux';
 import store from "./redux/store";
 

@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 import Buy from './Components/buy';
 import Sell from './Components/sell';
 import SIState from './Components/sessioninitiation';
-import Home from './HPage/home';
 import {connect} from 'react-redux';
+import LandingPage from './Pages/LandingPage/LandingPage';
 
 interface IAppComponentProps { 
     history: any
@@ -46,7 +46,7 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
                         </li>
                     </ul>
                 </div>
-                <Home history={this.props.history}/>
+                <LandingPage history={this.props.history}/>
             </div>
         );
     }

@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import MarketWindowModel from './MarketWindow.model'
-import EventInjectionModal from '../../Components/EventInjectionModal/EventInjectionModal';
+import EventInjectionModal from '../../../Components/EventInjectionModal/EventInjectionModal';
 
-import StockGraph from "../../Components/StockGraph/stockGraph";
+import StockGraph from "../../../Components/StockGraph/stockGraph";
 
 import { Subject } from "rxjs";
 
