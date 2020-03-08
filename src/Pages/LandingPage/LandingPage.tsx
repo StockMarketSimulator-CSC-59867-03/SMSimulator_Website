@@ -135,6 +135,12 @@ function LandingPage(props:LandingPageProps){
               <SignUpModal/>
           </Button>
 
+          <Button variant="contained" color="secondary" onClick={()=>{
+            props.history.push("/transactionPage");
+          }}>
+              Transaction page
+          </Button>
+
 
           <div className="sessions">
             <h2>Session Search</h2>

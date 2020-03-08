@@ -40,15 +40,9 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
                 { /* <SessionInitiation onSubmit={(formData: SIState)=>{
            this.createSession();
          }} />*/}
-                <div>
-                    <ul>
-                        <li>
-                            <Link to="/signup">Sign Up</Link>
-                        </li>
-                    </ul>
-                </div>
-            {/**  <LandingPage history={this.props.history}/>*/} 
-                <TransactionPage />
+
+            {/**  */} 
+            <LandingPage history={this.props.history}/>
             </div>
         );
     }
