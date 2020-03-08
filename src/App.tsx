@@ -8,6 +8,7 @@ import Sell from './Components/sell';
 import SIState from './Components/sessioninitiation';
 import {connect} from 'react-redux';
 import LandingPage from './Pages/LandingPage/LandingPage';
+import TransactionPage from './Pages/TransactionPage/TransactionPage';
 
 interface IAppComponentProps { 
     history: any
@@ -46,7 +47,8 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
                         </li>
                     </ul>
                 </div>
-                <LandingPage history={this.props.history}/>
+            {/**  <LandingPage history={this.props.history}/>*/} 
+                <TransactionPage />
             </div>
         );
     }
