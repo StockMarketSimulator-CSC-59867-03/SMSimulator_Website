@@ -20,6 +20,7 @@ import { useHistory, Link } from 'react-router-dom';
 import { withRouter } from "react-router-dom";
 import StoreIcon from '@material-ui/icons/Store';
 import AppsIcon from '@material-ui/icons/Apps';
+import HomeIcon from '@material-ui/icons/Home';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import changeSessionID from '../redux/actions';
 
@@ -63,7 +64,6 @@ function NavigationDrawer(props:any) {
     const classes = useStyles();
     let history = useHistory();
     let dispatch = useDispatch();
-    let current = history.location.pathname;
 
     return (
         <div className={classes.root}>
@@ -89,20 +89,19 @@ function NavigationDrawer(props:any) {
           >
             <div className={classes.toolbar} />
             <Divider />
-            <p>{props.sessionData.id}</p>
             <List>
-              {/* {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                <ListItem button key={text}>
-                  <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                  <ListItemText primary={text} />
+                <ListItem>
+                  {props.sessionData.id === "" ? <ListItemText primary="Not In Session"/> : <ListItemText primary={props.sessionData.id}/>}
                 </ListItem>
-              ))} */}
-                <ListItem button onClick={()=>{ dispatch(changeSessionID("")); 
-                                                history.push("/") }}>
+                <ListItem button onClick={props.sessionData.id === "" ? () => {} : ()=>{ dispatch(changeSessionID("")); history.push("/") }}>
                     <ListItemIcon><AppsIcon/></ListItemIcon>
                     <ListItemText primary="Landing"/>
                 </ListItem>
-                <ListItem button onClick={()=>{history.push("/transactionPage")}}>
+                <ListItem button onClick={props.sessionData.id === "" ? () => {} : ()=>{history.push("/marketwindow")}}>
+                    <ListItemIcon><HomeIcon/></ListItemIcon>
+                    <ListItemText primary="Home"/>
+                </ListItem>
+                <ListItem button onClick={props.sessionData.id === "" ? () => {} : ()=>{history.push("/transactionPage")}}>
                     <ListItemIcon><StoreIcon/></ListItemIcon>
                     <ListItemText primary="Transaction"/>
                 </ListItem>
