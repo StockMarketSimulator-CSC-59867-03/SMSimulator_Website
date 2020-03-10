@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import "./LandingPage.scss";
+// import "./LandingPage.scss";
 import { Link } from 'react-router-dom';
 import StockGraph from '../../Components/StockGraph/stockGraph';
 import SessionSearch from '../../Components/sessionSearch';
@@ -126,33 +126,19 @@ function LandingPage(props:LandingPageProps){
 
     return (
         <div>
-          <h1 className="title"> Home page </h1>
-          <Button className="signInButton">
-              <LogInModal/>
-          </Button>
+          <h1 /*className="title"*/> Landing Page </h1>
 
-          <Button className="signInButton">
-              <SignUpModal/>
-          </Button>
-
-          <Button variant="contained" color="secondary" onClick={()=>{
-            props.history.push("/transactionPage");
-          }}>
-              Transaction page
-          </Button>
-
-
-          <div className="sessions">
+          <div /*className="sessions"*/>
             <h2>Session Search</h2>
             <SessionSearch />
-            <Button className="sessionButton">
+            <Button /*className="sessionButton"*/>
               <CreateSessionModal
                 onSessionCreate={createSession}
                 onStocksSelected={addStocksToSession}
               ></CreateSessionModal>
             </Button>
             <h2>Session List</h2>
-            <div className="sessionResults">
+            <div /*className="sessionResults"*/>
               <ScrollableButtonList
                 onButtonClick={(sessionID: string) => {
                   if (sessionID != null || sessionID != "") {

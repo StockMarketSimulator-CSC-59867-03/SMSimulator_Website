@@ -1,10 +1,7 @@
 import React from 'react';
 import './App.scss';
 import SessionInitiation from './Components/sessioninitiation';
-import EventInjection from './Components/eventinjection';
 import { Link } from 'react-router-dom';
-import Buy from './Components/buy';
-import Sell from './Components/sell';
 import SIState from './Components/sessioninitiation';
 import {connect} from 'react-redux';
 import LandingPage from './Pages/LandingPage/LandingPage';
