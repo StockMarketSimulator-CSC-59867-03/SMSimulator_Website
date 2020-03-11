@@ -4,7 +4,7 @@ import SessionInitiation from './Components/sessioninitiation';
 import { Link } from 'react-router-dom';
 import SIState from './Components/sessioninitiation';
 import {connect} from 'react-redux';
-import LandingPage from './Pages/LandingPage/LandingPage';
+import LandingPage from './Pages/SessionPage/SessionPage';
 import TransactionPage from './Pages/TransactionPage/TransactionPage';
 
 interface IAppComponentProps { 

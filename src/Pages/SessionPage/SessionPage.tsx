@@ -8,7 +8,7 @@ import ScrollableButtonList from '../../Components/SessionList/scrollableButtonL
 import GeneralButton from '../../Components/generalButton';
 import Button from '@material-ui/core/Button';
 import CreateSessionModal from '../../Components/CreateSessionModal/CreateSessionModal'
-import MarketWindow from '../../Pages/OldPages/MarketWindow/marketwindow';
+import MarketWindow from '../OldPages/MarketWindow/marketwindow';
 import LogInModal from '../../Components/LogInModal/LogInModal';
 import SignUpModal from '../../Components/SignUpModal/SignUpModal';
 import Dialog from '@material-ui/core/Dialog';
@@ -21,11 +21,11 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import changeSession from '../../redux/actions';
 import changeSessionID from '../../redux/actions';
 
-type LandingPageProps = {
+type SessionPageProps = {
     history: any,
 };
 
-function LandingPage(props:LandingPageProps){
+function SessionPage(props:SessionPageProps){
 
     const [openSessionDialog, setOpenSessionDialog] = useState(false);
     const [clickedSessionID, setClickedSessionID] = useState("");
@@ -126,7 +126,7 @@ function LandingPage(props:LandingPageProps){
 
     return (
         <div>
-          <h1 /*className="title"*/> Landing Page </h1>
+          <h1 /*className="title"*/> Session Page </h1>
 
           <div /*className="sessions"*/>
             <h2>Session Search</h2>
@@ -175,4 +175,4 @@ function LandingPage(props:LandingPageProps){
       );
 }
 
-export default LandingPage;
+export default SessionPage;

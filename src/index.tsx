@@ -30,9 +30,6 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-
-
-
 const routing = (
     <Provider store={store}>
         <Router>

@@ -95,7 +95,7 @@ function NavigationDrawer(props:any) {
                 </ListItem>
                 <ListItem button onClick={props.sessionData.id === "" ? () => {} : ()=>{ dispatch(changeSessionID("")); history.push("/") }}>
                     <ListItemIcon><AppsIcon/></ListItemIcon>
-                    <ListItemText primary="Landing"/>
+                    <ListItemText primary="Session"/>
                 </ListItem>
                 <ListItem button onClick={props.sessionData.id === "" ? () => {} : ()=>{history.push("/marketwindow")}}>
                     <ListItemIcon><HomeIcon/></ListItemIcon>
