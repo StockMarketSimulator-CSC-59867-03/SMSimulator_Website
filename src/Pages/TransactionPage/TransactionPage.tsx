@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import StockList from './StockList/StockList';
 import StockView from './StockView/StockView';
 import { Grid, Container } from '@material-ui/core';
@@ -9,19 +9,32 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { StockDataModel } from '../../DataModels/stockData.model';
 import {setSelectedStockData} from '../../redux/actions';
+import { TransactionPageModel } from './TransactionPage.model';
 
+
+const transactionPageModel = new TransactionPageModel();
 
 function TransactionPage(){
 
     let history = useHistory();
     let dispatch = useDispatch();
+    let [stocks, setStocks] = useState([]);
 
-    function clickedStock(symbol: string){
+    useEffect(()=>{
+        transactionPageModel.init("46o2WO6zHIR5OdWomsiT");
+        transactionPageModel.stockListObservable.subscribe((data: any)=>{
+           setStocks(data);
+        });
+    },[]);
+    
+
+
+    function clickedStock(stockData: any){
         let stockDataModel: StockDataModel = {
-            symbol: symbol,
-            name: "Tesla inc.",
-            price: 405.12,
-            sector: "Technlogy",
+            symbol: stockData.symbol,
+            name: stockData.name,
+            price: stockData.price,
+            sector: stockData.sector,
             history: ["data goes here"]
 
         }
@@ -39,7 +52,7 @@ function TransactionPage(){
         >
 
             <div  style={{display:"inline-flex",width:"85%", height:"100%"}}>
-                <StockList stockClick={clickedStock} />
+                <StockList stocks={stocks} stockClick={clickedStock} />
                 <StockView />
             </div>
         </Grid>

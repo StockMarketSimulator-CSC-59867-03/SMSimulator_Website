@@ -45,7 +45,7 @@ function StockViewHeader(props: any) {
           </Typography>
           <Typography variant="subtitle1" component="h6">
             <span style={{ color: "green" }}>{props.name}</span>
-            <span>| {props.sector}</span>
+            <span> | {props.sector}</span>
           </Typography>
         </Grid>
       </Grid>

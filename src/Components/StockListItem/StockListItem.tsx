@@ -12,16 +12,16 @@ function StockListItem(props: any) {
         justify="space-around"
         alignItems="center"
         style={{ borderTop: "3px solid black", padding: 10 }}
-        onClick={()=>{props.onClick("TSLA")}}
+        onClick={()=>{props.onClick(props.stockData)}}
       >
             <Typography variant="h6" component="h6">
-                AAPL
+                {props.stockData.symbol}
             </Typography>
 
             <StockGraph width={100} height={80}></StockGraph>
 
             <Typography style={{color: "green"}} variant="h6" component="h6">
-                $303.65
+                {props.stockData.price}
             </Typography>
 
       </Grid>
