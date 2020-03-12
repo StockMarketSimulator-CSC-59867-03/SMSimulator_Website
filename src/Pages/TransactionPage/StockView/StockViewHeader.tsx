@@ -3,7 +3,7 @@ import { Grid } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import "./StockView.scss"
 
-function StockViewHeader() {
+function StockViewHeader(props: any) {
   return (
     <Grid
       container
@@ -26,10 +26,10 @@ function StockViewHeader() {
           alignItems="center"
         >
           <Typography variant="h2" component="h6">
-            $303.65
+            ${props.price}
           </Typography>
           <Typography variant="h3" component="h6">
-            AAPL
+            {props.symbol}
           </Typography>
         </Grid>
 
@@ -44,8 +44,8 @@ function StockViewHeader() {
             <span> TODAY</span>
           </Typography>
           <Typography variant="subtitle1" component="h6">
-            <span style={{ color: "green" }}>Apple Inc.</span>
-            <span>| Technology</span>
+            <span style={{ color: "green" }}>{props.name}</span>
+            <span>| {props.sector}</span>
           </Typography>
         </Grid>
       </Grid>

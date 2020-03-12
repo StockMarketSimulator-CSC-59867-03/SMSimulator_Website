@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import StockGraph from '../StockGraph/stockGraph';
 import { green } from '@material-ui/core/colors';
 
-function StockListItem() {
+function StockListItem(props: any) {
   return (
       <Grid
         container
@@ -12,6 +12,7 @@ function StockListItem() {
         justify="space-around"
         alignItems="center"
         style={{ borderTop: "3px solid black", padding: 10 }}
+        onClick={()=>{props.onClick("TSLA")}}
       >
             <Typography variant="h6" component="h6">
                 AAPL
