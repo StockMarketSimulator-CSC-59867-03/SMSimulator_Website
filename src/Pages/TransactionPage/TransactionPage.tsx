@@ -6,36 +6,42 @@ import "./TransactionPage.scss";
 import Button from '@material-ui/core/Button';
 
 import { useHistory } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { StockDataModel } from '../../DataModels/stockData.model';
 import {setSelectedStockData} from '../../redux/actions';
 import { TransactionPageModel } from './TransactionPage.model';
+import { StockDataService } from '../../Services/StockDataService';
+import StockData from '../OldPages/StockData/stockdata';
 
 
-const transactionPageModel = new TransactionPageModel();
 
 function TransactionPage(){
 
     let history = useHistory();
     let dispatch = useDispatch();
     let [stocks, setStocks] = useState([]);
+    let stockData = useSelector((state: any) => state.stockData);
 
     useEffect(()=>{
-        transactionPageModel.init("46o2WO6zHIR5OdWomsiT");
-        transactionPageModel.stockListObservable.subscribe((data: any)=>{
-           setStocks(data);
+        let stockListArray : any= [];
+        Object.entries(stockData).forEach((data: any) => {
+            stockListArray.push(data[1].data);
         });
-    },[]);
-    
+        setStocks(stockListArray);
+    },[stockData]);
 
 
-    function clickedStock(stockData: any){
+
+    function clickedStock(symbol: string){
+        let stockFromState = stockData[symbol];
+        console.log(stockFromState.history);
         let stockDataModel: StockDataModel = {
-            symbol: stockData.symbol,
-            name: stockData.name,
-            price: stockData.price,
-            sector: stockData.sector,
-            history: ["data goes here"]
+            symbol: stockFromState.data.symbol,
+            name: stockFromState.data.name,
+            price: stockFromState.data.price,
+            sector: stockFromState.data.sector,
+            history: stockFromState.history,
+            domain: stockFromState.domain
 
         }
         dispatch(setSelectedStockData(stockDataModel));

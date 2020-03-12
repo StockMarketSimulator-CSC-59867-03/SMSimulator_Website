@@ -4,4 +4,5 @@ export interface StockDataModel {
     price: Number;
     sector: string;
     history: any;
+    domain: any;
 }

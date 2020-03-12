@@ -4,7 +4,9 @@ function selectedStockData(state = {}, action: any){
             return {
                 ...state,
                 hasData: true,
-                ...action.payload
+                ...action.payload,
+                history: action.payload.history,
+                domain: action.payload.domain
                 
             }
         default:

@@ -6,9 +6,11 @@ import SIState from './Components/sessioninitiation';
 import {connect} from 'react-redux';
 import LandingPage from './Pages/SessionPage/SessionPage';
 import TransactionPage from './Pages/TransactionPage/TransactionPage';
+import { StockDataService } from './Services/StockDataService';
 
 interface IAppComponentProps { 
-    history: any
+    history: any,
+    stockDataService: StockDataService
 }
 interface IAppComponentState { }
 

@@ -12,7 +12,7 @@ function StockListItem(props: any) {
         justify="space-around"
         alignItems="center"
         style={{ borderTop: "3px solid black", padding: 10 }}
-        onClick={()=>{props.onClick(props.stockData)}}
+        onClick={()=>{props.onClick(props.stockData.symbol)}}
       >
             <Typography variant="h6" component="h6">
                 {props.stockData.symbol}

@@ -14,7 +14,6 @@ import {
 
 function StockGraph(props: any){
 
-    const [data, setData] = useState(props.data);
 
     let clickedStock = () => {
         props.handleClick({name:props.name, domain: props.domain, data: props.data})
@@ -23,7 +22,7 @@ function StockGraph(props: any){
    return  (
         <div style={{border: '0px solid black'}} onClick={clickedStock}>
             <ResponsiveContainer width={props.width} height={props.height}>
-             <LineChart  data={data}>
+             <LineChart  data={props.data}>
                  <Tooltip />
                  <XAxis dataKey="dateTime" tick={false} stroke="#FFFFFF" hide={true}/>
                  <YAxis domain={props.domain} tick={false} stroke="#FFFFFF" hide={true}/>
