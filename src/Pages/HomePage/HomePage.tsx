@@ -1,5 +1,6 @@
 import React from 'react';
-import "./h.css";
+import clsx from 'clsx';
+// import "./h.css";
 import { Link } from 'react-router-dom';
 import StockGraph from '../../Components/StockGraph/stockGraph';
 import SessionSearch from '../../Components/sessionSearch';
@@ -19,6 +20,11 @@ import { useHistory } from "react-router-dom";
 import { connect } from 'react-redux';
 import changeSession from '../../redux/actions';
 import changeSessionID from '../../redux/actions';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { Paper, Grid, Card, Container, Fab, Divider } from '@material-ui/core';
+import WatchedStocks from './WatchedStocks';
+import Typography from '@material-ui/core/Typography';
+import SessionStocks from './SessionStocks';
 
 type HomePageProps = {
     history: any,
@@ -26,12 +32,67 @@ type HomePageProps = {
     dispatch: any
 };
 
-function HomePage(props:HomePageProps){
-    
+const drawerWidth = 180;
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+      root: {
+          display: 'flex'
+      },
+      container: {
+          paddingTop: theme.spacing(2),
+          paddingBottom: theme.spacing(2),
+      },
+      paper: {
+        padding: theme.spacing(2),
+        display: 'flex',
+        overflow: 'auto',
+        flexDirection: 'column',
+      },
+      fixedHeight: {
+          height: 475,
+      },
+      button: {
+          position: "fixed",
+          alignSelf: "center",
+          marginBottom: 10
+      },
+      sessionStocks: {
+          position: "relative"
+      }
+  }),
+);
+
+export default function HomePage(props:HomePageProps) {
+    const classes = useStyles();
+    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+    
     return (
-        <div>
-            
+        <div className={classes.root}>
+            <Container maxWidth="lg" className={classes.container}>
+                <Grid container spacing={3}>
+                    {/* MarketGraph */}
+                    <Grid item xs={12} md={8} lg={9}>
+                        <Paper className={fixedHeightPaper}>
+                            <Typography variant="h5">Market Graph</Typography>
+                            <StockGraph width={500} height={400}></StockGraph>
+                        </Paper>
+                    </Grid>
+                    {/* Right Side Panel */}
+                    <Grid item xs={12} md={4} lg={3}>
+                        <Paper className={fixedHeightPaper}>
+                            <Button variant="contained" color="primary">View Portfolio</Button>
+                            <SessionStocks />
+                        </Paper>
+                    </Grid>
+                    {/* Watched Stocks */}
+                    <Grid item xs={12}>
+                        <Paper className={classes.paper}>
+                            <WatchedStocks/>
+                        </Paper>
+                    </Grid>
+                </Grid>
+            </Container>
         </div>
     );
 }
