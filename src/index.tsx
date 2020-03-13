@@ -6,14 +6,16 @@ import * as serviceWorker from './serviceWorker';
 import * as firebase from 'firebase';
 
 import App from './App';
-import Login from './RouteComponents/login';
-import MarketWindow from './RouteComponents/MarketWindow/marketwindow';
-import SignUp from './RouteComponents/signup'
+import Login from './Pages/OldPages/login';
+import MarketWindow from './Pages/OldPages/MarketWindow/marketwindow';
+import SignUp from './Pages/OldPages/signup'
 
 import { Session } from 'inspector';
-import StockData from './RouteComponents/StockData/stockdata';
+import StockData from './Pages/OldPages/StockData/stockdata';
 import { Provider } from 'react-redux';
 import store from "./redux/store";
+import TransactionPage from './Pages/TransactionPage/TransactionPage';
+import NavigationDrawer from './Styling/navigation';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCWFa5caoShYrHxcLFlVeHyIzM3mXWgJo0",
@@ -28,20 +30,19 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-
-
-
 const routing = (
     <Provider store={store}>
-    <Router>
-        <div>
-            <Route exact path="/" render={(props)=> <App {...props} />}/>
-            <Route path="/login" component={Login} />
-            <Route path="/marketwindow" render={(props)=> <MarketWindow {...props} />} />
-            <Route path="/stockdata" component={StockData} />
-            <Route path="/signup" component={SignUp} />
-        </div>
-    </Router>
+        <Router>
+            <NavigationDrawer content={
+            <div>
+                <Route exact path="/" render={(props)=> <App {...props} />}/>
+                <Route path="/login" component={Login} />
+                <Route path="/marketwindow" render={(props)=> <MarketWindow {...props} />} />
+                <Route path="/stockdata" component={StockData} />
+                <Route path="/signup" component={SignUp} />
+                <Route path="/transactionPage" component={TransactionPage} />
+            </div>}/>
+        </Router>
     </Provider>
 )
 

@@ -112,7 +112,7 @@ render() {
       <div>
           <Button 
           variant = "outlined"
-          color = "primary"
+          color = "secondary"
           onClick={handleOpen}>
           Sign Up
           </Button>
