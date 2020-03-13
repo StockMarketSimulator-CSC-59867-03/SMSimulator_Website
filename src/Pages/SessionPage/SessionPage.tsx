@@ -38,7 +38,7 @@ function SessionPage(props:SessionPageProps){
         const data = { name: sessionName, balance: startingBalance, type: type};
 
         return new Promise((resolve,reject)=>{
-            fetch('/createSession', {
+            fetch('https://thawing-shore-19302.herokuapp.com/createSession', {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ function SessionPage(props:SessionPageProps){
                 return;
             }
 
-            fetch('/addStocks', {
+            fetch('https://thawing-shore-19302.herokuapp.com/addStocks', {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
