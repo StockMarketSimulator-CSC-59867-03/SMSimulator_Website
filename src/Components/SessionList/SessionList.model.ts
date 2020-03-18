@@ -24,9 +24,6 @@ class SessionListModel{
             this.sessionObservable.next(this.sessionList);
         });
     }
-    
-
-
 }
 
 export default SessionListModel;
