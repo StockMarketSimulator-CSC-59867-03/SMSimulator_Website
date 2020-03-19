@@ -18,14 +18,11 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useHistory } from "react-router-dom";
 import { connect } from 'react-redux';
-import changeSession from '../../redux/actions';
-import changeSessionID from '../../redux/actions';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { Paper, Grid, Card, Container, Fab, Divider } from '@material-ui/core';
 import WatchedStocks from './WatchedStocks';
 import Typography from '@material-ui/core/Typography';
 import SessionStocks from './SessionStocks';
-import { changeSessionID } from '../../redux/actions';
 
 // type HomePageProps = {
 //     history: any,
