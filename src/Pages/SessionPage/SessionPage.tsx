@@ -18,8 +18,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useHistory } from "react-router-dom";
 import { connect, useDispatch, useSelector } from 'react-redux';
-import changeSession from '../../redux/actions';
-import changeSessionID from '../../redux/actions';
+import { changeSessionID } from '../../redux/actions';
 
 type SessionPageProps = {
     history: any,
@@ -38,7 +37,7 @@ function SessionPage(props:SessionPageProps){
         const data = { name: sessionName, balance: startingBalance, type: type};
 
         return new Promise((resolve,reject)=>{
-            fetch('/createSession', {
+            fetch('https://thawing-shore-19302.herokuapp.com/createSession', {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
@@ -84,7 +83,7 @@ function SessionPage(props:SessionPageProps){
                 return;
             }
 
-            fetch('/addStocks', {
+            fetch('https://thawing-shore-19302.herokuapp.com/addStocks', {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',

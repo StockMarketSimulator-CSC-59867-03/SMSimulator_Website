@@ -6,9 +6,11 @@ import SIState from './Components/sessioninitiation';
 import {connect} from 'react-redux';
 import LandingPage from './Pages/SessionPage/SessionPage';
 import TransactionPage from './Pages/TransactionPage/TransactionPage';
+import { StockDataService } from './Services/StockDataService';
 
 interface IAppComponentProps { 
-    history: any
+    history: any,
+    stockDataService: StockDataService
 }
 interface IAppComponentState { }
 
@@ -18,14 +20,14 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
     }
 
     callTestAPI() {
-        fetch("/testAPI")
+        fetch("https://thawing-shore-19302.herokuapp.com/testAPI")
             .then(res => res.text())
             .then(res => this.setState({ apiTestResponse: res }))
             .catch(err => err);
     }
 
     createSession() {
-        fetch("/createSession")
+        fetch("https://thawing-shore-19302.herokuapp.com/createSession")
             .then(res => res.text())
             .then(res => alert(res))
             .catch(err => err);
@@ -39,7 +41,7 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
          }} />*/}
 
             {/**  */} 
-            <LandingPage history={this.props.history}/>
+            <LandingPage history={this.props.history} />
             </div>
         );
     }

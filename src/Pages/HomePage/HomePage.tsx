@@ -25,6 +25,7 @@ import { Paper, Grid, Card, Container, Fab, Divider } from '@material-ui/core';
 import WatchedStocks from './WatchedStocks';
 import Typography from '@material-ui/core/Typography';
 import SessionStocks from './SessionStocks';
+import { changeSessionID } from '../../redux/actions';
 
 // type HomePageProps = {
 //     history: any,
