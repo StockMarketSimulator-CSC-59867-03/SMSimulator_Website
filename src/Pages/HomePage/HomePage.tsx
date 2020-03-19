@@ -26,11 +26,11 @@ import WatchedStocks from './WatchedStocks';
 import Typography from '@material-ui/core/Typography';
 import SessionStocks from './SessionStocks';
 
-type HomePageProps = {
-    history: any,
-    sessionData: any,
-    dispatch: any
-};
+// type HomePageProps = {
+//     history: any,
+//     sessionData: any,
+//     dispatch: any
+// };
 
 const drawerWidth = 180;
 
@@ -63,9 +63,10 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function HomePage(props:HomePageProps) {
+export default function HomePage(props:any) {
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+    console.log("Hello");
     
     return (
         <div className={classes.root}>
@@ -82,7 +83,8 @@ export default function HomePage(props:HomePageProps) {
                     <Grid item xs={12} md={4} lg={3}>
                         <Paper className={fixedHeightPaper}>
                             <Button variant="contained" color="primary">View Portfolio</Button>
-                            <SessionStocks />
+                            {/* <SessionStocks /> */}
+                            <MarketWindow/>
                         </Paper>
                     </Grid>
                     {/* Watched Stocks */}
