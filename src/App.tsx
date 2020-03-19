@@ -4,7 +4,7 @@ import SessionInitiation from './Components/sessioninitiation';
 import { Link } from 'react-router-dom';
 import SIState from './Components/sessioninitiation';
 import {connect} from 'react-redux';
-import LandingPage from './Pages/SessionPage/SessionPage';
+import SessionPage from './Pages/SessionPage/SessionPage';
 import TransactionPage from './Pages/TransactionPage/TransactionPage';
 import { StockDataService } from './Services/StockDataService';
 
@@ -41,7 +41,7 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
          }} />*/}
 
             {/**  */} 
-            <LandingPage history={this.props.history} />
+            <SessionPage history={this.props.history} stockDataService={this.props.stockDataService} />
             </div>
         );
     }

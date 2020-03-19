@@ -19,12 +19,7 @@ export default function WatchedStocks() {
 
     return (
       <GridList className={classes.list} cols={3.5} cellHeight='auto'>
-        <GridListTile><StockListItem/></GridListTile>
-        <GridListTile><StockListItem/></GridListTile>
-        <GridListTile><StockListItem/></GridListTile>
-        <GridListTile><StockListItem/></GridListTile>
-        <GridListTile><StockListItem/></GridListTile>
-        <GridListTile><StockListItem/></GridListTile>
+
       </GridList>
     );
 }
