@@ -13,6 +13,7 @@ type sbProps = {
 let sessionListModel = new SessionListModel();
 let previousSearchInput = "";
 let initialSessionList: object[] = [];
+let initialFetch = false;
 
 function ScrollableButtonList(props: sbProps){
     const [stocks, setStocks] = useState([] as any);
@@ -20,18 +21,26 @@ function ScrollableButtonList(props: sbProps){
     let buttons: object[]  = [];
 
     useEffect(()=>{
-        sessionListModel.init();
-        sessionListModel.sessionObservable.subscribe((data: any)=>{
-            buttons = [];
-            data.forEach((element: any) => {
-                buttons.push(<GeneralButton text={element.name} onClick={props.onButtonClick} sessionID={element.id} />)
+        if(!initialFetch){
+            sessionListModel.init();
+            sessionListModel.sessionObservable.subscribe((data: any)=>{
+                buttons = [];
+                data.forEach((element: any) => {
+                    buttons.push(<GeneralButton text={element.name} onClick={props.onButtonClick} sessionID={element.id} />)
+                });
+
+                initialSessionList = buttons;
+                initialFetch = true;
+                setStocks(buttons);
+
+                console.log("initial session data stored into stocks state");
             });
-
-            initialSessionList = buttons;
+        } else {
+            initialSessionList.forEach((element: any) => {
+                buttons.push(<GeneralButton text={element.props.text} onClick={props.onButtonClick} sessionID={element.props.sessionID} />)
+            })
             setStocks(buttons);
-
-            console.log("initial session data stored into stocks state");
-        });
+        }
     },[]);
 
 
@@ -55,7 +64,6 @@ function ScrollableButtonList(props: sbProps){
         previousSearchInput = currentSearchInput;
     }
 
-    // if search input is not empty, re render after filtering
     if(props.searchInput !== previousSearchInput){
         filterStocksBySearchInput();
         setStocks(buttons);

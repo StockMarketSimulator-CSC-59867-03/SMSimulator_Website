@@ -41,7 +41,7 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
          }} />*/}
 
             {/**  */} 
-            <TransactionPage />
+            <LandingPage history={this.props.history} />
             </div>
         );
     }
