@@ -16,6 +16,7 @@ import { Provider } from 'react-redux';
 import store from "./redux/store";
 import TransactionPage from './Pages/TransactionPage/TransactionPage';
 import NavigationDrawer from './Styling/navigation';
+import HomePage from './Pages/HomePage/HomePage';
 import { StockDataService } from './Services/StockDataService';
 
 const firebaseConfig = {
@@ -41,7 +42,8 @@ const routing = (
             <div>
                 <Route exact path="/" render={(props)=> <App stockDataService={stockDataService} {...props} />}/>
                 <Route path="/login" component={Login} />
-                <Route path="/marketwindow" render={(props)=> <MarketWindow {...props} />} />
+                {/* <Route path="/marketwindow" render={(props)=> <MarketWindow {...props} />} /> */}
+                <Route path="/marketwindow" component={HomePage} />
                 <Route path="/stockdata" component={StockData} />
                 <Route path="/signup" component={SignUp} />
                 <Route path="/transactionPage" component={TransactionPage} />
