@@ -1,21 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-
 import MarketWindowModel from './MarketWindow.model'
-import EventInjectionModal from '../../../Components/EventInjectionModal/EventInjectionModal';
-
 import StockGraph from "../../../Components/StockGraph/stockGraph";
-
-import { Subject } from "rxjs";
-
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-
-import { Grid, GridListTile, Paper, GridListTileBar, GridList } from "@material-ui/core";
 import { connect } from 'react-redux';
 
-
 type MWProps = {
-  // history: any,
   sessionData: any
 };
 type MWState = {
@@ -35,9 +23,7 @@ class MarketWindow extends React.Component<MWProps, MWState> {
       stockData: new Map()
     };
 
-    this.marketWindowModel = new MarketWindowModel(
-      props.sessionData.id
-    );
+    this.marketWindowModel = new MarketWindowModel(props.sessionData.id);
 
     this.marketWindowModel.stockDataSubject.subscribe(value => {
       console.log("From Subscription");
@@ -46,33 +32,6 @@ class MarketWindow extends React.Component<MWProps, MWState> {
         ...this.state,
         stockData: value
       });
-    });
-
-    this.showInjectionModal = this.showInjectionModal.bind(this);
-    this.hideInjectionModal = this.hideInjectionModal.bind(this);
-
-    this.showPortfolio = this.showPortfolio.bind(this);
-    this.hidePortfolio = this.hidePortfolio.bind(this);
-  }
-
-  showInjectionModal() {
-    //here we want to create a pop-up window where the admin can queue a shock/event
-    this.setState({ showModal: true });
-  }
-
-  hideInjectionModal() {
-    this.setState({ showModal: false });
-  }
-
-  showPortfolio() {
-    this.setState({
-      showPortfolio: true
-    });
-  }
-
-  hidePortfolio() {
-    this.setState({
-      showPortfolio: false
     });
   }
 
@@ -91,67 +50,26 @@ class MarketWindow extends React.Component<MWProps, MWState> {
     return [min - 20, max + 20];
   }
 
-  handleClick = (stockData: any) => {
-    // console.log(stockData);
-    // console.log(">>>>>>>>>>>>>>>>>>>>");
-    // this.props.history.push({pathname:"/stockdata", stockData:stockData});
-  }
-
   render() {
     let stockGraphs = [];
     for (const [key, value] of this.state.stockData.entries()) {
-
-        let domain = this.calculateDomain(value);
-
-
+      let domain = this.calculateDomain(value);
       stockGraphs.push(
-        // <div >
-        //   <StockGraph name={key} domain={domain} data={value} handleClick={this.handleClick}></StockGraph>
-        // </div>
-        <GridListTile>
-          <Paper>
-            <StockGraph name={key} domain={domain} data={value} handleClick={() => {}} width={100} height={80}></StockGraph>
-            {/* <GridListTileBar title={key} classes={{ root: {background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)'}, title: {color: 'white'} }}/> */}
-          </Paper>
-      </GridListTile>
+        <div style={{display: 'flex', borderBottom: '1px solid black'}}>
+          <div>
+            <p>{key}</p>
+            <p style={{backgroundColor: 'red', color: 'white', padding: '2px'}}>-6.21%</p>
+          </div>
+          <div style={{flexGrow: 1}}/>
+          <StockGraph name={key} domain={domain} data={value} handleClick={() => {}} width={100} height={80}></StockGraph>
+        </div>
       );
     }
 
-    // let current_user = "admin"; //the view should change depending on if a regular user or admin is viewing it
-    // const isViewingPortfolio = this.state.showPortfolio;
-    // let button;
-    // if (current_user === "admin") {
-    //   button = <button onClick={this.showInjectionModal}>Shock Input</button>; //only admins can inject shocks
-    // } else {
-    //   if (isViewingPortfolio)
-    //     button = <button onClick={this.hidePortfolio}>View Market</button>;
-    //   //only users can view their portfolio
-    //   else
-    //     button = <button onClick={this.showPortfolio}>View Portfolio</button>;
-    // }
     return (
-      // <div style={{textAlign:"center"}}>
- 
-      //   <h1>Market Window</h1>
-      //   <Link to="/"> Back to home </Link>
-      //   <h3>{this.state.sessionTitle}</h3>
-      //   <EventInjectionModal
-      //     show={this.state.showModal}
-      //     handleClose={this.hideInjectionModal}
-      //   />
-      //   <div>
-      //     {isViewingPortfolio ? (<p>Showing Portfolio Graph</p>) : (<p>Showing Market Graph</p>)}
-      //   </div>
-
-      <GridList cols={1} cellHeight='auto'>
-          {[...stockGraphs]}
-      </GridList>
-        // <Grid container direction="row" justify="center" alignItems="center" spacing={3}>
-          
-        // </Grid>
-
-      //   <div>{button}</div>
-      // </div>
+      <div>
+        {[...stockGraphs]}
+      </div>
     );
   }
 }
