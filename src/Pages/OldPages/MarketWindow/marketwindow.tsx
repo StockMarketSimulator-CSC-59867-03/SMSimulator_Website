@@ -1,7 +1,7 @@
 import React from 'react';
 import MarketWindowModel from './MarketWindow.model'
 import StockGraph from "../../../Components/StockGraph/stockGraph";
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 type MWProps = {
   sessionData: any

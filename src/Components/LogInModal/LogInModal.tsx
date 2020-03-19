@@ -57,6 +57,7 @@ handleSubmit(event : any) {
     .then(function(user){
       //to fetch user id:
       const uid = firebase.auth().currentUser?.uid;
+      console.log(uid);
       alert("Succesfully Signed In!");
       loginModal.setState({
         email : '',

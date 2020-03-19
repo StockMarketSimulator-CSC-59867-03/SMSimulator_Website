@@ -119,12 +119,10 @@ export default function HomePage(props:any) {
                                     <Typography variant="subtitle2">Total Return: $425.07</Typography>
                                 </div> }
                             </Card>
-                            {/* <Divider className={classes.divider}/> */}
-                            {/* <SessionStocks /> */}
                         </Paper>
                         <Paper className={fixedHeightPaperStocks}>
                             <Typography variant="subtitle2">{ isViewingPortfolio ? "STOCKS YOU OWN" : "MARKET STOCKS" }</Typography>
-                            { !isViewingPortfolio && <div className={classes.sessionStocks}><MarketWindow/></div> }
+                            { !isViewingPortfolio && <div className={classes.sessionStocks}><SessionStocks/></div> }
                             { isViewingPortfolio && <div className={classes.sessionStocks}><OwnedStocks/></div> }
                         </Paper>
                     </Grid>
@@ -132,7 +130,7 @@ export default function HomePage(props:any) {
                     <Grid item xs={12}>
                         <Paper className={classes.paper}>
                             <Typography variant="subtitle2">Watch List</Typography>
-                            {/* <WatchedStocks/> */}
+                            <WatchedStocks/>
                         </Paper>
                     </Grid>
                 </Grid>
