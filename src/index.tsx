@@ -33,7 +33,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const stockDataService = new StockDataService();
-stockDataService.changeCurrentSession("46o2WO6zHIR5OdWomsiT");
 
 const routing = (
     <Provider store={store}>
