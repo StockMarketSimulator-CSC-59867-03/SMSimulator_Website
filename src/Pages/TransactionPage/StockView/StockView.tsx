@@ -5,6 +5,8 @@ import StockViewHeader from "./StockViewHeader";
 import StockGraph from "../../../Components/StockGraph/stockGraph";
 import StockViewFooter from "./StockViewFooter";
 import './StockView.scss'
+import BuyModalv2 from "../../../Components/BuyModalv2/BuyModalv2";
+import SellModalv2 from "../../../Components/SellModalv2/SellModalv2";
 import { useSelector } from "react-redux";
 
 function StockView() {
@@ -36,15 +38,10 @@ function StockView() {
         direction="row"
         justify="flex-end"
         alignItems="center"
-        style={{ paddingRight: 25, paddingBottom: 25, paddingTop: 25 }}
-      >
-        <Button variant="contained" color="primary">
-          Buy
-        </Button>
+        style={{ paddingRight: 25, paddingBottom: 25, paddingTop: 25 }}>
+        <BuyModalv2/>
         <div style={{ paddingLeft: 10 }}>
-          <Button variant="contained" color="secondary">
-            Sell
-          </Button>
+          <SellModalv2/>
         </div>
       </Grid>
     </Grid>
