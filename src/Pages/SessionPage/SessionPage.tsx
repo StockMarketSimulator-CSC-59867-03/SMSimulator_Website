@@ -34,6 +34,9 @@ function SessionPage(props:SessionPageProps){
     let dispatch = useDispatch();
     let sessionData = useSelector((state: any) => state.sessionData);
 
+    console.log("Rendering SessionData");
+
+
     let createSession = (sessionName: string, startingBalance: number, type: string) : Promise<any> => {
         console.log("Creating Session");
         const data = { name: sessionName, balance: startingBalance, type: type};

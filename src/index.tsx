@@ -18,6 +18,7 @@ import TransactionPage from './Pages/TransactionPage/TransactionPage';
 import NavigationDrawer from './Styling/navigation';
 import HomePage from './Pages/HomePage/HomePage';
 import { StockDataService } from './Services/StockDataService';
+import NotificationComponent from './Components/NotificationComponent/NotificationComponent';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCWFa5caoShYrHxcLFlVeHyIzM3mXWgJo0",
@@ -37,6 +38,7 @@ const stockDataService = new StockDataService();
 const routing = (
     <Provider store={store}>
         <Router>
+            <NotificationComponent>
             <NavigationDrawer content={
             <div>
                 <Route exact path="/" render={(props)=> <App stockDataService={stockDataService} {...props} />}/>
@@ -47,6 +49,7 @@ const routing = (
                 <Route path="/signup" component={SignUp} />
                 <Route path="/transactionPage" component={TransactionPage} />
             </div>}/>
+            </NotificationComponent>
         </Router>
     </Provider>
 )
