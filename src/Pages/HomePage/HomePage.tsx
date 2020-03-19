@@ -17,8 +17,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useHistory } from "react-router-dom";
 import { connect } from 'react-redux';
-import changeSession from '../../redux/actions';
-import changeSessionID from '../../redux/actions';
+import { changeSessionID } from '../../redux/actions';
+
 
 type HomePageProps = {
     history: any,

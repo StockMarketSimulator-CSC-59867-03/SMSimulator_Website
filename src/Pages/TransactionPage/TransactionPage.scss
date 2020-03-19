@@ -7,3 +7,9 @@
     outline: 5px dotted black;
     
 }
+
+.stockList{
+    position:relative;
+    max-height:100vh;
+    overflow:scroll;
+}

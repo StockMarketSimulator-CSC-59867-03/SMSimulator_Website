@@ -22,7 +22,7 @@ import StoreIcon from '@material-ui/icons/Store';
 import AppsIcon from '@material-ui/icons/Apps';
 import HomeIcon from '@material-ui/icons/Home';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import changeSessionID from '../redux/actions';
+import { changeSessionID } from '../redux/actions';
 
 const drawerWidth = 180;
 
