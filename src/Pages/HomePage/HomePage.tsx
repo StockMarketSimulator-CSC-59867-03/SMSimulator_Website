@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 // import "./h.css";
 import { Link } from 'react-router-dom';
@@ -23,6 +23,7 @@ import { Paper, Grid, Card, Container, Fab, Divider } from '@material-ui/core';
 import WatchedStocks from './WatchedStocks';
 import Typography from '@material-ui/core/Typography';
 import SessionStocks from './SessionStocks';
+import OwnedStocks from './OwnedStocks';
 
 // type HomePageProps = {
 //     history: any,
@@ -44,19 +45,44 @@ const useStyles = makeStyles((theme: Theme) =>
       paper: {
         padding: theme.spacing(2),
         display: 'flex',
-        overflow: 'auto',
+        // overflow: 'auto',
         flexDirection: 'column',
       },
       fixedHeight: {
           height: 475,
       },
+      fixedHeightPreview: {
+          height: 150,
+      },
+      fixedHeightStocks: {
+          marginTop: 15,
+          height: 310,
+      },
       button: {
-          position: "fixed",
-          alignSelf: "center",
-          marginBottom: 10
+          justifySelf: "center",
       },
       sessionStocks: {
-          position: "relative"
+          padding: theme.spacing(1),
+          zIndex: 1,
+          overflow: 'auto',
+      },
+      card: {
+          padding: theme.spacing(2),
+        //   height: 150,
+          position: "absolute",
+          alignSelf: "center",
+          zIndex: 2,
+          display: 'flex',
+          flexWrap: "wrap",
+          flexDirection: 'column',
+          background: "lightGray",
+      },
+      preview: {
+          paddingTop: theme.spacing(1),
+          justifySelf: "left"
+      },
+      divider: {
+          flexGrow: 1,
       }
   }),
 );
@@ -64,7 +90,11 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function HomePage(props:any) {
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-    console.log("Hello");
+    const fixedHeightPaperPreview = clsx(classes.paper, classes.fixedHeightPreview);
+    const fixedHeightPaperStocks = clsx(classes.paper, classes.fixedHeightStocks);
+
+    //homepage states to toggle between marketview/portfolioview
+    const [isViewingPortfolio, togglePortfolioView] = useState(false);
     
     return (
         <div className={classes.root}>
@@ -73,21 +103,33 @@ export default function HomePage(props:any) {
                     {/* MarketGraph */}
                     <Grid item xs={12} md={8} lg={9}>
                         <Paper className={fixedHeightPaper}>
-                            <Typography variant="h5">Market Graph</Typography>
+                            <Typography variant="h5">{ isViewingPortfolio ? "YOUR PORTFOLIO" : "MARKET GRAPH" }</Typography>
                             <StockGraph width={500} height={400}></StockGraph>
                         </Paper>
                     </Grid>
                     {/* Right Side Panel */}
                     <Grid item xs={12} md={4} lg={3}>
-                        <Paper className={fixedHeightPaper}>
-                            <Button variant="contained" color="primary">View Portfolio</Button>
-                            {/* <SessionStocks /> */}
-                            <MarketWindow/>
+                        <Paper className={fixedHeightPaperPreview}>
+                            <Card className={classes.card}>
+                                <Button variant="contained" color="primary" className={classes.button} onClick={() => togglePortfolioView(!isViewingPortfolio)}>
+                                    { isViewingPortfolio ? "View Market" : "View Portfolio" }
+                                </Button>
+                                { !isViewingPortfolio && <div className={classes.preview}>
+                                    <Typography variant="subtitle2">Buying Power: $5123.97</Typography>
+                                    <Typography variant="subtitle2">Total Return: $425.07</Typography>
+                                </div> }
+                            </Card>
+                        </Paper>
+                        <Paper className={fixedHeightPaperStocks}>
+                            <Typography variant="subtitle2">{ isViewingPortfolio ? "STOCKS YOU OWN" : "MARKET STOCKS" }</Typography>
+                            { !isViewingPortfolio && <div className={classes.sessionStocks}><SessionStocks/></div> }
+                            { isViewingPortfolio && <div className={classes.sessionStocks}><OwnedStocks/></div> }
                         </Paper>
                     </Grid>
                     {/* Watched Stocks */}
                     <Grid item xs={12}>
                         <Paper className={classes.paper}>
+                            <Typography variant="subtitle2">Watch List</Typography>
                             <WatchedStocks/>
                         </Paper>
                     </Grid>
