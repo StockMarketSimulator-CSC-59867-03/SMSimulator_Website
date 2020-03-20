@@ -22,7 +22,7 @@ import StoreIcon from '@material-ui/icons/Store';
 import AppsIcon from '@material-ui/icons/Apps';
 import HomeIcon from '@material-ui/icons/Home';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import changeSessionID from '../redux/actions';
+import { changeSessionID } from '../redux/actions';
 
 const drawerWidth = 180;
 
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme: Theme) =>
     content: {
       flexGrow: 1,
       backgroundColor: theme.palette.background.default,
-      padding: theme.spacing(3),
+      padding: theme.spacing(2),
     },
   }),
 );
@@ -64,6 +64,9 @@ function NavigationDrawer(props:any) {
     const classes = useStyles();
     let history = useHistory();
     let dispatch = useDispatch();
+
+    let enableSwitching = (props.sessionData.id === "");
+    enableSwitching = false;
 
     return (
         <div className={classes.root}>
@@ -91,17 +94,17 @@ function NavigationDrawer(props:any) {
             <Divider />
             <List>
                 <ListItem>
-                  {props.sessionData.id === "" ? <ListItemText primary="Not In Session"/> : <ListItemText primary={props.sessionData.id}/>}
+                  {enableSwitching ? <ListItemText primary="Not In Session"/> : <ListItemText primary={props.sessionData.id}/>}
                 </ListItem>
-                <ListItem button onClick={props.sessionData.id === "" ? () => {} : ()=>{ dispatch(changeSessionID("")); history.push("/") }}>
+                <ListItem button onClick={enableSwitching ? () => {} : ()=>{ dispatch(changeSessionID("")); history.push("/") }}>
                     <ListItemIcon><AppsIcon/></ListItemIcon>
                     <ListItemText primary="Session"/>
                 </ListItem>
-                <ListItem button onClick={props.sessionData.id === "" ? () => {} : ()=>{history.push("/marketwindow")}}>
+                <ListItem button onClick={enableSwitching ? () => {} : ()=>{history.push("/marketwindow")}}>
                     <ListItemIcon><HomeIcon/></ListItemIcon>
                     <ListItemText primary="Home"/>
                 </ListItem>
-                <ListItem button onClick={props.sessionData.id === "" ? () => {} : ()=>{history.push("/transactionPage")}}>
+                <ListItem button onClick={enableSwitching ? () => {} : ()=>{history.push("/transactionPage")}}>
                     <ListItemIcon><StoreIcon/></ListItemIcon>
                     <ListItemText primary="Transaction"/>
                 </ListItem>

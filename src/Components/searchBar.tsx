@@ -11,12 +11,14 @@ class SearchBar extends React.Component<{}, ISearchBarState> {
         };
         this.onInputChange = this.onInputChange.bind(this);
     }
+
     private onInputChange(e: any) {
         const { value } = e.target;
         this.setState({
             inputValue: value
         });
     }
+    
     public render() {
         const { inputValue } = this.state;
         return (

@@ -10,12 +10,12 @@ import { Subject } from "rxjs";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 
-import { Grid } from "@material-ui/core";
+import { Grid, GridListTile, Paper, GridListTileBar, GridList } from "@material-ui/core";
 import { connect } from 'react-redux';
 
 
 type MWProps = {
-  history: any,
+  // history: any,
   sessionData: any
 };
 type MWState = {
@@ -92,9 +92,9 @@ class MarketWindow extends React.Component<MWProps, MWState> {
   }
 
   handleClick = (stockData: any) => {
-    console.log(stockData);
-    console.log(">>>>>>>>>>>>>>>>>>>>");
-    this.props.history.push({pathname:"/stockdata", stockData:stockData});
+    // console.log(stockData);
+    // console.log(">>>>>>>>>>>>>>>>>>>>");
+    // this.props.history.push({pathname:"/stockdata", stockData:stockData});
   }
 
   render() {
@@ -105,44 +105,53 @@ class MarketWindow extends React.Component<MWProps, MWState> {
 
 
       stockGraphs.push(
-        <div >
-          <StockGraph name={key} domain={domain} data={value} handleClick={this.handleClick}></StockGraph>
-        </div>
+        // <div >
+        //   <StockGraph name={key} domain={domain} data={value} handleClick={this.handleClick}></StockGraph>
+        // </div>
+        <GridListTile>
+          <Paper>
+            <StockGraph name={key} domain={domain} data={value} handleClick={() => {}} width={100} height={80}></StockGraph>
+            {/* <GridListTileBar title={key} classes={{ root: {background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)'}, title: {color: 'white'} }}/> */}
+          </Paper>
+      </GridListTile>
       );
     }
 
-    let current_user = "admin"; //the view should change depending on if a regular user or admin is viewing it
-    const isViewingPortfolio = this.state.showPortfolio;
-    let button;
-    if (current_user === "admin") {
-      button = <button onClick={this.showInjectionModal}>Shock Input</button>; //only admins can inject shocks
-    } else {
-      if (isViewingPortfolio)
-        button = <button onClick={this.hidePortfolio}>View Market</button>;
-      //only users can view their portfolio
-      else
-        button = <button onClick={this.showPortfolio}>View Portfolio</button>;
-    }
+    // let current_user = "admin"; //the view should change depending on if a regular user or admin is viewing it
+    // const isViewingPortfolio = this.state.showPortfolio;
+    // let button;
+    // if (current_user === "admin") {
+    //   button = <button onClick={this.showInjectionModal}>Shock Input</button>; //only admins can inject shocks
+    // } else {
+    //   if (isViewingPortfolio)
+    //     button = <button onClick={this.hidePortfolio}>View Market</button>;
+    //   //only users can view their portfolio
+    //   else
+    //     button = <button onClick={this.showPortfolio}>View Portfolio</button>;
+    // }
     return (
-      <div style={{textAlign:"center"}}>
+      // <div style={{textAlign:"center"}}>
  
-        <h1>Market Window</h1>
-        <Link to="/"> Back to home </Link>
-        <h3>{this.state.sessionTitle}</h3>
-        <EventInjectionModal
-          show={this.state.showModal}
-          handleClose={this.hideInjectionModal}
-        />
-        <div>
-          {isViewingPortfolio ? (<p>Showing Portfolio Graph</p>) : (<p>Showing Market Graph</p>)}
-        </div>
+      //   <h1>Market Window</h1>
+      //   <Link to="/"> Back to home </Link>
+      //   <h3>{this.state.sessionTitle}</h3>
+      //   <EventInjectionModal
+      //     show={this.state.showModal}
+      //     handleClose={this.hideInjectionModal}
+      //   />
+      //   <div>
+      //     {isViewingPortfolio ? (<p>Showing Portfolio Graph</p>) : (<p>Showing Market Graph</p>)}
+      //   </div>
 
-        <Grid container direction="row" justify="center" alignItems="center" spacing={3}>
+      <GridList cols={1} cellHeight='auto'>
           {[...stockGraphs]}
-        </Grid>
+      </GridList>
+        // <Grid container direction="row" justify="center" alignItems="center" spacing={3}>
+          
+        // </Grid>
 
-        <div>{button}</div>
-      </div>
+      //   <div>{button}</div>
+      // </div>
     );
   }
 }

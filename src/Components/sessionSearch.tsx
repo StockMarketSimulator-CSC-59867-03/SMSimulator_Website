@@ -1,37 +1,35 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateSearchInputValue } from '../redux/actions';
 
-interface ISearchBarState {
-    inputValue: string
+function SearchBar(){
+    let dispatch = useDispatch();
+
+    const [inputValue, setInputValue] = useState("");
+
+    useEffect(() => {
+
+    }, [inputValue]);
+
+    const onInputChange = (e: any) => {
+        setInputValue(e.target.value);
+    }
+
+    const storeSearchInputValue = () => {
+        // update current inputValue state to redux
+        dispatch(updateSearchInputValue(inputValue));
+        console.log("dispatched !!");
+    }
+
+    return (
+        <div className='input-wrapper'>
+            <input
+                placeholder='Search...'
+                value={inputValue}
+                onChange={onInputChange}
+            />
+            <button onClick={storeSearchInputValue}>Search</button>
+        </div>);    
 }
-class SearchBar extends React.Component<{}, ISearchBarState> {
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            inputValue: ''
-        };
-        this.onInputChange = this.onInputChange.bind(this);
-    }
-    private onInputChange(e: any) {
-        const { value } = e.target;
-        this.setState({
-            inputValue: value
-        });
-    }
-    public render() {
-        const { inputValue } = this.state;
-        return (
-            <div className='input-wrapper'>
-                
-                <input
-                    placeholder='Search...'
-                    value={inputValue}
-                    spellCheck={false}
-                    
-                />
-                <span className='input-highlight'>
-                    {inputValue.replace(/ /g, "\u00a0")}
-                </span>
-            </div>);
-    }
-}
+
 export default SearchBar;
