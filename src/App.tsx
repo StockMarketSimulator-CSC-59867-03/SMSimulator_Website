@@ -41,7 +41,7 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
          }} />*/}
 
             {/**  */} 
-            <SessionPage history={this.props.history} />
+            <SessionPage history={this.props.history} stockDataService={this.props.stockDataService} />
             </div>
         );
     }

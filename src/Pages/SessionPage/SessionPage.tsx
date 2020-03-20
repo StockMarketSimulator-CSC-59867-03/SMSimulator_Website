@@ -19,9 +19,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { useHistory } from "react-router-dom";
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { changeSessionID } from '../../redux/actions';
+import { StockDataService } from '../../Services/StockDataService';
 
 type SessionPageProps = {
     history: any,
+    stockDataService: StockDataService
 };
 
 function SessionPage(props:SessionPageProps){
@@ -31,6 +33,9 @@ function SessionPage(props:SessionPageProps){
 
     let dispatch = useDispatch();
     let sessionData = useSelector((state: any) => state.sessionData);
+
+    console.log("Rendering SessionData");
+
 
     let createSession = (sessionName: string, startingBalance: number, type: string) : Promise<any> => {
         console.log("Creating Session");
@@ -56,6 +61,7 @@ function SessionPage(props:SessionPageProps){
                     if(typeof data == "string"){
                         resolve(data);
                         dispatch(changeSessionID(data));
+                        props.stockDataService.changeCurrentSession(data);
                     }
                     else{
                         reject("Error: Response wasn't a string for the session id");
@@ -119,6 +125,7 @@ function SessionPage(props:SessionPageProps){
 
       const clickedYes = () => {
         dispatch(changeSessionID(clickedSessionID));
+        props.stockDataService.changeCurrentSession(clickedSessionID);
         handleClose();
         props.history.push("/marketwindow");
       };
