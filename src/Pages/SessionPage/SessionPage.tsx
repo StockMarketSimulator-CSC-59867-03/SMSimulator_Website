@@ -33,6 +33,16 @@ function SessionPage(props:SessionPageProps){
 
     let dispatch = useDispatch();
     let sessionData = useSelector((state: any) => state.sessionData);
+    let currentUserData = useSelector((state: any) => state.currentUserData);
+    if(currentUserData.id === undefined) {
+      console.log("no user logged in");
+      return(
+        <div>
+          Please Log In!
+          (email:blah@test.com, pass:123456)
+        </div>
+      )
+    }
 
     console.log("Rendering SessionData");
 

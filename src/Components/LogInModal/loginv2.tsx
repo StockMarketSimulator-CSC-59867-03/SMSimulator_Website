@@ -1,12 +1,53 @@
 import React, { useState, useRef } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import firebase from 'firebase';
-import { changeCurrentUserID } from '../../redux/actions';
+import { changeCurrentUserID, changeCurrentUsername } from '../../redux/actions';
 
-function LoginTest(props:any){
+import Button from "@material-ui/core/Button";
+import Modal from "@material-ui/core/Modal"
+import TextField from "@material-ui/core/TextField";
+import { Grid } from "@material-ui/core";
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme: Theme) => 
+    createStyles({
+        modal: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center'
+        },
+        modalBackground: {
+            position: 'relative',
+            width: '25%',
+            height: '25%',
+            backgroundColor: theme.palette.background.default,
+        },
+        grid: {
+            padding: theme.spacing(2),
+            justifySelf: 'center',
+            alignItems: 'center',
+            flexGrow: 1
+        },
+        submitButton: {
+            marginBottom: theme.spacing(2),
+            position: 'absolute',
+            bottom: 0
+        }
+    })
+);
+
+function LoginModalv2(props:any){
+    const classes = useStyles();
     let dispatch = useDispatch();
+
     let email = useRef("");
     let password = useRef("");
+    let [isModalOpen, setModalOpen] = useState(false);
+
+    const handleOpenClose = () => {
+        setModalOpen(!isModalOpen);
+    }
 
     const handleChange = (event:any) => {
         let value = event.target.value;
@@ -16,7 +57,6 @@ function LoginTest(props:any){
             case 'password':
                 password.current = value; break;
         }
-        // console.log(email, username, password);
     }
 
     const handleSubmit = (event:any) => {
@@ -25,12 +65,15 @@ function LoginTest(props:any){
         firebase.auth().signInWithEmailAndPassword(email.current, password.current)
         .then(function(user){
           //to fetch user id:
-          const uid = firebase.auth().currentUser?.uid;
+          const isValidUser = firebase.auth().currentUser;
+          const uid = isValidUser?.uid;
+          const username = isValidUser?.displayName;
           dispatch(changeCurrentUserID(uid));
-          // console.log(uid);
+          dispatch(changeCurrentUsername(username));
           alert("Succesfully Signed In!");
           email.current = "";
           password.current = "";
+          handleOpenClose();
         })
         .catch(
           function(error){
@@ -46,22 +89,20 @@ function LoginTest(props:any){
     
     return (
         <div>
-            <h1>Log In</h1>
-            <form onSubmit={handleSubmit}>
-            <br/>
-            <label>Email <input type="email" name="email" onChange={handleChange}/></label>
-            <br/>
-            <label>Password <input type="password" name="password" onChange={handleChange}/></label>
-            <br/>
-            <br/>
-            <input type="submit" value="Log In"/>
-            </form>
+            <Button variant="contained" onClick={handleOpenClose}>
+                Log In
+            </Button>
+            <Modal className={classes.modal} open={isModalOpen} onClose={handleOpenClose}>
+                <div className={classes.modalBackground}>
+                    <Grid container className={classes.grid} direction="column">
+                        <TextField id="standard-basic" label="Email" name="email" onChange={handleChange}/>
+                        <TextField id="standard-basic" type="password" label="Password" name="password" onChange={handleChange}/>
+                        <Button className={classes.submitButton} variant="contained" onClick={handleSubmit}>Log In</Button>
+                    </Grid>
+                </div>
+            </Modal>
         </div>
     );
 }
 
-const mapStateToProps = (state: any) => ({
-    currentUserData: state.currentUserData
-});
-
-export default connect(mapStateToProps)(LoginTest);
+export default LoginModalv2;

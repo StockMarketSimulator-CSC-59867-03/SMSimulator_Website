@@ -5,6 +5,11 @@ function currentUserData(state = {}, action: any){
                 ...state,
                 id: action.payload,
             }
+        case 'CHANGE_USERNAME':
+            return {
+                ...state,
+                username: action.payload
+            }
         default:
             return {
                 ...state
