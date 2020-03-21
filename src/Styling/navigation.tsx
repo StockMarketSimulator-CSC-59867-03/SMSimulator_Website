@@ -23,6 +23,7 @@ import AppsIcon from '@material-ui/icons/Apps';
 import HomeIcon from '@material-ui/icons/Home';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { changeSessionID } from '../redux/actions';
+import LoginTest from '../Components/LogInModal/loginv2';
 
 const drawerWidth = 180;
 
@@ -66,7 +67,7 @@ function NavigationDrawer(props:any) {
     let dispatch = useDispatch();
 
     let enableSwitching = (props.sessionData.id === "");
-    enableSwitching = false;
+    // enableSwitching = false;
 
     return (
         <div className={classes.root}>
@@ -77,7 +78,8 @@ function NavigationDrawer(props:any) {
                 Stock Market Simulator
               </Typography>
               <div className={classes.buttons}>
-                <div className={classes.button}><LogInModal/></div>
+              <LoginTest/>
+                {/* <div className={classes.button}><LogInModal/></div> */}
                 <div className={classes.button}><SignUpModal/></div>
               </div>
             </Toolbar>
@@ -93,6 +95,9 @@ function NavigationDrawer(props:any) {
             <div className={classes.toolbar} />
             <Divider />
             <List>
+                <ListItem>
+                  <ListItemText primary={props.currentUserData.id}/>
+                </ListItem>
                 <ListItem>
                   {enableSwitching ? <ListItemText primary="Not In Session"/> : <ListItemText primary={props.sessionData.id}/>}
                 </ListItem>
@@ -120,7 +125,8 @@ function NavigationDrawer(props:any) {
 }
 
 const mapStateToProps = (state: any) => ({
-    sessionData: state.sessionData
+    sessionData: state.sessionData,
+    currentUserData: state.currentUserData
   });
 
 export default connect(mapStateToProps)(withRouter(NavigationDrawer));

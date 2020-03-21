@@ -32,3 +32,8 @@ export const replaceNotifications = (data: any) => ({
     type: "REPLACE_NOTIFICATIONS",
     payload: data
 });
+
+export const changeCurrentUserID = (id: any) => ({
+    type: "CHANGE_USER_ID",
+    payload: id
+});
