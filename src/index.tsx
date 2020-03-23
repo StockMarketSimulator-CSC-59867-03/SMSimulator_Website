@@ -19,6 +19,7 @@ import NavigationDrawer from './Styling/navigation';
 import HomePage from './Pages/HomePage/HomePage';
 import { StockDataService } from './Services/StockDataService';
 import NotificationComponent from './Components/NotificationComponent/NotificationComponent';
+import LoginTest from './Components/LogInModal/loginv2';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCWFa5caoShYrHxcLFlVeHyIzM3mXWgJo0",
@@ -42,7 +43,6 @@ const routing = (
             <NavigationDrawer content={
             <div>
                 <Route exact path="/" render={(props)=> <App stockDataService={stockDataService} {...props} />}/>
-                <Route path="/login" component={Login} />
                 {/* <Route path="/marketwindow" render={(props)=> <MarketWindow {...props} />} /> */}
                 <Route path="/marketwindow" component={HomePage} />
                 <Route path="/stockdata" component={StockData} />

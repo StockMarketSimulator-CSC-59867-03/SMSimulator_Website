@@ -23,6 +23,8 @@ import AppsIcon from '@material-ui/icons/Apps';
 import HomeIcon from '@material-ui/icons/Home';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { changeSessionID } from '../redux/actions';
+import LoginModalv2 from '../Components/LogInModal/loginv2';
+import SignOut from '../Components/SignOut/SignOut';
 
 const drawerWidth = 180;
 
@@ -66,7 +68,8 @@ function NavigationDrawer(props:any) {
     let dispatch = useDispatch();
 
     let enableSwitching = (props.sessionData.id === "");
-    enableSwitching = false;
+    let isLoggedIn = (props.currentUserData.username !== undefined);
+    console.log(isLoggedIn);
 
     return (
         <div className={classes.root}>
@@ -76,10 +79,14 @@ function NavigationDrawer(props:any) {
               <Typography variant="h6" className={classes.title}>
                 Stock Market Simulator
               </Typography>
-              <div className={classes.buttons}>
-                <div className={classes.button}><LogInModal/></div>
-                <div className={classes.button}><SignUpModal/></div>
-              </div>
+                { !isLoggedIn && <div className={classes.buttons}> 
+                                  <div className={classes.button}><LoginModalv2/></div>
+                                  <div className={classes.button}><SignUpModal/></div>
+                                </div> }
+                { isLoggedIn && <div className={classes.buttons}>
+                                  <div className={classes.button}><p>Welcome, {props.currentUserData.username}!</p></div>
+                                  <div style={{margin: 5, alignSelf: "center"}}><SignOut/></div>
+                                </div> }
             </Toolbar>
           </AppBar>
           <Drawer
@@ -93,6 +100,9 @@ function NavigationDrawer(props:any) {
             <div className={classes.toolbar} />
             <Divider />
             <List>
+                <ListItem>
+                  <ListItemText primary={props.currentUserData.id}/>
+                </ListItem>
                 <ListItem>
                   {enableSwitching ? <ListItemText primary="Not In Session"/> : <ListItemText primary={props.sessionData.id}/>}
                 </ListItem>
@@ -120,7 +130,8 @@ function NavigationDrawer(props:any) {
 }
 
 const mapStateToProps = (state: any) => ({
-    sessionData: state.sessionData
+    sessionData: state.sessionData,
+    currentUserData: state.currentUserData
   });
 
 export default connect(mapStateToProps)(withRouter(NavigationDrawer));
