@@ -23,7 +23,8 @@ import { StockDataService } from '../../Services/StockDataService';
 
 type SessionPageProps = {
     history: any,
-    stockDataService: StockDataService
+    stockDataService: StockDataService,
+    userID: any
 };
 
 function SessionPage(props:SessionPageProps){
@@ -33,6 +34,7 @@ function SessionPage(props:SessionPageProps){
 
     let dispatch = useDispatch();
     let sessionData = useSelector((state: any) => state.sessionData);
+    
     // let currentUserData = useSelector((state: any) => state.currentUserData);
     // if(currentUserData.id === undefined) {
     //   console.log("no user logged in");
@@ -46,9 +48,11 @@ function SessionPage(props:SessionPageProps){
 
     console.log("Rendering SessionData");
 
-    let createSession = (sessionName: string, startingBalance: number, type: string) : Promise<any> => {
+    let createSession = (sessionName: string, startingBalance: number, type: string, userID: string) : Promise<any> => {
         console.log("Creating Session");
-        const data = { name: sessionName, balance: startingBalance, type: type};
+        const data = { name: sessionName, balance: startingBalance, type: type, ownerID: userID};
+
+        console.log("DATA: " + data.ownerID);
 
         return new Promise((resolve,reject)=>{
             fetch('https://thawing-shore-19302.herokuapp.com/createSession', {
@@ -139,6 +143,8 @@ function SessionPage(props:SessionPageProps){
         props.history.push("/marketwindow");
       };
 
+    const isLoggedIn = props.userID;
+
     return (
         <div>
           <h1 /*className="title"*/> Session Page </h1>
@@ -146,12 +152,16 @@ function SessionPage(props:SessionPageProps){
           <div /*className="sessions"*/>
             <h2>Session Search</h2>
             <SessionSearch />
-            <Button /*className="sessionButton"*/>
-              <CreateSessionModal
-                onSessionCreate={createSession}
-                onStocksSelected={addStocksToSession}
-              ></CreateSessionModal>
-            </Button>
+            {isLoggedIn 
+                ? <Button /*className="sessionButton"*/>
+                    <CreateSessionModal
+                      onSessionCreate={createSession}
+                      onStocksSelected={addStocksToSession}
+                      userID={props.userID}
+                    ></CreateSessionModal>
+                  </Button>
+                : <div></div>
+            }
             <h2>Session List</h2>
             <div /*className="sessionResults"*/>
               <ScrollableButtonList
@@ -190,4 +200,13 @@ function SessionPage(props:SessionPageProps){
       );
 }
 
-export default SessionPage;
+function mapStateToProps(state: any){
+  console.log("getting user id: ", state.currentUserData.id);
+
+    return {
+        userID: state.currentUserData.id
+    };
+
+}
+
+export default connect(mapStateToProps)(SessionPage);
