@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React , { useState }from 'react';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +12,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import ManageIcon from '@material-ui/icons/Build';
 import App from '../App';
 import LogInModal from '../Components/LogInModal/LogInModal';
 import { Button, Menu, MenuItem } from '@material-ui/core';
@@ -25,6 +26,12 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { changeSessionID } from '../redux/actions';
 import LoginModalv2 from '../Components/LogInModal/loginv2';
 import SignOut from '../Components/SignOut/SignOut';
+
+// is it worth to do this firebase connectio separately?
+import firebase from 'firebase';
+import { collection, collectionData, collectionChanges } from 'rxfire/firestore';
+import { Subject } from 'rxjs';
+
 
 const drawerWidth = 180;
 
@@ -64,12 +71,27 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function NavigationDrawer(props:any) {
     const classes = useStyles();
+    const [isOwner, setIsOwner] = useState(false);
+
     let history = useHistory();
     let dispatch = useDispatch();
 
     let enableSwitching = (props.sessionData.id === "");
     let isLoggedIn = (props.currentUserData.username !== undefined);
-    console.log(isLoggedIn);
+
+    if(props.sessionData.id){
+      const db = firebase.firestore()
+      db.collection('Sessions').doc(props.sessionData.id).get()
+        .then(doc => {
+          if(!doc.exists){
+            console.log("No document found");
+          } else {
+            setIsOwner(props.currentUserData.id == doc.data()!.ownerID);
+          }
+        }).catch(err => {
+          console.log("Error getting document", err);
+        })
+    }
 
     return (
         <div className={classes.root}>
@@ -118,6 +140,13 @@ function NavigationDrawer(props:any) {
                     <ListItemIcon><StoreIcon/></ListItemIcon>
                     <ListItemText primary="Transaction"/>
                 </ListItem>
+                {isOwner
+                  ? <ListItem button onClick={enableSwitching ? () => {} : ()=>{history.push("/manage")}}>
+                      <ListItemIcon><ManageIcon/></ListItemIcon>
+                      <ListItemText primary="Manage"/>
+                    </ListItem>
+                  : <div></div>
+                }
             </List>
             <Divider />
           </Drawer>
@@ -131,7 +160,7 @@ function NavigationDrawer(props:any) {
 
 const mapStateToProps = (state: any) => ({
     sessionData: state.sessionData,
-    currentUserData: state.currentUserData
+    currentUserData: state.currentUserData,
   });
 
 export default connect(mapStateToProps)(withRouter(NavigationDrawer));

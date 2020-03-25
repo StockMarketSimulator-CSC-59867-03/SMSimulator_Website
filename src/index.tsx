@@ -15,6 +15,7 @@ import StockData from './Pages/OldPages/StockData/stockdata';
 import { Provider } from 'react-redux';
 import store from "./redux/store";
 import TransactionPage from './Pages/TransactionPage/TransactionPage';
+import ManagePage from './Pages/ManagePage/ManagePage';
 import NavigationDrawer from './Styling/navigation';
 import HomePage from './Pages/HomePage/HomePage';
 import { StockDataService } from './Services/StockDataService';
@@ -48,6 +49,7 @@ const routing = (
                 <Route path="/stockdata" component={StockData} />
                 <Route path="/signup" component={SignUp} />
                 <Route path="/transactionPage" component={TransactionPage} />
+                <Route path="/manage" component={ManagePage} />
             </div>}/>
             </NotificationComponent>
         </Router>
