@@ -16,6 +16,11 @@ export const setStockData = (data: any) => ({
     payload: data
 });
 
+export const clearStockData = () => ({
+    type: "CLEAR_STOCK_DATA",
+    payload: {}
+});
+
 export const updateSearchInputValue = (inputValue: string) => {
 	return {
 		type: "UPDATE_SEARCH_INPUT_VALUE",
