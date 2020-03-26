@@ -65,11 +65,6 @@ function LoginModalv2(props:any){
         firebase.auth().signInWithEmailAndPassword(email.current, password.current)
         .then(function(user){
           //to fetch user id:
-          const isValidUser = firebase.auth().currentUser;
-          const uid = isValidUser?.uid;
-          const username = isValidUser?.displayName;
-          dispatch(changeCurrentUserID(uid));
-          dispatch(changeCurrentUsername(username));
           alert("Succesfully Signed In!");
           email.current = "";
           password.current = "";

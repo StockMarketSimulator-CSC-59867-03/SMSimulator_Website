@@ -21,6 +21,8 @@ import HomePage from './Pages/HomePage/HomePage';
 import { StockDataService } from './Services/StockDataService';
 import NotificationComponent from './Components/NotificationComponent/NotificationComponent';
 import LoginTest from './Components/LogInModal/loginv2';
+import { changeCurrentUserID, changeCurrentUsername } from './redux/actions';
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyCWFa5caoShYrHxcLFlVeHyIzM3mXWgJo0",
@@ -34,6 +36,21 @@ const firebaseConfig = {
   };
 
 firebase.initializeApp(firebaseConfig);
+
+
+firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+        console.log("User is signed in:");
+        const isValidUser = user;
+        const uid = isValidUser?.uid;
+        const username = isValidUser?.displayName;
+        store.dispatch(changeCurrentUserID(uid));
+        store.dispatch(changeCurrentUsername(username));
+    } else {
+        store.dispatch(changeCurrentUserID(undefined));
+        store.dispatch(changeCurrentUsername(undefined));
+    }
+  });
 
 const stockDataService = new StockDataService();
 
