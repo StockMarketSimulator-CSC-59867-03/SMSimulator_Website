@@ -3,9 +3,19 @@ import { Subject } from 'rxjs';
 import { collection, collectionData, collectionChanges } from 'rxfire/firestore';
 
 import store from '../redux/store';
+import { addNotification } from "../redux/actions";
 
 import { setStockData } from '../redux/actions';
 
+function showError(errorText: string){
+    store.dispatch(addNotification({
+        type:"INSTANT",
+        title:"Error",
+        body:errorText
+    }));
+}
+
+let calls = 0;
 
 function calculateDomain(value : Array<any>){
     let min = 1000000;
@@ -33,10 +43,18 @@ export class StockDataService{
     private db : any;
     public sessionStocks: Array<string> = [];
     public stockDataSubject = new Subject<any>();
-
     public stockDataMap: Map<string, StockDataFormat>;
 
+    private stockListners: any = [];
+    private stockDocumentMap: Map<string,Map<string,Array<any>>> = new Map();
+    private stockDocumentMapSubject = new Subject<any>();
+
     constructor(){
+        if(calls > 0){
+            showError("BUG: Mutliple StockDataServices are being initialized. Only one should exist");
+        }
+        calls++;
+
         this.stockDataMap = new Map();
         this.db = firebase.firestore();
         this.stockDataSubject.subscribe((value: Map<any,any>)=>{
@@ -46,78 +64,91 @@ export class StockDataService{
               }, {});
             store.dispatch(setStockData(mapToObject));
         });
+
+
+        // NEED: Algorithm probably could be more efficient 
+        // Gets out of hand with a lot of data here 
+        this.stockDocumentMapSubject.subscribe((stockSymbol:string )=>{
+            
+                let stockData: any[] = [];
+                let stockDataMap = this.stockDocumentMap.get(stockSymbol);
+
+                if(stockDataMap != null){
+                    for(const [dataID, dataSet] of stockDataMap.entries()){
+                        stockData = [...stockData,...dataSet];
+                    }
+                    stockData.sort((a,b)=> (a.dateTime > b.dateTime) ? 1 : -1);
+
+                    let limitedStockData = stockData.slice(stockData.length - 30, stockData.length);
+                    console.log(stockData);
+                    let oldData = this.stockDataMap.get(stockSymbol);
+                    if (oldData != null){
+                        let domain = calculateDomain(limitedStockData);
+                        this.stockDataMap.set(stockSymbol, {data:oldData.data, history:limitedStockData, domain: domain});
+                        this.stockDataSubject.next(this.stockDataMap);
+                    }
+                    
+                }
+                else{
+                    showError("Error: StockDataMap is null for somereason in the StockDataService");
+                }
+
+        });
+
     }
 
+    private createStockListner = (sessionID: string, stockName: string) => {
+        this.stockDocumentMap.set(stockName, new Map());
+        let newListner = this.db.collection("Sessions").doc(sessionID).collection("Stocks").doc(stockName).collection("Stock History")
+        .onSnapshot((snapshot: any) => {
+            snapshot.docChanges().forEach((change: any) => {
+                if (change.type === "added" || change.type === "modified") {
+                    let dataPoints = change.doc.data()["data"];
+                    if(dataPoints != null){
+                        this.stockDocumentMap.get(stockName)?.set(change.doc.id,dataPoints);
+                    }
+                    else{
+                        showError("StockDataService: dataPoints from firebase is null");
+                    }
+                    this.stockDocumentMapSubject.next(stockName);
+                }
+
+                if (change.type === "removed") {
+                    console.log("Removed city: ", change.doc.data());
+                    this.stockDocumentMap.get(stockName)?.delete(change.doc.id);
+                    this.stockDocumentMapSubject.next(stockName);
+                }
+            });
+        });
+        this.stockListners.push(newListner);
+    }
+
+    // Set up the listneres for a session for each stock 
     public changeCurrentSession = (sessionID: string) => {
         this.sessionID = sessionID;
         if(this.sessionID == ""){
             return;
         }
-        console.log("HELLO");
-        this.stockDataMap = new Map();
-        this.db.collection("Sessions").doc(this.sessionID).collection("Stocks").get().then((querySnapshot: any) => {
-            querySnapshot.forEach((doc : any) =>{
-                this.stockDataMap.set(doc.id,{data:doc.data(), history: null, domain: null});
-                this.sessionStocks.push(doc.id);
-            });
-            console.log(this.stockDataMap);
-            let mainQuery: Array<string> = []
-            let nextQuery: Array<string> = [];
 
-
-            if(this.sessionStocks.length >= 10){ //These quries don't support more than 10 in the dictionary
-                let halfOfArray = Math.floor(this.sessionStocks.length/2);
-                mainQuery = this.sessionStocks.slice(0, halfOfArray);
-                nextQuery = this.sessionStocks.slice(halfOfArray, this.sessionStocks.length);
-            }
-            else{
-                mainQuery = this.sessionStocks;
-            }
-            if(mainQuery.length > 0){
-
-            
-            this.db.collection("StockHistory").where(firebase.firestore.FieldPath.documentId(), "in", mainQuery).get()
-            .then((querySnapshot : any)=>{
-                querySnapshot.forEach((doc : any) =>{
-                    // doc.data() is never undefined for query doc snapshots
-                    if(doc.data()["history"] != null){
-                        let oldData = this.stockDataMap.get(doc.id);
-                        if (oldData != null){
-                            let domain = calculateDomain(doc.data()["history"]);
-                            this.stockDataMap.set(doc.id, {data:oldData.data, history:doc.data()["history"].reverse(), domain: domain});
-                        }
-                    }
-                    
-                });
-                
-
-                if(nextQuery.length > 0){
-                    this.db.collection("StockHistory").where(firebase.firestore.FieldPath.documentId(), "in", nextQuery).get()
-                    .then((querySnapshot : any)=>{
-                        querySnapshot.forEach((doc : any) =>{
-                            if(doc.data()["history"] != null){
-                                let oldData = this.stockDataMap.get(doc.id);
-                                if (oldData != null){
-                                    let domain = calculateDomain(doc.data()["history"]);
-                                    this.stockDataMap.set(doc.id, {data:oldData.data, history:doc.data()["history"].reverse(), domain: domain});
-                                }                         }
-                        });
-                        this.stockDataSubject.next(this.stockDataMap);
-                    });
-                }else{
-                    this.stockDataSubject.next(this.stockDataMap);
-                }
-
-            })
-            .catch((err: any)=>{
-                console.log(err);
+        if(this.stockListners.length > 0 && sessionID == this.sessionID){
+            showError("StockDataService trying to create more listeners when there are already");
+        }
+        else if (this.stockListners.length > 0){ // If there exists listeners already then we need to remove all of them
+            this.stockListners.forEach((listener: any) => {
+                listener();
             });
         }
 
+        this.stockListners = [];
+
+        this.db.collection("Sessions").doc(sessionID).collection("Stocks").get().then((querySnapshot: any) => {
+            querySnapshot.forEach((doc : any) =>{
+                this.stockDataMap.set(doc.id,{data:doc.data(), history: null, domain: null});
+                console.log(`Creating stock listener for :${doc.id}`);
+                this.createStockListner(sessionID, doc.id);
+            });
         });
 
-
-
-
     }
+
 }
