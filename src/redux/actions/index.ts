@@ -47,3 +47,8 @@ export const changeCurrentUsername = (username: any) => ({
     type: "CHANGE_USERNAME",
     payload: username
 })
+
+export const addToWatchList = (watchedStocks: any) => ({
+    type: "ADD_TO_WATCHLIST",
+    payload: watchedStocks
+})

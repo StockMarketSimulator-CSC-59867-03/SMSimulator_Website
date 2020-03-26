@@ -65,7 +65,7 @@ function LoginModalv2(props:any){
         firebase.auth().signInWithEmailAndPassword(email.current, password.current)
         .then(function(user){
           //to fetch user id:
-          alert("Succesfully Signed In!");
+        //   alert("Succesfully Signed In!");
           email.current = "";
           password.current = "";
           handleOpenClose();
@@ -84,7 +84,7 @@ function LoginModalv2(props:any){
     
     return (
         <div>
-            <Button variant="contained" onClick={handleOpenClose}>
+            <Button color="secondary" variant="contained" onClick={handleOpenClose}>
                 Log In
             </Button>
             <Modal className={classes.modal} open={isModalOpen} onClose={handleOpenClose}>
@@ -92,7 +92,7 @@ function LoginModalv2(props:any){
                     <Grid container className={classes.grid} direction="column">
                         <TextField id="standard-basic" label="Email" name="email" onChange={handleChange}/>
                         <TextField id="standard-basic" type="password" label="Password" name="password" onChange={handleChange}/>
-                        <Button className={classes.submitButton} variant="contained" onClick={handleSubmit}>Log In</Button>
+                        <Button className={classes.submitButton} color="secondary" variant="contained" onClick={handleSubmit}>Log In</Button>
                     </Grid>
                 </div>
             </Modal>

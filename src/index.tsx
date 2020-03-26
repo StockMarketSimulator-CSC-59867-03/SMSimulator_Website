@@ -21,7 +21,7 @@ import HomePage from './Pages/HomePage/HomePage';
 import { StockDataService } from './Services/StockDataService';
 import NotificationComponent from './Components/NotificationComponent/NotificationComponent';
 import LoginTest from './Components/LogInModal/loginv2';
-import { changeCurrentUserID, changeCurrentUsername, changeSessionID } from './redux/actions';
+import { changeCurrentUserID, changeCurrentUsername, changeSessionID, addToWatchList } from './redux/actions';
 
 
 const firebaseConfig = {

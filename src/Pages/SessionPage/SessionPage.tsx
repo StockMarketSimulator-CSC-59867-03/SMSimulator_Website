@@ -18,8 +18,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useHistory } from "react-router-dom";
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { changeSessionID } from '../../redux/actions';
+import { changeSessionID, addToWatchList } from '../../redux/actions';
 import { StockDataService } from '../../Services/StockDataService';
+import LandingPage from '../LandingPage/LandingPage';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 type SessionPageProps = {
@@ -135,6 +136,16 @@ function SessionPage(props:SessionPageProps){
       const clickedYes = () => {
         dispatch(changeSessionID(clickedSessionID));
         localStorage.setItem('currentSessionID',clickedSessionID);
+
+        let key = "session" + clickedSessionID + "watchedstocks";
+        let watchedstocks = localStorage.getItem(key);
+        if(watchedstocks !== null || watchedstocks !== "") {
+          dispatch(addToWatchList(watchedstocks?.split(",")));
+        }
+        else {
+          dispatch(addToWatchList([]));
+        }
+
         props.stockDataService.changeCurrentSession(clickedSessionID);
         handleClose();
         props.history.push("/marketwindow");
@@ -142,6 +153,10 @@ function SessionPage(props:SessionPageProps){
 
     const isLoggedIn = props.userID;
     const showLoading = true;
+
+    if(!isLoggedIn) {
+      return <LandingPage/>;
+    }
 
     return (
         <div>

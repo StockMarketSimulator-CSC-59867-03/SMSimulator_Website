@@ -87,7 +87,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function HomePage(props:any) {
+function HomePage(props:any) {
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     const fixedHeightPaperPreview = clsx(classes.paper, classes.fixedHeightPreview);
@@ -122,7 +122,7 @@ export default function HomePage(props:any) {
                         </Paper>
                         <Paper className={fixedHeightPaperStocks}>
                             <Typography variant="subtitle2">{ isViewingPortfolio ? "STOCKS YOU OWN" : "MARKET STOCKS" }</Typography>
-                            { !isViewingPortfolio && <div className={classes.sessionStocks}><SessionStocks/></div> }
+                            { !isViewingPortfolio && <div className={classes.sessionStocks}><SessionStocks sessionData={props.sessionData} currentUserData={props.currentUserData}/></div> }
                             { isViewingPortfolio && <div className={classes.sessionStocks}><OwnedStocks/></div> }
                         </Paper>
                     </Grid>
@@ -130,7 +130,7 @@ export default function HomePage(props:any) {
                     <Grid item xs={12}>
                         <Paper className={classes.paper}>
                             <Typography variant="subtitle2">Watch List</Typography>
-                            <WatchedStocks/>
+                            <WatchedStocks currentUserData={props.currentUserData}/>
                         </Paper>
                     </Grid>
                 </Grid>
@@ -138,3 +138,10 @@ export default function HomePage(props:any) {
         </div>
     );
 }
+
+const mapStateToProps = (state: any) => ({
+    sessionData: state.sessionData,
+    currentUserData: state.currentUserData,
+});
+
+export default connect(mapStateToProps)(HomePage);
