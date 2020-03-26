@@ -13,17 +13,23 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function WatchedStocks() {
+export default function WatchedStocks(props:any) {
     const classes = useStyles();
     let stocks = useSelector((state: any) => state.stockData); //handle for global stockData
     let stockGraphs: JSX.Element[] = []; //array of stocks we want to display
+
+    console.log("hello from watchedstocks:", props.currentUserData.watchedStocks);
+    const stocksToList = props.currentUserData.watchedStocks;
+
+    if(!stocksToList) {
+      return(<div></div>)
+    }
 
     Object.entries(stocks).forEach((stock:any) => {
       let tickerSymbol = stock[1].data['symbol'];
       let graphDomain = stock[1].domain;
       let stockHistory = stock[1].history;
-
-      if(tickerSymbol === 'AAPL' || tickerSymbol === 'AMZN'){
+      if(stocksToList.indexOf(tickerSymbol) !== -1){
         stockGraphs.push(
           <div style={{display: 'flex', borderTop: '1px solid black', margin: '2px'}}>
               <div>

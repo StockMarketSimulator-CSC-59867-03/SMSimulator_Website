@@ -177,7 +177,7 @@ render() {
                           variant="contained"
                           color="secondary"
                           onClick={handleClose}>
-                          Cancle
+                          Cancel
                           </Button>
                         </div>
                         </Grid>
