@@ -10,7 +10,7 @@ function selectedStockData(state = {}, action: any){
                 
             }
         default:
-            return {...state, hasData:false};
+            return {...state};
     }
 }
 

@@ -10,14 +10,14 @@ import SellModalv2 from "../../../Components/SellModalv2/SellModalv2";
 import { useSelector } from "react-redux";
 
 function StockView() {
-  const stockData = useSelector((state: any) => state.selectedStockData);
-  let showData = stockData.hasData;
-
-  if (showData == false){
+  const selectedStock = useSelector((state: any) => state.selectedStockData);
+  const allStockData = useSelector((state: any) => state.stockData);
+  
+  if (selectedStock.hasData == null){
     return (<div></div>);
   }
 
-  console.log(stockData.domain);
+  let stockData = allStockData[selectedStock.symbol];
 
   return (
     <Grid
@@ -26,7 +26,7 @@ function StockView() {
       justify="space-between"
       alignItems="stretch"
     >
-      <StockViewHeader price={stockData.price} sector={stockData.sector} symbol={stockData.symbol} name={stockData.name}></StockViewHeader>
+      <StockViewHeader price={stockData.data.price} sector={stockData.data.sector} symbol={selectedStock.symbol} name={stockData.data.name}></StockViewHeader>
       <Grid container direction="row" justify="center" alignItems="center" className="bottomBorder" >
         <StockGraph domain={stockData.domain} data={stockData.history}  width={1000} height={500}></StockGraph>
       </Grid>
