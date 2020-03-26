@@ -7,6 +7,9 @@ function stockData(state = {}, action: any){
                 ...action.payload
                 
             }
+        case 'CLEAR_STOCK_DATA':
+            return {
+            }
         default:
             return {...state};
     }

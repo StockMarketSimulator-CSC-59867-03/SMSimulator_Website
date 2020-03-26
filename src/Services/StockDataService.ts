@@ -5,7 +5,7 @@ import { collection, collectionData, collectionChanges } from 'rxfire/firestore'
 import store from '../redux/store';
 import { addNotification } from "../redux/actions";
 
-import { setStockData } from '../redux/actions';
+import { setStockData,clearStockData } from '../redux/actions';
 
 function showError(errorText: string){
     store.dispatch(addNotification({
@@ -41,10 +41,8 @@ export interface StockDataFormat{
 export class StockDataService{
     private sessionID: string = "";
     private db : any;
-    public sessionStocks: Array<string> = [];
     public stockDataSubject = new Subject<any>();
     public stockDataMap: Map<string, StockDataFormat>;
-
     private stockListners: any = [];
     private stockDocumentMap: Map<string,Map<string,Array<any>>> = new Map();
     private stockDocumentMapSubject = new Subject<any>();
@@ -125,22 +123,30 @@ export class StockDataService{
 
     // Set up the listneres for a session for each stock 
     public changeCurrentSession = (sessionID: string) => {
-        this.sessionID = sessionID;
-        if(this.sessionID == ""){
+
+        if(sessionID == this.sessionID){
+            console.log("Called From the same session");
             return;
         }
 
-        if(this.stockListners.length > 0 && sessionID == this.sessionID){
-            showError("StockDataService trying to create more listeners when there are already");
-        }
-        else if (this.stockListners.length > 0){ // If there exists listeners already then we need to remove all of them
+        if (this.stockListners.length > 0){ // If there exists listeners already then we need to remove all of them
             this.stockListners.forEach((listener: any) => {
                 listener();
             });
         }
 
+        this.stockDataMap = new Map();
         this.stockListners = [];
+        this.stockDocumentMap = new Map();
+        store.dispatch(clearStockData());
 
+
+        this.sessionID = sessionID;
+        if(this.sessionID == ""){
+            return;
+        }
+
+        
         this.db.collection("Sessions").doc(sessionID).collection("Stocks").get().then((querySnapshot: any) => {
             querySnapshot.forEach((doc : any) =>{
                 this.stockDataMap.set(doc.id,{data:doc.data(), history: null, domain: null});
