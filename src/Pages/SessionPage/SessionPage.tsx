@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import "./LandingPage.scss";
 import { Link } from 'react-router-dom';
 import StockGraph from '../../Components/StockGraph/stockGraph';
@@ -34,19 +34,13 @@ function SessionPage(props:SessionPageProps){
 
     let dispatch = useDispatch();
     let sessionData = useSelector((state: any) => state.sessionData);
-    
-    // let currentUserData = useSelector((state: any) => state.currentUserData);
-    // if(currentUserData.id === undefined) {
-    //   console.log("no user logged in");
-    //   return(
-    //     <div>
-    //       Please Log In!
-    //       (email:blah@test.com, pass:123456)
-    //     </div>
-    //   )
-    // }
-
-    console.log("Rendering SessionData");
+  
+  // Check if there is a persisted sessionID then we can just redirect to "marketWindow" or home page
+   useEffect(()=>{
+     if(sessionData.id != null && sessionData.id != ""){
+      props.history.push("/marketwindow");
+     }
+   },[]);
 
     let createSession = (sessionName: string, startingBalance: number, type: string, userID: string) : Promise<any> => {
         console.log("Creating Session");
@@ -75,6 +69,7 @@ function SessionPage(props:SessionPageProps){
                         resolve(data);
                         dispatch(changeSessionID(data));
                         props.stockDataService.changeCurrentSession(data);
+                        localStorage.setItem('currentSessionID',data);
                     }
                     else{
                         reject("Error: Response wasn't a string for the session id");
@@ -138,6 +133,7 @@ function SessionPage(props:SessionPageProps){
 
       const clickedYes = () => {
         dispatch(changeSessionID(clickedSessionID));
+        localStorage.setItem('currentSessionID',clickedSessionID);
         props.stockDataService.changeCurrentSession(clickedSessionID);
         handleClose();
         props.history.push("/marketwindow");
@@ -196,6 +192,13 @@ function SessionPage(props:SessionPageProps){
               </Button>
             </DialogActions>
           </Dialog>
+
+          
+
+
+
+
+
         </div>
       );
 }

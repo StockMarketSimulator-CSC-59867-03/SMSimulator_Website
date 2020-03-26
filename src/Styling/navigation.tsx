@@ -31,6 +31,8 @@ import SignOut from '../Components/SignOut/SignOut';
 import firebase from 'firebase';
 import { collection, collectionData, collectionChanges } from 'rxfire/firestore';
 import { Subject } from 'rxjs';
+import NavigationSideMenu from './navigationSideMenu';
+
 
 
 const drawerWidth = 180;
@@ -41,7 +43,8 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
     },
     appBar: {
-      width: `calc(100% - ${drawerWidth}px)`,
+      width: `100%`,
+      zIndex: 20000,
       marginLeft: drawerWidth,
     },
     drawer: {
@@ -79,6 +82,8 @@ function NavigationDrawer(props:any) {
     let enableSwitching = (props.sessionData.id === "");
     let isLoggedIn = (props.currentUserData.username !== undefined);
 
+    
+
     if(props.sessionData.id){
       const db = firebase.firestore()
       db.collection('Sessions').doc(props.sessionData.id).get()
@@ -93,69 +98,61 @@ function NavigationDrawer(props:any) {
         })
     }
 
-    return (
-        <div className={classes.root}>
-          <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" className={classes.title}>
-                Stock Market Simulator
-              </Typography>
-                { !isLoggedIn && <div className={classes.buttons}> 
-                                  <div className={classes.button}><LoginModalv2/></div>
-                                  <div className={classes.button}><SignUpModal/></div>
-                                </div> }
-                { isLoggedIn && <div className={classes.buttons}>
-                                  <div className={classes.button}><p>Welcome, {props.currentUserData.username}!</p></div>
-                                  <div style={{margin: 5, alignSelf: "center"}}><SignOut/></div>
-                                </div> }
-            </Toolbar>
-          </AppBar>
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            anchor="left"
-          >
-            <div className={classes.toolbar} />
-            <Divider />
-            <List>
-                <ListItem>
-                  <ListItemText primary={props.currentUserData.id}/>
-                </ListItem>
-                <ListItem>
-                  {enableSwitching ? <ListItemText primary="Not In Session"/> : <ListItemText primary={props.sessionData.id}/>}
-                </ListItem>
-                <ListItem button onClick={enableSwitching ? () => {} : ()=>{ dispatch(changeSessionID("")); history.push("/") }}>
-                    <ListItemIcon><AppsIcon/></ListItemIcon>
-                    <ListItemText primary="Session"/>
-                </ListItem>
-                <ListItem button onClick={enableSwitching ? () => {} : ()=>{history.push("/marketwindow")}}>
-                    <ListItemIcon><HomeIcon/></ListItemIcon>
-                    <ListItemText primary="Home"/>
-                </ListItem>
-                <ListItem button onClick={enableSwitching ? () => {} : ()=>{history.push("/transactionPage")}}>
-                    <ListItemIcon><StoreIcon/></ListItemIcon>
-                    <ListItemText primary="Transaction"/>
-                </ListItem>
-                {isOwner
-                  ? <ListItem button onClick={enableSwitching ? () => {} : ()=>{history.push("/manage")}}>
-                      <ListItemIcon><ManageIcon/></ListItemIcon>
-                      <ListItemText primary="Manage"/>
-                    </ListItem>
-                  : <div></div>
-                }
-            </List>
-            <Divider />
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar}/>
-            {props.content}
-          </main>
-        </div>
+
+    let sideMenu = (<div></div>);
+    console.log(props.currentUserData);
+    if (props.sessionData.id != null && props.sessionData.id != "") {
+      sideMenu = (
+        <NavigationSideMenu
+          enableSwitching={enableSwitching}
+          classes={classes}
+          currentUserData={props.currentUserData}
+          sessionData={props.sessionData}
+          isOwner={isOwner}
+        />
       );
+    }
+
+
+    return (
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppBar position="fixed" className={classes.appBar}>
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>
+              Stock Market Simulator
+            </Typography>
+            {!isLoggedIn && (
+              <div className={classes.buttons}>
+                <div className={classes.button}>
+                  <LoginModalv2 />
+                </div>
+                <div className={classes.button}>
+                  <SignUpModal />
+                </div>
+              </div>
+            )}
+            {isLoggedIn && (
+              <div className={classes.buttons}>
+                <div className={classes.button}>
+                  <p>Welcome, {props.currentUserData.username}!</p>
+                </div>
+                <div style={{ margin: 5, alignSelf: "center" }}>
+                  <SignOut />
+                </div>
+              </div>
+            )}
+          </Toolbar>
+        </AppBar>
+
+          {sideMenu}
+
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          {props.children}
+        </main>
+      </div>
+    );
 }
 
 const mapStateToProps = (state: any) => ({
