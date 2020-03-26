@@ -46,6 +46,7 @@ export class StockDataService{
     private stockListners: any = [];
     private stockDocumentMap: Map<string,Map<string,Array<any>>> = new Map();
     private stockDocumentMapSubject = new Subject<any>();
+    private newStockListner: any;
 
     constructor(){
         if(calls > 0){
@@ -146,12 +147,24 @@ export class StockDataService{
             return;
         }
 
-        
-        this.db.collection("Sessions").doc(sessionID).collection("Stocks").get().then((querySnapshot: any) => {
-            querySnapshot.forEach((doc : any) =>{
-                this.stockDataMap.set(doc.id,{data:doc.data(), history: null, domain: null});
-                console.log(`Creating stock listener for :${doc.id}`);
-                this.createStockListner(sessionID, doc.id);
+        if(this.newStockListner != null){
+            this.newStockListner();
+        }
+
+        this.newStockListner = this.db.collection("Sessions").doc(sessionID).collection("Stocks")
+        .onSnapshot((snapshot: any) => {
+            snapshot.docChanges().forEach((change: any) => {
+                if (change.type === "added") {
+                    this.stockDataMap.set(change.doc.id,{data:change.doc.data(), history: null, domain: null});
+                    console.log(`Creating stock listener for :${change.doc.id}`);
+                    this.createStockListner(sessionID, change.doc.id);
+                }
+                if (change.type === "modified") {
+                    
+                }
+                if (change.type === "removed") {
+                    showError("STOCKS REMOVED. STOCKS SHOULDN'T BE REMOVED");
+                }
             });
         });
 

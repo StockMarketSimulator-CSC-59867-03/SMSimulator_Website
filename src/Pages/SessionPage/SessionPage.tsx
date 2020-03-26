@@ -20,6 +20,7 @@ import { useHistory } from "react-router-dom";
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { changeSessionID } from '../../redux/actions';
 import { StockDataService } from '../../Services/StockDataService';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 type SessionPageProps = {
     history: any,
@@ -140,6 +141,7 @@ function SessionPage(props:SessionPageProps){
       };
 
     const isLoggedIn = props.userID;
+    const showLoading = true;
 
     return (
         <div>
@@ -148,6 +150,9 @@ function SessionPage(props:SessionPageProps){
           <div /*className="sessions"*/>
             <h2>Session Search</h2>
             <SessionSearch />
+
+
+
             {isLoggedIn 
                 ? <Button /*className="sessionButton"*/>
                     <CreateSessionModal
