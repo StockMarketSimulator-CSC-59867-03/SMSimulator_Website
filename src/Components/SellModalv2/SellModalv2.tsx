@@ -85,7 +85,7 @@ function SellModalv2(props:any){
     return (
       <div>
       <Button variant="contained" color="primary" onClick = {handleOpen}>
-      Bid
+      Sell
       </Button>
       <Modal
         open={open}
