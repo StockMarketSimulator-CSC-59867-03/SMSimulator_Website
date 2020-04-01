@@ -91,27 +91,80 @@ const useStyles = makeStyles((theme: Theme) =>
 function HomePage(props:any) {
     const db = firebase.firestore();
 
-    useEffect(()=>{
-      // Ideally should use backend API's route to utilize User model....
-      db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).set({
-        id: props.currentUserData.id,
-        // should be the initial "value", not this hardcoded value
-        liquid: 10000,
-        type: "player"
-      })
-    },[]);
+    //homepage states to toggle between marketview/portfolioview
+    const [isViewingPortfolio, togglePortfolioView] = useState(false);
+    const [joinKeyValue, setJoinKeyValue] = useState("");
+    const [authenticationFlag, setAuthenticationFlag] = useState(false);
 
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     const fixedHeightPaperPreview = clsx(classes.paper, classes.fixedHeightPreview);
     const fixedHeightPaperStocks = clsx(classes.paper, classes.fixedHeightStocks);
 
-    //homepage states to toggle between marketview/portfolioview
-    const [isViewingPortfolio, togglePortfolioView] = useState(false);
-    
+//  two check to "skip" join key, either public or user already existing
+//  check if public
+    let sessionTypeRef = db.collection('Sessions').doc(props.sessionData.id).get().then(doc => {
+      if(doc.exists){
+        if(doc.data()?.type == "public"){
+          setAuthenticationFlag(true);
+        }
+      }
+    }).catch(err => {
+      console.log(err);
+    });
+
+//  check if user exists
+    let userRef = db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id);
+    let getDoc = userRef.get().then(doc => {
+      if(doc.exists){
+        setAuthenticationFlag(true);
+      }
+    }).catch(err => {
+      console.log(err);
+    });
+
+    useEffect(()=>{
+
+    },[joinKeyValue]);
+
+    const onInputChange = (e: any) => {
+      setJoinKeyValue(e.target.value);
+    }
+
+    const compareJoinKey = () => {
+      let documentData;
+      let joinKey = "";
+
+      db.collection('Sessions').doc(props.sessionData.id).get().then(doc => {
+        if(doc.exists){
+          documentData = doc.data();
+          joinKey = documentData?.joinKey;
+
+          if(joinKeyValue == joinKey){
+            logUser();
+            setAuthenticationFlag(true);
+          } else {
+            alert("Invitation code is wrong, ask session administrator");
+          }
+        }
+      }).catch(err => {
+        console.log("Error getting join key from firebase");
+      });
+    }
+
+    const logUser = () => {
+      db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).set({
+        id: props.currentUserData.id,
+        // should be the initial "value", not this hardcoded value
+        liquid: 10000,
+        type: "player"
+      })
+    }
+
     return (
         <div className={classes.root}>
             <Container maxWidth="lg" className={classes.container}>
+              {authenticationFlag ?
                 <Grid container spacing={3}>
                     {/* MarketGraph */}
                     <Grid item xs={12} md={8} lg={9}>
@@ -147,6 +200,16 @@ function HomePage(props:any) {
                         </Paper>
                     </Grid>
                 </Grid>
+                :
+                <div className='input-wrapper'>
+                    <input
+                        placeholder='Enter invitation code...'
+                        value={joinKeyValue}
+                        onChange={onInputChange}
+                    />
+                    <button onClick={compareJoinKey}>Search</button>
+                </div>
+              }
             </Container>
         </div>
     );
