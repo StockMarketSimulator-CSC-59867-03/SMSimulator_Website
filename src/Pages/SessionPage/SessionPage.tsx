@@ -98,7 +98,6 @@ function SessionPage(props:SessionPageProps){
                 reject("Error: No SessionID");
                 return;
             }
-
             fetch('https://thawing-shore-19302.herokuapp.com/addStocks', {
                 method: 'POST', 
                 headers: {

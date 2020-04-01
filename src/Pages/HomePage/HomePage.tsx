@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 // import "./h.css";
 import { Link } from 'react-router-dom';
@@ -24,6 +24,7 @@ import WatchedStocks from './WatchedStocks';
 import Typography from '@material-ui/core/Typography';
 import SessionStocks from './SessionStocks';
 import OwnedStocks from './OwnedStocks';
+import firebase from 'firebase';
 
 // type HomePageProps = {
 //     history: any,
@@ -88,6 +89,18 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 function HomePage(props:any) {
+    const db = firebase.firestore();
+
+    useEffect(()=>{
+      // Ideally should use backend API's route to utilize User model....
+      db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).set({
+        id: props.currentUserData.id,
+        // should be the initial "value", not this hardcoded value
+        liquid: 10000,
+        type: "player"
+      })
+    },[]);
+
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     const fixedHeightPaperPreview = clsx(classes.paper, classes.fixedHeightPreview);
