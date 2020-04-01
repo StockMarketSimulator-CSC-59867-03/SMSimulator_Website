@@ -8,6 +8,7 @@ import './StockView.scss'
 import BuyModalv2 from "../../../Components/BuyModalv2/BuyModalv2";
 import SellModalv2 from "../../../Components/SellModalv2/SellModalv2";
 import { useSelector } from "react-redux";
+import { ButtonGroup } from '@material-ui/core';
 
 function StockView() {
   const selectedStock = useSelector((state: any) => state.selectedStockData);
@@ -39,10 +40,16 @@ function StockView() {
         justify="flex-end"
         alignItems="center"
         style={{ paddingRight: 25, paddingBottom: 25, paddingTop: 25 }}>
+        <Grid
+          container
+          direction="row"
+          justify="flex-end"
+          alignItems="center"
+          style={{ paddingRight: 25, paddingBottom: 25, paddingTop: 25 }}>
         <BuyModalv2/>
-        <div style={{ paddingLeft: 10 }}>
-          <SellModalv2/>
-        </div>
+        <SellModalv2/>
+        </Grid>
+        
       </Grid>
     </Grid>
   );
