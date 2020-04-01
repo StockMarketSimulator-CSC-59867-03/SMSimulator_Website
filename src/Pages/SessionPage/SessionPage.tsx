@@ -51,7 +51,8 @@ function SessionPage(props:SessionPageProps){
         console.log("DATA: " + data.ownerID);
 
         return new Promise((resolve,reject)=>{
-            fetch('/createSession', {
+          // https://thawing-shore-19302.herokuapp.com/createSession
+            fetch('https://thawing-shore-19302.herokuapp.com/createSession', {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
@@ -98,8 +99,8 @@ function SessionPage(props:SessionPageProps){
                 reject("Error: No SessionID");
                 return;
             }
-
-            fetch('/addStocks', {
+            // https://thawing-shore-19302.herokuapp.com/addStocks
+            fetch('https://thawing-shore-19302.herokuapp.com/addStocks', {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
