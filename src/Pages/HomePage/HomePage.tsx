@@ -102,10 +102,11 @@ function HomePage(props:any) {
     const fixedHeightPaperStocks = clsx(classes.paper, classes.fixedHeightStocks);
 
 //  two check to "skip" join key, either public or user already existing
-//  check if public
+//  check if public, skip join key but still log the user into the collection
     let sessionTypeRef = db.collection('Sessions').doc(props.sessionData.id).get().then(doc => {
       if(doc.exists){
         if(doc.data()?.type == "public"){
+          logUser();
           setAuthenticationFlag(true);
         }
       }
@@ -155,7 +156,7 @@ function HomePage(props:any) {
     const logUser = () => {
       db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).set({
         id: props.currentUserData.id,
-        // should be the initial "value", not this hardcoded value
+        // !! IMPORTANT this should NOT be OVERWRITTEN IN FUTURE IMPLEMENTATION, either UPDATE or PASS IN CURRENT VALUE 
         liquid: 10000,
         type: "player"
       })
