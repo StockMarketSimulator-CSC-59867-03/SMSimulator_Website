@@ -20,13 +20,15 @@ import {
 } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
 import Page1 from "./CreateSessionForm1";
-
 import Page2 from "./CreateSessionStockSelecter";
+import { connect } from 'react-redux';
 
 type sessionModalProps = {
   onSessionCreate: any;
   onStocksSelected: any;
+  userID: string;
 };
+
 type sessionModalState = {
   open: boolean;
   sessionName: string;
@@ -34,6 +36,7 @@ type sessionModalState = {
   sessionType: any;
   pageNumber: number;
 };
+
 export default class SessionModal extends React.Component<
   sessionModalProps,
   sessionModalState
@@ -92,13 +95,15 @@ export default class SessionModal extends React.Component<
 
     const handleSubmitPage1 = (event: any) => {
       console.log("Handle Submit");
+      console.log("USER ID: " + this.props.userID);
       console.log(this.state);
 
       this.props
         .onSessionCreate(
           this.state.sessionName,
           this.state.sessionBalance,
-          this.state.sessionType
+          this.state.sessionType,
+          this.props.userID
         )
         .then(() => {
           this.setState({

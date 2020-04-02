@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import "./LandingPage.scss";
 import { Link } from 'react-router-dom';
 import StockGraph from '../../Components/StockGraph/stockGraph';
@@ -18,12 +18,15 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useHistory } from "react-router-dom";
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { changeSessionID } from '../../redux/actions';
+import { changeSessionID, addToWatchList,clearSelectedStockData } from '../../redux/actions';
 import { StockDataService } from '../../Services/StockDataService';
+import LandingPage from '../LandingPage/LandingPage';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 type SessionPageProps = {
     history: any,
-    stockDataService: StockDataService
+    stockDataService: StockDataService,
+    userID: any
 };
 
 function SessionPage(props:SessionPageProps){
@@ -33,13 +36,19 @@ function SessionPage(props:SessionPageProps){
 
     let dispatch = useDispatch();
     let sessionData = useSelector((state: any) => state.sessionData);
+  
+  // Check if there is a persisted sessionID then we can just redirect to "marketWindow" or home page
+   useEffect(()=>{
+     if(sessionData.id != null && sessionData.id != ""){
+      props.history.push("/marketwindow");
+     }
+   },[]);
 
-    console.log("Rendering SessionData");
-
-
-    let createSession = (sessionName: string, startingBalance: number, type: string) : Promise<any> => {
+    let createSession = (sessionName: string, startingBalance: number, type: string, userID: string) : Promise<any> => {
         console.log("Creating Session");
-        const data = { name: sessionName, balance: startingBalance, type: type};
+        const data = { name: sessionName, balance: startingBalance, type: type, ownerID: userID};
+
+        console.log("DATA: " + data.ownerID);
 
         return new Promise((resolve,reject)=>{
             fetch('https://thawing-shore-19302.herokuapp.com/createSession', {
@@ -62,6 +71,7 @@ function SessionPage(props:SessionPageProps){
                         resolve(data);
                         dispatch(changeSessionID(data));
                         props.stockDataService.changeCurrentSession(data);
+                        localStorage.setItem('currentSessionID',data);
                     }
                     else{
                         reject("Error: Response wasn't a string for the session id");
@@ -125,10 +135,29 @@ function SessionPage(props:SessionPageProps){
 
       const clickedYes = () => {
         dispatch(changeSessionID(clickedSessionID));
+        dispatch(clearSelectedStockData());
+        localStorage.setItem('currentSessionID',clickedSessionID);
+
+        let key = "session" + clickedSessionID + "watchedstocks";
+        let watchedstocks = localStorage.getItem(key);
+        if(watchedstocks !== null || watchedstocks !== "") {
+          dispatch(addToWatchList(watchedstocks?.split(",")));
+        }
+        else {
+          dispatch(addToWatchList([]));
+        }
+
         props.stockDataService.changeCurrentSession(clickedSessionID);
         handleClose();
         props.history.push("/marketwindow");
       };
+
+    const isLoggedIn = props.userID;
+    const showLoading = true;
+
+    if(!isLoggedIn) {
+      return <LandingPage/>;
+    }
 
     return (
         <div>
@@ -137,12 +166,19 @@ function SessionPage(props:SessionPageProps){
           <div /*className="sessions"*/>
             <h2>Session Search</h2>
             <SessionSearch />
-            <Button /*className="sessionButton"*/>
-              <CreateSessionModal
-                onSessionCreate={createSession}
-                onStocksSelected={addStocksToSession}
-              ></CreateSessionModal>
-            </Button>
+
+
+
+            {isLoggedIn 
+                ? <Button /*className="sessionButton"*/>
+                    <CreateSessionModal
+                      onSessionCreate={createSession}
+                      onStocksSelected={addStocksToSession}
+                      userID={props.userID}
+                    ></CreateSessionModal>
+                  </Button>
+                : <div></div>
+            }
             <h2>Session List</h2>
             <div /*className="sessionResults"*/>
               <ScrollableButtonList
@@ -177,8 +213,24 @@ function SessionPage(props:SessionPageProps){
               </Button>
             </DialogActions>
           </Dialog>
+
+          
+
+
+
+
+
         </div>
       );
 }
 
-export default SessionPage;
+function mapStateToProps(state: any){
+  console.log("getting user id: ", state.currentUserData.id);
+
+    return {
+        userID: state.currentUserData.id
+    };
+
+}
+
+export default connect(mapStateToProps)(SessionPage);

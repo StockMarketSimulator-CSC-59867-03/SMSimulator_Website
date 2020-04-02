@@ -60,18 +60,5 @@ render() {
 }
 
 }
-/*
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    // User is signed in. Username can be retrieved here
-    const displayName = user.displayName;
-    const email = user.email;
-    const uid = user.uid;
-    
-  } else {
-    // User is signed out.
-    
-  }
-});
-*/
+
 export default LogIn;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 // import "./h.css";
 import { Link } from 'react-router-dom';
@@ -24,6 +24,7 @@ import WatchedStocks from './WatchedStocks';
 import Typography from '@material-ui/core/Typography';
 import SessionStocks from './SessionStocks';
 import OwnedStocks from './OwnedStocks';
+import firebase from 'firebase';
 
 // type HomePageProps = {
 //     history: any,
@@ -87,18 +88,85 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function HomePage(props:any) {
+function HomePage(props:any) {
+    const db = firebase.firestore();
+
+    //homepage states to toggle between marketview/portfolioview
+    const [isViewingPortfolio, togglePortfolioView] = useState(false);
+    const [joinKeyValue, setJoinKeyValue] = useState("");
+    const [authenticationFlag, setAuthenticationFlag] = useState(false);
+
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     const fixedHeightPaperPreview = clsx(classes.paper, classes.fixedHeightPreview);
     const fixedHeightPaperStocks = clsx(classes.paper, classes.fixedHeightStocks);
 
-    //homepage states to toggle between marketview/portfolioview
-    const [isViewingPortfolio, togglePortfolioView] = useState(false);
-    
+//  two check to "skip" join key, either public or user already existing
+//  check if public, skip join key but still log the user into the collection
+    let sessionTypeRef = db.collection('Sessions').doc(props.sessionData.id).get().then(doc => {
+      if(doc.exists){
+        if(doc.data()?.type == "public"){
+          logUser();
+          setAuthenticationFlag(true);
+        }
+      }
+    }).catch(err => {
+      console.log(err);
+    });
+
+//  check if user exists
+if(props.currentUserData.id != null){
+    let userRef = db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id);
+    let getDoc = userRef.get().then(doc => {
+      if(doc.exists){
+        setAuthenticationFlag(true);
+      }
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+    useEffect(()=>{
+
+    },[joinKeyValue]);
+
+    const onInputChange = (e: any) => {
+      setJoinKeyValue(e.target.value);
+    }
+
+    const compareJoinKey = () => {
+      let documentData;
+      let joinKey = "";
+
+      db.collection('Sessions').doc(props.sessionData.id).get().then(doc => {
+        if(doc.exists){
+          documentData = doc.data();
+          joinKey = documentData?.joinKey;
+
+          if(joinKeyValue == joinKey){
+            logUser();
+            setAuthenticationFlag(true);
+          } else {
+            alert("Invitation code is wrong, ask session administrator");
+          }
+        }
+      }).catch(err => {
+        console.log("Error getting join key from firebase");
+      });
+    }
+
+    const logUser = () => {
+      db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).set({
+        id: props.currentUserData.id,
+        // !! IMPORTANT this should NOT be OVERWRITTEN IN FUTURE IMPLEMENTATION, either UPDATE or PASS IN CURRENT VALUE 
+        liquid: 10000,
+        type: "player"
+      })
+    }
+
     return (
         <div className={classes.root}>
             <Container maxWidth="lg" className={classes.container}>
+              {authenticationFlag ?
                 <Grid container spacing={3}>
                     {/* MarketGraph */}
                     <Grid item xs={12} md={8} lg={9}>
@@ -122,7 +190,7 @@ export default function HomePage(props:any) {
                         </Paper>
                         <Paper className={fixedHeightPaperStocks}>
                             <Typography variant="subtitle2">{ isViewingPortfolio ? "STOCKS YOU OWN" : "MARKET STOCKS" }</Typography>
-                            { !isViewingPortfolio && <div className={classes.sessionStocks}><SessionStocks/></div> }
+                            { !isViewingPortfolio && <div className={classes.sessionStocks}><SessionStocks sessionData={props.sessionData} currentUserData={props.currentUserData}/></div> }
                             { isViewingPortfolio && <div className={classes.sessionStocks}><OwnedStocks/></div> }
                         </Paper>
                     </Grid>
@@ -130,11 +198,28 @@ export default function HomePage(props:any) {
                     <Grid item xs={12}>
                         <Paper className={classes.paper}>
                             <Typography variant="subtitle2">Watch List</Typography>
-                            <WatchedStocks/>
+                            <WatchedStocks currentUserData={props.currentUserData}/>
                         </Paper>
                     </Grid>
                 </Grid>
+                :
+                <div className='input-wrapper'>
+                    <input
+                        placeholder='Enter invitation code...'
+                        value={joinKeyValue}
+                        onChange={onInputChange}
+                    />
+                    <button onClick={compareJoinKey}>Search</button>
+                </div>
+              }
             </Container>
         </div>
     );
 }
+
+const mapStateToProps = (state: any) => ({
+    sessionData: state.sessionData,
+    currentUserData: state.currentUserData,
+});
+
+export default connect(mapStateToProps)(HomePage);

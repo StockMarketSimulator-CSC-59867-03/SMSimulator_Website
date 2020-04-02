@@ -41,15 +41,7 @@ handleChange(event : any) {
         [event.target.name]: event.target.value,
     })
 
-    firebase.auth().onAuthStateChanged(function(user){
-      if(user){
-        //signing in
-        //to get token? : user.getIdToken();
-      }
-      else{
-        //singing out
-      }
-    });
+
 }
 
 handleSubmit(event : any) {
@@ -185,7 +177,7 @@ render() {
                           variant="contained"
                           color="secondary"
                           onClick={handleClose}>
-                          Cancle
+                          Cancel
                           </Button>
                         </div>
                         </Grid>

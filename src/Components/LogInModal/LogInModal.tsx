@@ -10,6 +10,8 @@ import TextField from "@material-ui/core/TextField";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import { Grid } from "@material-ui/core";
+import { connect, useDispatch } from 'react-redux';
+import { changeCurrentUserID } from '../../redux/actions';
 
 type LogInProps = {
 };
@@ -39,15 +41,7 @@ handleChange(event : any) {
         [event.target.name]: event.target.value,
     })
 
-    firebase.auth().onAuthStateChanged(function(user){
-      if(user){
-        //signing in
-        //to get token? : user.getIdToken();
-      }
-      else{
-        //singing out
-      }
-    });
+
 }
 
 handleSubmit(event : any) {
@@ -57,7 +51,7 @@ handleSubmit(event : any) {
     .then(function(user){
       //to fetch user id:
       const uid = firebase.auth().currentUser?.uid;
-      console.log(uid);
+      // console.log(uid);
       alert("Succesfully Signed In!");
       loginModal.setState({
         email : '',
@@ -175,5 +169,4 @@ render() {
   }
 
 }
-
 export default LogInModal;

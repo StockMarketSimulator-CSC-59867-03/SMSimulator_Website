@@ -3,9 +3,11 @@ import { FormControlLabel, Button } from "@material-ui/core";
 import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
 import Grid from "@material-ui/core/Grid";
 import "../../App.scss";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export default function StockSelecter(props: any) {
   let defaultStocks = ["AMZN", "GOOGL", "AAPL", "MSFT", "TSLA"];
+  const [showLoading,setShowLoading] = React.useState(false);
 
   const [state, setState] = React.useState({
     check1: true,
@@ -142,23 +144,39 @@ export default function StockSelecter(props: any) {
 
   return (
     <div id="StockSelecter" style={{ height: "100%" }}>
-      <Grid
-        style={{ height: "100%" }}
-        container
-        direction="column"
-        justify="space-around"
-        alignItems="center"
-      >
-        <h2>Add stocks to your session:</h2>
-        <div style={{ width: "60%" }}>
-          <Grid container direction="row" justify="center" alignItems="center">
-            {[...stockComponents]}
+      {showLoading ? (
+          <Grid
+            container
+            direction="row"
+            justify="center"
+            alignItems="center"
+            style={{ width: "100%", height: "100%" }}
+          >
+            <CircularProgress />
           </Grid>
-        </div>
-        <Button variant="contained" color="primary" onClick={props.handleSubmit}>
-          Add Stocks
-        </Button>
-      </Grid>
+        ) : (
+          <Grid
+          style={{ height: "100%" }}
+          container
+          direction="column"
+          justify="space-around"
+          alignItems="center"
+        >
+          <h2>Add stocks to your session:</h2>
+          <div style={{ width: "60%" }}>
+            <Grid container direction="row" justify="center" alignItems="center">
+              {[...stockComponents]}
+            </Grid>
+          </div>
+          <Button variant="contained" color="primary" onClick={(event: any)=>{
+            props.handleSubmit(event);
+            setShowLoading(true);
+          }}>
+            Add Stocks
+          </Button>
+        </Grid>
+        )}
+
     </div>
   );
 }

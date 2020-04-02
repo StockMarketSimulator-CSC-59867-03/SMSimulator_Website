@@ -8,7 +8,7 @@ function sessionData(state = {}, action: any){
                 
             }
         default:
-            return {...state, id:""};
+            return {...state};
     }
 }
 

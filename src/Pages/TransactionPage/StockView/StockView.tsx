@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect, useRef } from "react";
 import "../TransactionPage.scss";
 import { Grid, Button } from "@material-ui/core";
 import StockViewHeader from "./StockViewHeader";
@@ -8,16 +8,20 @@ import './StockView.scss'
 import BuyModalv2 from "../../../Components/BuyModalv2/BuyModalv2";
 import SellModalv2 from "../../../Components/SellModalv2/SellModalv2";
 import { useSelector } from "react-redux";
+import { ButtonGroup } from '@material-ui/core';
 
 function StockView() {
-  const stockData = useSelector((state: any) => state.selectedStockData);
-  let showData = stockData.hasData;
-
-  if (showData == false){
+  const selectedStock = useSelector((state: any) => state.selectedStockData);
+  const allStockData = useSelector((state: any) => state.stockData);
+  
+  if (selectedStock.hasData == null){
     return (<div></div>);
   }
 
-  console.log(stockData.domain);
+  let stockData = allStockData[selectedStock.symbol];
+
+  let stockPrice = stockData.history[stockData.history.length - 1]["price"];
+
 
   return (
     <Grid
@@ -26,9 +30,9 @@ function StockView() {
       justify="space-between"
       alignItems="stretch"
     >
-      <StockViewHeader price={stockData.price} sector={stockData.sector} symbol={stockData.symbol} name={stockData.name}></StockViewHeader>
+      <StockViewHeader price={stockPrice} sector={stockData.data.sector} symbol={selectedStock.symbol} name={stockData.data.name}></StockViewHeader>
       <Grid container direction="row" justify="center" alignItems="center" className="bottomBorder" >
-        <StockGraph domain={stockData.domain} data={stockData.history}  width={1000} height={500}></StockGraph>
+        <StockGraph domain={stockData.domain} data={stockData.history}  width={800} height={500}></StockGraph>
       </Grid>
 
       <StockViewFooter></StockViewFooter>
@@ -39,10 +43,16 @@ function StockView() {
         justify="flex-end"
         alignItems="center"
         style={{ paddingRight: 25, paddingBottom: 25, paddingTop: 25 }}>
+        <Grid
+          container
+          direction="row"
+          justify="flex-end"
+          alignItems="center"
+          style={{ paddingRight: 25, paddingBottom: 25, paddingTop: 25 }}>
         <BuyModalv2/>
-        <div style={{ paddingLeft: 10 }}>
-          <SellModalv2/>
-        </div>
+        <SellModalv2/>
+        </Grid>
+        
       </Grid>
     </Grid>
   );
