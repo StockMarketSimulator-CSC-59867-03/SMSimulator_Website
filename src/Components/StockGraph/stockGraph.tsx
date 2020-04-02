@@ -19,14 +19,17 @@ function StockGraph(props: any){
         props.handleClick({name:props.name, domain: props.domain, data: props.data})
     };
 
+    let animationOn = !(props.animationOn == false) ;
+    let showToolTip = !(props.showToolTip == false);
+
    return  (
         <div style={{border: '0px solid black'}} onClick={clickedStock}>
             <ResponsiveContainer width={props.width} height={props.height}>
-             <LineChart  data={props.data}>
-                 <Tooltip />
+             <LineChart data={props.data}>
+                 {showToolTip ?  <Tooltip /> : <div></div>}
                  <XAxis dataKey="dateTime" tick={false} stroke="#FFFFFF" hide={true}/>
                  <YAxis domain={props.domain} tick={false} stroke="#FFFFFF" hide={true}/>
-                 <Line  dataKey="price" stroke="#008006" dot={false} />
+                 <Line  dataKey="price" stroke="#008006" dot={false} isAnimationActive={animationOn} />
              </LineChart>
              </ResponsiveContainer>
          </div>
