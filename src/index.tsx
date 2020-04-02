@@ -22,6 +22,7 @@ import { StockDataService } from './Services/StockDataService';
 import NotificationComponent from './Components/NotificationComponent/NotificationComponent';
 import LoginTest from './Components/LogInModal/loginv2';
 import { changeCurrentUserID, changeCurrentUsername, changeSessionID, addToWatchList, clearSelectedStockData } from './redux/actions';
+import { NotificationListenerService } from './Services/NotificationListenerService';
 
 
 const firebaseConfig = {
@@ -37,6 +38,8 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+const notificationListenerService = new NotificationListenerService();
+
 
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -46,9 +49,11 @@ firebase.auth().onAuthStateChanged(function(user) {
         const username = isValidUser?.displayName;
         store.dispatch(changeCurrentUserID(uid));
         store.dispatch(changeCurrentUsername(username));
+        notificationListenerService.attachUserNotificationListerner(uid);
     } else {
         store.dispatch(changeCurrentUserID(undefined));
         store.dispatch(changeCurrentUsername(undefined));
+        notificationListenerService.detachUserListner();
     }
   });
 

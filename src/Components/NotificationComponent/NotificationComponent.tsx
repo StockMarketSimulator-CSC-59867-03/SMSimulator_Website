@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -18,6 +18,7 @@ function Alert(props: AlertProps) {
 
 
 function NotificationComponent(props: any){
+
 
     let defaultInstant: Notification = {
         type:"INSTANT",
@@ -68,6 +69,12 @@ function NotificationComponent(props: any){
                     open: true,
                     notification: notif
                 });
+              break;
+            case "SaleConfirmation":
+              setInstant({
+                open: true,
+                notification: notif
+            });
               break;
             default:
               // code block
