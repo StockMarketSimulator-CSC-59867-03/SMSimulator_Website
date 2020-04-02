@@ -2,9 +2,19 @@ import React, { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import StockGraph from '../StockGraph/stockGraph';
 import { green } from '@material-ui/core/colors';
+import { useSelector } from "react-redux";
+
 import { Paper, Grid, Card, Container, Fab, Divider } from '@material-ui/core';
 
 function StockListItem(props: any) {
+  console.log(props.stockData.symbol);
+  const allStockData = useSelector((state: any) => state.stockData);
+  let stockData = allStockData[props.stockData.symbol];
+
+  
+  
+  
+
   return (
     <Paper style={{marginTop:10}} elevation={2}>
     
@@ -20,8 +30,7 @@ function StockListItem(props: any) {
                 {props.stockData.symbol}
             </Typography>
 
-            <StockGraph width={100} height={80}></StockGraph>
-
+            <StockGraph domain={stockData.domain} data={stockData.history}  width={100} height={80} animationOn={false} showToolTip={false}></StockGraph>
             <Typography style={{color: "green"}} variant="h6" component="h6">
                 {props.stockData.price}
             </Typography>

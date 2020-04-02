@@ -20,9 +20,7 @@ function StockView() {
 
   let stockData = allStockData[selectedStock.symbol];
 
-  if(stockData == null){
-    
-  }
+
 
 
   return (
