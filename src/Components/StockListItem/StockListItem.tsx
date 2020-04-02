@@ -12,7 +12,12 @@ function StockListItem(props: any) {
   let stockData = allStockData[props.stockData.symbol];
 
   
+  let stockPrice = 0;
+  if(stockData != null && stockData.history != null ){
+    stockPrice = stockData.history[stockData.history.length - 1]["price"];
+  }
   
+
   
 
   return (
@@ -32,7 +37,7 @@ function StockListItem(props: any) {
 
             <StockGraph domain={stockData.domain} data={stockData.history}  width={100} height={80} animationOn={false} showToolTip={false}></StockGraph>
             <Typography style={{color: "green"}} variant="h6" component="h6">
-                {props.stockData.price}
+                {stockPrice}
             </Typography>
 
       </Grid>

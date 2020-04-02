@@ -20,7 +20,7 @@ function StockView() {
 
   let stockData = allStockData[selectedStock.symbol];
 
-
+  let stockPrice = stockData.history[stockData.history.length - 1]["price"];
 
 
   return (
@@ -30,7 +30,7 @@ function StockView() {
       justify="space-between"
       alignItems="stretch"
     >
-      <StockViewHeader price={stockData.data.price} sector={stockData.data.sector} symbol={selectedStock.symbol} name={stockData.data.name}></StockViewHeader>
+      <StockViewHeader price={stockPrice} sector={stockData.data.sector} symbol={selectedStock.symbol} name={stockData.data.name}></StockViewHeader>
       <Grid container direction="row" justify="center" alignItems="center" className="bottomBorder" >
         <StockGraph domain={stockData.domain} data={stockData.history}  width={800} height={500}></StockGraph>
       </Grid>
