@@ -41,7 +41,8 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
-    },
+      height:"100%"
+        },
     appBar: {
       width: `100%`,
       zIndex: 20000,
@@ -115,7 +116,7 @@ function NavigationDrawer(props:any) {
 
 
     return (
-      <div className={classes.root}>
+      <div  className={classes.root}>
         <CssBaseline />
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>

@@ -115,6 +115,7 @@ function HomePage(props:any) {
     });
 
 //  check if user exists
+if(props.currentUserData.id != null){
     let userRef = db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id);
     let getDoc = userRef.get().then(doc => {
       if(doc.exists){
@@ -123,7 +124,7 @@ function HomePage(props:any) {
     }).catch(err => {
       console.log(err);
     });
-
+  }
     useEffect(()=>{
 
     },[joinKeyValue]);

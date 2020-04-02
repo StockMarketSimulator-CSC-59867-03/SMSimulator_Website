@@ -79,7 +79,7 @@ function NotificationComponent(props: any){
     console.log("Rendering Notification");
 
    return (
-     <div>
+     <div className="root">
        <Dialog
          open={instant.open}
          onClose={handleInstantClose}
@@ -106,7 +106,7 @@ function NotificationComponent(props: any){
            {snackBar.notification.title}
          </Alert>
        </Snackbar>
-       <div>{props.children}</div>
+       {props.children}
      </div>
    );
 }
