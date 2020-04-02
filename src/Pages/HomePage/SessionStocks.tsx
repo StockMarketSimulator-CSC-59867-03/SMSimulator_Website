@@ -76,7 +76,7 @@ function SessionStocks(props:any) {
           </div>
           <div style={{flexGrow: 1}}/>
           <div style={{display: 'flex'}}>
-            <StockGraph name={tickerSymbol} domain={graphDomain} data={stockHistory} handleClick={() => {}} width={100} height={80}/>
+            <StockGraph name={tickerSymbol} domain={graphDomain} data={stockHistory} handleClick={() => {}} width={100} height={80} animationOn={false} showToolTip={false}/>
             <input name={tickerSymbol} type="checkbox" onChange={handleChange} checked={isWatched}/>
           </div>
       </div>
