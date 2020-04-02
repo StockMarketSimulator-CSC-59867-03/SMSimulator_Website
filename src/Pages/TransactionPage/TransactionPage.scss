@@ -8,8 +8,10 @@
     
 }
 
-.stockList{
-    position:relative;
-    max-height:100vh;
-    overflow:scroll;
-}
+.example::-webkit-scrollbar {
+    display: none;
+  }
+
+  .example{
+      overflow: scroll;
+  }

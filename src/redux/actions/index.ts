@@ -7,8 +7,13 @@ export const changeSessionID = (id: string) => ({
 });
 
 export const setSelectedStockData = (data: StockDataModel) => ({
-    type: "MODIFY_STOCK_DATA",
+    type: "MODIFY_SELECTED_STOCK_DATA",
     payload: data
+});
+
+export const clearSelectedStockData = () => ({
+    type: "CLEAR_SELECTED_STOCK_DATA",
+    payload: {}
 });
 
 export const setStockData = (data: any) => ({

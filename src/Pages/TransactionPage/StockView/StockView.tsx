@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect, useRef } from "react";
 import "../TransactionPage.scss";
 import { Grid, Button } from "@material-ui/core";
 import StockViewHeader from "./StockViewHeader";
@@ -20,6 +20,11 @@ function StockView() {
 
   let stockData = allStockData[selectedStock.symbol];
 
+  if(stockData == null){
+    
+  }
+
+
   return (
     <Grid
       container
@@ -29,7 +34,7 @@ function StockView() {
     >
       <StockViewHeader price={stockData.data.price} sector={stockData.data.sector} symbol={selectedStock.symbol} name={stockData.data.name}></StockViewHeader>
       <Grid container direction="row" justify="center" alignItems="center" className="bottomBorder" >
-        <StockGraph domain={stockData.domain} data={stockData.history}  width={1000} height={500}></StockGraph>
+        <StockGraph domain={stockData.domain} data={stockData.history}  width={800} height={500}></StockGraph>
       </Grid>
 
       <StockViewFooter></StockViewFooter>

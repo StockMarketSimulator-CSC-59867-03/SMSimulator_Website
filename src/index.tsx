@@ -21,7 +21,7 @@ import HomePage from './Pages/HomePage/HomePage';
 import { StockDataService } from './Services/StockDataService';
 import NotificationComponent from './Components/NotificationComponent/NotificationComponent';
 import LoginTest from './Components/LogInModal/loginv2';
-import { changeCurrentUserID, changeCurrentUsername, changeSessionID, addToWatchList } from './redux/actions';
+import { changeCurrentUserID, changeCurrentUsername, changeSessionID, addToWatchList, clearSelectedStockData } from './redux/actions';
 
 
 const firebaseConfig = {
@@ -58,6 +58,7 @@ const stockDataService = new StockDataService();
 
 let sessionID = localStorage.getItem('currentSessionID');
 if(sessionID != null && sessionID != ""){
+    store.dispatch(clearSelectedStockData());
     store.dispatch(changeSessionID(sessionID));
     stockDataService.changeCurrentSession(sessionID);
 }
@@ -65,7 +66,7 @@ if(sessionID != null && sessionID != ""){
 const routing = (
   <Provider store={store}>
     <Router>
-      <NotificationComponent>
+      <NotificationComponent >
         <NavigationDrawer>
           <Route
             exact
@@ -78,7 +79,7 @@ const routing = (
           <Route path="/marketwindow" component={HomePage} />
           <Route path="/stockdata" component={StockData} />
           <Route path="/signup" component={SignUp} />
-          <Route path="/transactionPage" component={TransactionPage} />
+          <Route style={{height:"100%"}} path="/transactionPage" component={TransactionPage} />
           <Route path="/manage" component={ManagePage} />
         </NavigationDrawer>
       </NotificationComponent>

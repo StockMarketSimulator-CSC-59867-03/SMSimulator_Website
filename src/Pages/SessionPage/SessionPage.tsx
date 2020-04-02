@@ -18,7 +18,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useHistory } from "react-router-dom";
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { changeSessionID, addToWatchList } from '../../redux/actions';
+import { changeSessionID, addToWatchList,clearSelectedStockData } from '../../redux/actions';
 import { StockDataService } from '../../Services/StockDataService';
 import LandingPage from '../LandingPage/LandingPage';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -51,7 +51,7 @@ function SessionPage(props:SessionPageProps){
         console.log("DATA: " + data.ownerID);
 
         return new Promise((resolve,reject)=>{
-            fetch('https://thawing-shore-19302.herokuapp.com/createSession', {
+            fetch('createSession', {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ function SessionPage(props:SessionPageProps){
                 return;
             }
 
-            fetch('https://thawing-shore-19302.herokuapp.com/addStocks', {
+            fetch('/addStocks', {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
@@ -135,6 +135,7 @@ function SessionPage(props:SessionPageProps){
 
       const clickedYes = () => {
         dispatch(changeSessionID(clickedSessionID));
+        dispatch(clearSelectedStockData());
         localStorage.setItem('currentSessionID',clickedSessionID);
 
         let key = "session" + clickedSessionID + "watchedstocks";

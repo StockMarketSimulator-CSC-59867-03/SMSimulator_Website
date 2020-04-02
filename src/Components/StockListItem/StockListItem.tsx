@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { Grid } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import StockGraph from '../StockGraph/stockGraph';
 import { green } from '@material-ui/core/colors';
+import { Paper, Grid, Card, Container, Fab, Divider } from '@material-ui/core';
 
 function StockListItem(props: any) {
   return (
+    <Paper style={{marginTop:10}} elevation={2}>
+    
       <Grid
         container
         direction="row"
         justify="space-around"
         alignItems="center"
-        style={{ borderTop: "3px solid black", padding: 10 }}
+        style={{ padding: 10 }}
         onClick={()=>{props.onClick(props.stockData.symbol)}}
       >
             <Typography variant="h6" component="h6">
@@ -25,6 +27,7 @@ function StockListItem(props: any) {
             </Typography>
 
       </Grid>
+      </Paper>
   );
 }
 
