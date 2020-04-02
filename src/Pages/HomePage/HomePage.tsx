@@ -24,6 +24,7 @@ import WatchedStocks from './WatchedStocks';
 import Typography from '@material-ui/core/Typography';
 import SessionStocks from './SessionStocks';
 import OwnedStocks from './OwnedStocks';
+import MainStockGraph from './MainStockGraph';
 
 // type HomePageProps = {
 //     history: any,
@@ -104,7 +105,8 @@ function HomePage(props:any) {
                     <Grid item xs={12} md={8} lg={9}>
                         <Paper className={fixedHeightPaper}>
                             <Typography variant="h5">{ isViewingPortfolio ? "YOUR PORTFOLIO" : "MARKET GRAPH" }</Typography>
-                            <StockGraph width={500} height={400}></StockGraph>
+                            {/* <StockGraph width={500} height={400}></StockGraph> */}
+                            <MainStockGraph/>
                         </Paper>
                     </Grid>
                     {/* Right Side Panel */}
