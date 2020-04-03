@@ -69,17 +69,38 @@ function SellModalv2(props:any){
     }
 
     const submitSell = () => {
-        db1.collection('SellOrders').add({
-          price : parseFloat(price).toFixed(2),
-          quantity : parseFloat(quantity).toFixed(0),
-          stock : selectedStock.symbol,
-          time : new Date().getTime(),
-          user : currentUser.id,
-          sessionID : props.sessionData.id
-        })
-        .then(()=>{handleClose()});
-        
-        
+      var priceFloat = parseFloat(parseFloat(price).toFixed(2));
+      var quantityFloat = parseFloat(parseFloat(quantity).toFixed(0));
+      var sessionID = props.sessionData.id;
+      var userID = currentUser.id;
+      var stock = selectedStock.symbol;
+      db1.collection('Sessions')
+         .doc(sessionID)
+         .collection('Users')
+         .doc(userID)
+         .collection('Stocks')
+         .doc(stock)
+         .get()
+         .then((doc : any) =>{
+            if(!doc.exists){
+              alert('Sorry, you do not possess any shares of the currently selected stock');
+            }
+            else if(doc.data().quantity< quantityFloat){
+              alert('Sorry, you do not possess enough shares of the currently selected stock');
+            }
+            else{
+              db1.collection('SellOrders').add({
+                price : priceFloat,
+                quantity : quantityFloat,
+                stock : stock,
+                time : new Date().getTime(),
+                user : userID,
+                sessionID : sessionID
+              })
+              .then(()=>{handleClose()});
+            }
+         });
+      
     }
 
     return (
