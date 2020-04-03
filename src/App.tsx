@@ -7,10 +7,12 @@ import {connect} from 'react-redux';
 import SessionPage from './Pages/SessionPage/SessionPage';
 import TransactionPage from './Pages/TransactionPage/TransactionPage';
 import { StockDataService } from './Services/StockDataService';
+import { UserDataService } from './Services/UserDataService';
 
 interface IAppComponentProps { 
     history: any,
-    stockDataService: StockDataService
+    stockDataService: StockDataService,
+    userDataService: UserDataService
 }
 interface IAppComponentState { }
 
@@ -41,7 +43,7 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
          }} />*/}
 
             {/**  */} 
-            <SessionPage history={this.props.history} stockDataService={this.props.stockDataService} />
+            <SessionPage history={this.props.history} stockDataService={this.props.stockDataService} userDataService={this.props.userDataService} />
             </div>
         );
     }

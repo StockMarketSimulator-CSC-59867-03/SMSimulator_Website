@@ -17,6 +17,15 @@ function showError(errorText: string){
 
 let calls = 0;
 
+function msToDateString(ms: number){
+    let date = new Date(ms);
+    let year = date.getFullYear();
+    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+    let day = ("0" + date.getDate()).slice(-2);
+    let formatted_date = year + "-" + month + "-" + day;
+    return formatted_date;
+}
+
 function calculateDomain(value : Array<any>){
     let min = 1000000;
     let max = 0;
@@ -77,6 +86,11 @@ export class StockDataService{
                         stockData = [...stockData,...dataSet];
                     }
                     stockData.sort((a,b)=> (a.dateTime > b.dateTime) ? 1 : -1);
+
+                    stockData = stockData.map((x: any)=>{
+                        x.dateTime = msToDateString(x.dateTime);
+                        return x;
+                    });
 
                     let limitedStockData = stockData.slice(stockData.length - 30, stockData.length);
                     console.log(stockData);

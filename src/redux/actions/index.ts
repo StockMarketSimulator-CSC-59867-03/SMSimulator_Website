@@ -6,6 +6,11 @@ export const changeSessionID = (id: string) => ({
     payload: id
 });
 
+export const changeSessionBalance = (balance: number) => ({
+    type: "CHANGE_SESSION_BALANCE",
+    payload: balance
+});
+
 export const setSelectedStockData = (data: StockDataModel) => ({
     type: "MODIFY_SELECTED_STOCK_DATA",
     payload: data

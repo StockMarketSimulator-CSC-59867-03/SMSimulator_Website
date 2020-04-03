@@ -46,6 +46,9 @@ function NavigationSideMenu(props: any) {
     sessionID = sessionID.substring(0, 12) + "...";
   }
 
+
+  let fundText = (props.sessionData == null || props.sessionData.balance == null) ? "" : `Funds: $${props.sessionData.balance}`;
+
   return (
     <Drawer
       className={props.classes.drawer}
@@ -118,9 +121,14 @@ function NavigationSideMenu(props: any) {
               </ListItemIcon>
               <ListItemText primary="Manage" />
             </ListItem>
+
+            
           ) : (
             <div></div>
           )}
+          <ListItem>
+              <ListItemText primary={fundText} style={{ width: "10" }} />
+          </ListItem>
         </List>
 
         <Button variant="contained" color="secondary" style={{marginBottom:20}} onClick={leaveSession}>

@@ -7,6 +7,11 @@ function sessionData(state = {}, action: any){
                 id: action.payload
                 
             }
+        case 'CHANGE_SESSION_BALANCE':
+            return {
+                ...state,
+                balance: action.payload
+            }
         default:
             return {...state};
     }

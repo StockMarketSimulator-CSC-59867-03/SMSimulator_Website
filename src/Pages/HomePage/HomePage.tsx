@@ -155,12 +155,22 @@ if(props.currentUserData.id != null){
     }
 
     const logUser = () => {
-      db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).set({
-        id: props.currentUserData.id,
-        // !! IMPORTANT this should NOT be OVERWRITTEN IN FUTURE IMPLEMENTATION, either UPDATE or PASS IN CURRENT VALUE 
-        liquid: 10000,
-        type: "player"
-      })
+
+      db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).get().then(function(doc) {
+        if (doc.exists) {
+            console.log("Document data:", doc.data());
+        } else {
+          db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).set({
+            id: props.currentUserData.id,
+            // !! IMPORTANT this should NOT be OVERWRITTEN IN FUTURE IMPLEMENTATION, either UPDATE or PASS IN CURRENT VALUE 
+            liquid: 10000,
+            type: "player"
+          })
+        }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+
     }
 
     return (

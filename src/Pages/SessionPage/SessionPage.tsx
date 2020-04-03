@@ -26,7 +26,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 type SessionPageProps = {
     history: any,
     stockDataService: StockDataService,
-    userID: any
+    userID: any,
+    userDataService: any
 };
 
 function SessionPage(props:SessionPageProps){
@@ -71,6 +72,7 @@ function SessionPage(props:SessionPageProps){
                         resolve(data);
                         dispatch(changeSessionID(data));
                         props.stockDataService.changeCurrentSession(data);
+                        props.userDataService.changeSessionID(data);
                         localStorage.setItem('currentSessionID',data);
                     }
                     else{
@@ -148,6 +150,7 @@ function SessionPage(props:SessionPageProps){
         }
 
         props.stockDataService.changeCurrentSession(clickedSessionID);
+        props.userDataService.changeSessionID(clickedSessionID);
         handleClose();
         props.history.push("/marketwindow");
       };
