@@ -19,7 +19,14 @@ export default function WatchedStocks(props:any) {
     let stockGraphs: JSX.Element[] = []; //array of stocks we want to display
 
     console.log("hello from watchedstocks:", props.currentUserData.watchedStocks);
-    const stocksToList = props.currentUserData.watchedStocks;
+    let key = "session" + props.sessionData.id + "watchedstocks";
+    let stocksToList:any; //= props.currentUserData.watchedStocks;
+    if(localStorage.getItem(key)?.split(",") === undefined){
+      stocksToList = [];
+    }
+    else {
+      stocksToList = localStorage.getItem(key)?.split(",")
+    }
 
     if(!stocksToList) {
       return(<div></div>)
