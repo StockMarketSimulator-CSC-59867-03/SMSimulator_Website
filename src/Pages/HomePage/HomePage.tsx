@@ -198,7 +198,7 @@ if(props.currentUserData.id != null){
                                     { isViewingPortfolio ? "View Market" : "View Portfolio" }
                                 </Button>
                                 { !isViewingPortfolio && <div className={classes.preview}>
-                                    <Typography variant="subtitle2">Buying Power: $5123.97</Typography>
+                                    <Typography variant="subtitle2">Buying Power: ${props.sessionData.balance}</Typography>
                                     <Typography variant="subtitle2">Total Return: $425.07</Typography>
                                 </div> }
                             </Card>
