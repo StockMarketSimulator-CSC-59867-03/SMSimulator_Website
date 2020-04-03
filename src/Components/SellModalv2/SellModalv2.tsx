@@ -4,10 +4,11 @@ import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 import { FormControlLabel, InputLabel, FormControl, Input, Button, Grid } from '@material-ui/core';
 import firebase from 'firebase';
-import { connect, useSelector } from 'react-redux';
+import { connect, useSelector,useDispatch } from 'react-redux';
 import stockData from '../../redux/reducers/stockDataReducer';
 import { PassThrough } from 'stream';
 import currentUserData from '../../redux/reducers/userReducer';
+import {addNotification} from '../../redux/actions';
 
 
 
@@ -41,8 +42,14 @@ function SellModalv2(props:any){
     const [name,setName] = React.useState(props.sessionData.name);
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);
+
     const selectedStock = useSelector((state: any) => state.selectedStockData);
     const currentUser = useSelector((state: any)=> state.currentUserData);
+    const userStocks = useSelector((state: any)=> state.userStocks);
+
+    const dispatch = useDispatch();
+
+
     const db1 = firebase.firestore()
     const isDisabled = Number(quantity) <= 0 ||
       Number.isNaN(Number(quantity))||
@@ -74,33 +81,37 @@ function SellModalv2(props:any){
       var sessionID = props.sessionData.id;
       var userID = currentUser.id;
       var stock = selectedStock.symbol;
-      db1.collection('Sessions')
-         .doc(sessionID)
-         .collection('Users')
-         .doc(userID)
-         .collection('Stocks')
-         .doc(stock)
-         .get()
-         .then((doc : any) =>{
-            if(!doc.exists){
-              alert('Sorry, you do not possess any shares of the currently selected stock');
-            }
-            else if(doc.data().quantity< quantityFloat){
-              alert('Sorry, you do not possess enough shares of the currently selected stock');
-            }
-            else{
-              db1.collection('SellOrders').add({
-                price : priceFloat,
-                quantity : quantityFloat,
-                stock : stock,
-                time : new Date().getTime(),
-                user : userID,
-                sessionID : sessionID
-              })
-              .then(()=>{handleClose()});
-            }
-         });
-      
+      let userStock = userStocks[stock];
+
+      if(userStock != null){
+        let stockQuantity = userStock.quantity;
+        if(stockQuantity < quantityFloat){
+          dispatch(addNotification({
+            type:"INSTANT",
+            title:"Sell Order",
+            body:"Sorry, you do not possess enough shares of the currently selected stock"
+        }));
+        }
+        else{
+          db1.collection('SellOrders').add({
+            price : priceFloat,
+            quantity : quantityFloat,
+            stock : stock,
+            time : new Date().getTime(),
+            user : userID,
+            sessionID : sessionID
+          })
+          .then(()=>{handleClose()});
+        }
+      }
+      else{
+        dispatch(addNotification({
+          type:"INSTANT",
+          title:"Sell Order",
+          body:"Sorry, you do not possess any shares of the currently selected stock"
+      }));
+      }
+            
     }
 
     return (

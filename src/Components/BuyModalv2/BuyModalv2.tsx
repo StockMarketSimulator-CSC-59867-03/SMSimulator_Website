@@ -4,10 +4,11 @@ import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 import { FormControlLabel, InputLabel, FormControl, Input, Button, Grid } from '@material-ui/core';
 import firebase from 'firebase';
-import { connect, useSelector } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import stockData from '../../redux/reducers/stockDataReducer';
 import { PassThrough } from 'stream';
 import currentUserData from '../../redux/reducers/userReducer';
+import {addNotification} from '../../redux/actions';
 
 
 
@@ -48,8 +49,14 @@ function BuyModalv2(props:any){
     const name = React.useState(props.sessionData.name);
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);
+
     const selectedStock = useSelector((state: any) => state.selectedStockData);
     const currentUser = useSelector((state: any)=> state.currentUserData);
+    const userLiquid = useSelector((state: any) => state.sessionData.balance);
+
+    const dispatch = useDispatch();
+
+
     const db1 = firebase.firestore();
     const isDisabled = Number(quantity) <= 0 ||
       Number.isNaN(Number(quantity))||
@@ -80,29 +87,28 @@ function BuyModalv2(props:any){
       var priceFloat = parseFloat(parseFloat(price).toFixed(2));
       var quantityFloat = parseFloat(parseFloat(quantity).toFixed(0));
       var totalPurchasingAmount = priceFloat * quantityFloat;
-      db1.collection('Sessions')
-         .doc(props.sessionData.id)
-         .collection('Users')
-         .doc(currentUser.id)
-         .get()
-         .then((doc :any) => {
-            var userLiquid = doc.data().liquid;
-            if(totalPurchasingAmount <= userLiquid){
-              db1.collection('BuyOrders').add({
-                price : priceFloat,
-                quantity : quantityFloat,
-                stock : selectedStock.symbol,
-                time : new Date().getTime(),
-                user : currentUser.id,
-                sessionID : props.sessionData.id
-              })
-              .then(()=>{handleClose()});
-            }
-            else{
-              alert('Not enough liquid to purchase selected stock');
-            }
-         });
-    }
+      if (totalPurchasingAmount <= userLiquid) {
+        db1
+          .collection("BuyOrders")
+          .add({
+            price: priceFloat,
+            quantity: quantityFloat,
+            stock: selectedStock.symbol,
+            time: new Date().getTime(),
+            user: currentUser.id,
+            sessionID: props.sessionData.id
+          })
+          .then(() => {
+            handleClose();
+          });
+      } else {
+        dispatch(addNotification({
+          type:"INSTANT",
+          title:"Buy Order",
+          body:"Not enough liquid to purchase selected stock"
+      }));
+      }
+    };
 
     return (
         <div>
