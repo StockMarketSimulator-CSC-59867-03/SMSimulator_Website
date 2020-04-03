@@ -26,6 +26,7 @@ import SessionStocks from './SessionStocks';
 import OwnedStocks from './OwnedStocks';
 import MainStockGraph from './MainStockGraph';
 import firebase from 'firebase';
+import PortfolioStockGraph from './PortfolioStockGraph';
 
 // type HomePageProps = {
 //     history: any,
@@ -184,7 +185,9 @@ if(props.currentUserData.id != null){
                         <Paper className={fixedHeightPaper}>
                             <Typography variant="h5">{ isViewingPortfolio ? "YOUR PORTFOLIO" : "MARKET GRAPH" }</Typography>
                             {/* <StockGraph width={500} height={400}></StockGraph> */}
-                            <MainStockGraph/>
+                            { !isViewingPortfolio && <MainStockGraph/> }
+                            { isViewingPortfolio && <PortfolioStockGraph/> }
+                            {/* <MainStockGraph/> */}
                         </Paper>
                     </Grid>
                     {/* Right Side Panel */}
@@ -195,7 +198,7 @@ if(props.currentUserData.id != null){
                                     { isViewingPortfolio ? "View Market" : "View Portfolio" }
                                 </Button>
                                 { !isViewingPortfolio && <div className={classes.preview}>
-                                    <Typography variant="subtitle2">Buying Power: $5123.97</Typography>
+                                    <Typography variant="subtitle2">Buying Power: ${props.sessionData.balance}</Typography>
                                     <Typography variant="subtitle2">Total Return: $425.07</Typography>
                                 </div> }
                             </Card>
@@ -210,7 +213,7 @@ if(props.currentUserData.id != null){
                     <Grid item xs={12}>
                         <Paper className={classes.paper}>
                             <Typography variant="subtitle2">Watch List</Typography>
-                            <WatchedStocks currentUserData={props.currentUserData}/>
+                            <WatchedStocks sessionData={props.sessionData} currentUserData={props.currentUserData}/>
                         </Paper>
                     </Grid>
                 </Grid>
