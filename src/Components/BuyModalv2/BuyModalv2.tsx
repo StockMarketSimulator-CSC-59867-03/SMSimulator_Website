@@ -77,15 +77,31 @@ function BuyModalv2(props:any){
     
     //script for test cases
     const submitBuy = () => {
-        db1.collection('BuyOrders').add({
-          price : parseFloat(price).toFixed(2),
-          quantity : parseFloat(quantity).toFixed(0),
-          stock : selectedStock.symbol,
-          time : new Date().getTime(),
-          user : currentUser.id,
-          sessionID : props.sessionData.id
-        })
-        .then(()=>{handleClose()});
+      var priceFloat = parseFloat(parseFloat(price).toFixed(2));
+      var quantityFloat = parseFloat(parseFloat(quantity).toFixed(0));
+      var totalPurchasingAmount = priceFloat * quantityFloat;
+      db1.collection('Sessions')
+         .doc(props.sessionData.id)
+         .collection('Users')
+         .doc(currentUser.id)
+         .get()
+         .then((doc :any) => {
+            var userLiquid = doc.data().liquid;
+            if(totalPurchasingAmount <= userLiquid){
+              db1.collection('BuyOrders').add({
+                price : priceFloat,
+                quantity : quantityFloat,
+                stock : selectedStock.symbol,
+                time : new Date().getTime(),
+                user : currentUser.id,
+                sessionID : props.sessionData.id
+              })
+              .then(()=>{handleClose()});
+            }
+            else{
+              alert('Not enough liquid to purchase selected stock');
+            }
+         });
     }
 
     return (
