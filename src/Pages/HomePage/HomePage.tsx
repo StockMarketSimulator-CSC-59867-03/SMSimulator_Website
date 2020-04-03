@@ -157,22 +157,25 @@ if(props.currentUserData.id != null){
     }
 
     const logUser = () => {
+      db.collection('Sessions').doc(props.sessionData.id).get().then(doc => {
+        let startingBalance = doc.data()?.startingBalance;
 
-      db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).get().then(function(doc) {
-        if (doc.exists) {
-            console.log("Document data:", doc.data());
-        } else {
-          db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).set({
-            id: props.currentUserData.id,
-            // !! IMPORTANT this should NOT be OVERWRITTEN IN FUTURE IMPLEMENTATION, either UPDATE or PASS IN CURRENT VALUE 
-            liquid: 10000,
-            type: "player"
-          })
-        }
-    }).catch(function(error) {
-        console.log("Error getting document:", error);
-    });
-
+        db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).get().then(function(doc) {
+          if (doc.exists) {
+              console.log("Document data:", doc.data());
+          } else {
+            db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).set({
+              id: props.currentUserData.id,
+              liquid: startingBalance,
+              type: "player"
+            })
+          }
+        }).catch(function(error) {
+            console.log("Error getting document:", error);
+        });
+      }).catch(err => {
+        console.log("Error getting join key from firebase");
+      });
     }
 
     return (
