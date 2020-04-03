@@ -23,7 +23,7 @@ import StoreIcon from "@material-ui/icons/Store";
 import AppsIcon from "@material-ui/icons/Apps";
 import HomeIcon from "@material-ui/icons/Home";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { changeSessionID,clearSelectedStockData } from "../redux/actions";
+import { changeSessionID,clearSelectedStockData, clearUserStockData } from "../redux/actions";
 import LoginModalv2 from "../Components/LogInModal/loginv2";
 import SignOut from "../Components/SignOut/SignOut";
 import { Grid } from "@material-ui/core";
@@ -45,6 +45,9 @@ function NavigationSideMenu(props: any) {
   if (sessionID != null && sessionID.length > 6) {
     sessionID = sessionID.substring(0, 12) + "...";
   }
+
+
+  let fundText = (props.sessionData == null || props.sessionData.balance == null) ? "" : `Funds: $${props.sessionData.balance}`;
 
   return (
     <Drawer
@@ -118,9 +121,14 @@ function NavigationSideMenu(props: any) {
               </ListItemIcon>
               <ListItemText primary="Manage" />
             </ListItem>
+
+            
           ) : (
             <div></div>
           )}
+          <ListItem>
+              <ListItemText primary={fundText} style={{ width: "10" }} />
+          </ListItem>
         </List>
 
         <Button variant="contained" color="secondary" style={{marginBottom:20}} onClick={leaveSession}>

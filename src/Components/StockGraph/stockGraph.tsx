@@ -22,6 +22,16 @@ function StockGraph(props: any){
     let animationOn = !(props.animationOn == false) ;
     let showToolTip = !(props.showToolTip == false);
 
+    let lineColor = "#008006";
+    
+    if(props.data != null && !showToolTip){
+        // Probably not the way to do it but
+        let trend = props.data[props.data.length - 1].price - props.data[0].price
+        lineColor = (trend > 0) ? "#008006" : "#FF0000";
+
+    }
+    
+
    return  (
         <div style={{border: '0px solid black'}} onClick={clickedStock}>
             <ResponsiveContainer width={props.width} height={props.height}>
@@ -29,7 +39,7 @@ function StockGraph(props: any){
                  {showToolTip ?  <Tooltip /> : <div></div>}
                  <XAxis dataKey="dateTime" tick={false} stroke="#FFFFFF" hide={true}/>
                  <YAxis domain={props.domain} tick={false} stroke="#FFFFFF" hide={true}/>
-                 <Line  dataKey="price" stroke="#008006" dot={false} isAnimationActive={animationOn} />
+                 <Line  dataKey="price" stroke={lineColor} dot={false} isAnimationActive={animationOn} />
              </LineChart>
              </ResponsiveContainer>
          </div>

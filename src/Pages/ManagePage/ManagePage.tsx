@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { Grid, Container } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { changeSessionID,clearSelectedStockData } from "../../redux/actions";
+import { changeSessionID,clearSelectedStockData,clearUserStockData } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { StockDataModel } from '../../DataModels/stockData.model';
 import { setSelectedStockData } from '../../redux/actions';
@@ -10,14 +10,28 @@ import { StockDataService } from '../../Services/StockDataService';
 import StockData from '../OldPages/StockData/stockdata';
 import firebase from 'firebase';
 import { collection, collectionData, collectionChanges } from 'rxfire/firestore';
+import './ManagePage.scss';
 
 type ManagePageProps = {
     sessionData: any
 };
 
 function ManagePage(props: ManagePageProps){
+    const db = firebase.firestore();
+    const [joinKey, setJoinKey] = useState("");
+
     let history = useHistory();
     let dispatch = useDispatch();
+
+    useEffect(()=>{
+      db.collection('Sessions').doc(props.sessionData.id).get().then(doc => {
+        if(doc.exists){
+          setJoinKey(doc.data()?.joinKey);
+        }
+      }).catch(err => {
+        console.log("Error getting join key from firebase");
+      });
+    },[]);
 
     let leaveSession = ()=>{
         dispatch(changeSessionID(""));
@@ -38,8 +52,6 @@ function ManagePage(props: ManagePageProps){
     }
 
     async function deleteSessionDocument(documentPath: any, batchSize: any){
-        const db = firebase.firestore();
-
         // since firebase do not delete subcollections inside document, manually delete them
         // First, delete the stock history collection
         db.collection('Sessions').doc(documentPath).collection('Stocks').get().then(querySnapshot => {
@@ -115,9 +127,10 @@ function ManagePage(props: ManagePageProps){
             
         >
             <div>
-                <Button onClick={handleDeleteSession} variant="contained" color="secondary">
-                    Completely delete this session
-                </Button>
+              <p>Your invitation code is: <b>{joinKey}</b></p>
+              <Button id="deleteButton" onClick={handleDeleteSession} variant="contained" color="secondary">
+                  Completely delete this session
+              </Button>
             </div>
         </Grid>
     );

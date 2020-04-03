@@ -19,6 +19,7 @@ export const theme = createMuiTheme({
           ].join(','),
     },
     palette: {
+        type: "dark",
         primary: {
             main: lightBlue[300],
         }

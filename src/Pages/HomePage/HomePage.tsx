@@ -24,7 +24,9 @@ import WatchedStocks from './WatchedStocks';
 import Typography from '@material-ui/core/Typography';
 import SessionStocks from './SessionStocks';
 import OwnedStocks from './OwnedStocks';
+import MainStockGraph from './MainStockGraph';
 import firebase from 'firebase';
+import PortfolioStockGraph from './PortfolioStockGraph';
 
 // type HomePageProps = {
 //     history: any,
@@ -155,12 +157,22 @@ if(props.currentUserData.id != null){
     }
 
     const logUser = () => {
-      db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).set({
-        id: props.currentUserData.id,
-        // !! IMPORTANT this should NOT be OVERWRITTEN IN FUTURE IMPLEMENTATION, either UPDATE or PASS IN CURRENT VALUE 
-        liquid: 10000,
-        type: "player"
-      })
+
+      db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).get().then(function(doc) {
+        if (doc.exists) {
+            console.log("Document data:", doc.data());
+        } else {
+          db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).set({
+            id: props.currentUserData.id,
+            // !! IMPORTANT this should NOT be OVERWRITTEN IN FUTURE IMPLEMENTATION, either UPDATE or PASS IN CURRENT VALUE 
+            liquid: 10000,
+            type: "player"
+          })
+        }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+
     }
 
     return (
@@ -172,7 +184,10 @@ if(props.currentUserData.id != null){
                     <Grid item xs={12} md={8} lg={9}>
                         <Paper className={fixedHeightPaper}>
                             <Typography variant="h5">{ isViewingPortfolio ? "YOUR PORTFOLIO" : "MARKET GRAPH" }</Typography>
-                            <StockGraph width={500} height={400}></StockGraph>
+                            {/* <StockGraph width={500} height={400}></StockGraph> */}
+                            { !isViewingPortfolio && <MainStockGraph/> }
+                            { isViewingPortfolio && <PortfolioStockGraph/> }
+                            {/* <MainStockGraph/> */}
                         </Paper>
                     </Grid>
                     {/* Right Side Panel */}
@@ -183,7 +198,7 @@ if(props.currentUserData.id != null){
                                     { isViewingPortfolio ? "View Market" : "View Portfolio" }
                                 </Button>
                                 { !isViewingPortfolio && <div className={classes.preview}>
-                                    <Typography variant="subtitle2">Buying Power: $5123.97</Typography>
+                                    <Typography variant="subtitle2">Buying Power: ${props.sessionData.balance}</Typography>
                                     <Typography variant="subtitle2">Total Return: $425.07</Typography>
                                 </div> }
                             </Card>
@@ -198,7 +213,7 @@ if(props.currentUserData.id != null){
                     <Grid item xs={12}>
                         <Paper className={classes.paper}>
                             <Typography variant="subtitle2">Watch List</Typography>
-                            <WatchedStocks currentUserData={props.currentUserData}/>
+                            <WatchedStocks sessionData={props.sessionData} currentUserData={props.currentUserData}/>
                         </Paper>
                     </Grid>
                 </Grid>

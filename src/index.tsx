@@ -21,7 +21,13 @@ import HomePage from './Pages/HomePage/HomePage';
 import { StockDataService } from './Services/StockDataService';
 import NotificationComponent from './Components/NotificationComponent/NotificationComponent';
 import LoginTest from './Components/LogInModal/loginv2';
-import { changeCurrentUserID, changeCurrentUsername, changeSessionID, addToWatchList, clearSelectedStockData } from './redux/actions';
+import { changeCurrentUserID, changeCurrentUsername, changeSessionID, addToWatchList, clearSelectedStockData, clearUserStockData } from './redux/actions';
+import { NotificationListenerService } from './Services/NotificationListenerService';
+import { UserDataService } from './Services/UserDataService';
+import { Subject } from 'rxjs';
+import { ThemeProvider } from '@material-ui/core';
+import { theme } from './Styling/styles';
+
 
 
 const firebaseConfig = {
@@ -37,6 +43,12 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+const notificationListenerService = new NotificationListenerService();
+const userDataService = new UserDataService();
+
+
+let sessionID = localStorage.getItem('currentSessionID');
+
 
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -46,9 +58,14 @@ firebase.auth().onAuthStateChanged(function(user) {
         const username = isValidUser?.displayName;
         store.dispatch(changeCurrentUserID(uid));
         store.dispatch(changeCurrentUsername(username));
+        notificationListenerService.attachUserNotificationListerner(uid);
+        userDataService.changeUserID(uid);
+        
     } else {
         store.dispatch(changeCurrentUserID(undefined));
         store.dispatch(changeCurrentUsername(undefined));
+        notificationListenerService.detachUserListner();
+        
     }
   });
 
@@ -56,11 +73,12 @@ firebase.auth().onAuthStateChanged(function(user) {
 
 const stockDataService = new StockDataService();
 
-let sessionID = localStorage.getItem('currentSessionID');
+
 if(sessionID != null && sessionID != ""){
     store.dispatch(clearSelectedStockData());
     store.dispatch(changeSessionID(sessionID));
     stockDataService.changeCurrentSession(sessionID);
+    userDataService.changeSessionID(sessionID);
 }
 
 const routing = (
@@ -72,7 +90,7 @@ const routing = (
             exact
             path="/"
             render={props => (
-              <App stockDataService={stockDataService} {...props} />
+              <App stockDataService={stockDataService} userDataService={userDataService} {...props} />
             )}
           />
           {/* <Route path="/marketwindow" render={(props)=> <MarketWindow {...props} />} /> */}
