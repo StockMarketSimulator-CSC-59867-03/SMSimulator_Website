@@ -101,7 +101,7 @@ function SessionPage(props:SessionPageProps){
                 return;
             }
 
-            fetch('/addStocks', {
+            fetch('addStocks', {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
