@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { changeCurrentUserID, changeCurrentUsername, changeSessionID, clearSelectedStockData } from '../../redux/actions';
+import { changeCurrentUserID, changeCurrentUsername, changeSessionID, clearSelectedStockData,clearUserStockData } from '../../redux/actions';
 import { Button } from '@material-ui/core';
 import * as firebase from 'firebase';
 import { useHistory } from 'react-router';
@@ -21,6 +21,7 @@ function SignOut(){
           });
         dispatch(changeSessionID(""));
         dispatch(clearSelectedStockData());
+        dispatch(clearUserStockData());
         localStorage.setItem('currentSessionID',"");
         history.push("/");
     }

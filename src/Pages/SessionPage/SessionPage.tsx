@@ -18,7 +18,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useHistory } from "react-router-dom";
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { changeSessionID, addToWatchList,clearSelectedStockData } from '../../redux/actions';
+import { changeSessionID, addToWatchList,clearSelectedStockData,clearUserStockData } from '../../redux/actions';
 import { StockDataService } from '../../Services/StockDataService';
 import LandingPage from '../LandingPage/LandingPage';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -138,6 +138,7 @@ function SessionPage(props:SessionPageProps){
       const clickedYes = () => {
         dispatch(changeSessionID(clickedSessionID));
         dispatch(clearSelectedStockData());
+        dispatch(clearUserStockData());
         localStorage.setItem('currentSessionID',clickedSessionID);
 
         let key = "session" + clickedSessionID + "watchedstocks";

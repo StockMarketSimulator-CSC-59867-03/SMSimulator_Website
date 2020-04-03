@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { Grid, Container } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { changeSessionID,clearSelectedStockData } from "../../redux/actions";
+import { changeSessionID,clearSelectedStockData,clearUserStockData } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { StockDataModel } from '../../DataModels/stockData.model';
 import { setSelectedStockData } from '../../redux/actions';
@@ -22,6 +22,7 @@ function ManagePage(props: ManagePageProps){
     let leaveSession = ()=>{
         dispatch(changeSessionID(""));
         dispatch(clearSelectedStockData());
+        dispatch(clearUserStockData());
         localStorage.setItem('currentSessionID',"");
         history.push("/");
         window.location.reload();

@@ -23,7 +23,7 @@ import StoreIcon from "@material-ui/icons/Store";
 import AppsIcon from "@material-ui/icons/Apps";
 import HomeIcon from "@material-ui/icons/Home";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { changeSessionID,clearSelectedStockData } from "../redux/actions";
+import { changeSessionID,clearSelectedStockData, clearUserStockData } from "../redux/actions";
 import LoginModalv2 from "../Components/LogInModal/loginv2";
 import SignOut from "../Components/SignOut/SignOut";
 import { Grid } from "@material-ui/core";

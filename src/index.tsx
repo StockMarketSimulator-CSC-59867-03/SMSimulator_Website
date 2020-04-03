@@ -21,7 +21,7 @@ import HomePage from './Pages/HomePage/HomePage';
 import { StockDataService } from './Services/StockDataService';
 import NotificationComponent from './Components/NotificationComponent/NotificationComponent';
 import LoginTest from './Components/LogInModal/loginv2';
-import { changeCurrentUserID, changeCurrentUsername, changeSessionID, addToWatchList, clearSelectedStockData } from './redux/actions';
+import { changeCurrentUserID, changeCurrentUsername, changeSessionID, addToWatchList, clearSelectedStockData, clearUserStockData } from './redux/actions';
 import { NotificationListenerService } from './Services/NotificationListenerService';
 import { UserDataService } from './Services/UserDataService';
 import { Subject } from 'rxjs';
@@ -72,6 +72,7 @@ const stockDataService = new StockDataService();
 
 
 if(sessionID != null && sessionID != ""){
+    store.dispatch(clearUserStockData());
     store.dispatch(clearSelectedStockData());
     store.dispatch(changeSessionID(sessionID));
     stockDataService.changeCurrentSession(sessionID);
