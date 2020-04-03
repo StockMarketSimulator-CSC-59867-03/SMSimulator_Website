@@ -27,7 +27,7 @@ function StockGraph(props: any){
     if(props.data != null && !showToolTip){
         // Probably not the way to do it but
         let trend = props.data[props.data.length - 1].price - props.data[0].price
-        lineColor = (trend > 0) ? "#008006" : "#008006";
+        lineColor = (trend > 0) ? "#008006" : "#FF0000";
 
     }
     

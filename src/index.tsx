@@ -25,6 +25,9 @@ import { changeCurrentUserID, changeCurrentUsername, changeSessionID, addToWatch
 import { NotificationListenerService } from './Services/NotificationListenerService';
 import { UserDataService } from './Services/UserDataService';
 import { Subject } from 'rxjs';
+import { ThemeProvider } from '@material-ui/core';
+import { theme } from './Styling/styles';
+
 
 
 const firebaseConfig = {
