@@ -87,11 +87,6 @@ export class StockDataService{
                     }
                     stockData.sort((a,b)=> (a.dateTime > b.dateTime) ? 1 : -1);
 
-                    stockData = stockData.map((x: any)=>{
-                        x.dateTime = msToDateString(x.dateTime);
-                        return x;
-                    });
-
                     let limitedStockData = stockData.slice(stockData.length - 30, stockData.length);
                     console.log(stockData);
                     let oldData = this.stockDataMap.get(stockSymbol);
