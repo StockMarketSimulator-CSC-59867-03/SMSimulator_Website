@@ -76,6 +76,12 @@ function NotificationComponent(props: any){
                 notification: notif
             });
               break;
+            case "PurchaseConfirmation":
+                setInstant({
+                  open: true,
+                  notification: notif
+              });
+                break;
             default:
               // code block
           }
