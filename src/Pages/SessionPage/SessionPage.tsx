@@ -138,7 +138,6 @@ function SessionPage(props:SessionPageProps){
       const clickedYes = () => {
         dispatch(changeSessionID(clickedSessionID));
         dispatch(clearSelectedStockData());
-        dispatch(clearUserStockData());
         localStorage.setItem('currentSessionID',clickedSessionID);
 
         let key = "session" + clickedSessionID + "watchedstocks";

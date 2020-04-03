@@ -72,7 +72,6 @@ const stockDataService = new StockDataService();
 
 
 if(sessionID != null && sessionID != ""){
-    store.dispatch(clearUserStockData());
     store.dispatch(clearSelectedStockData());
     store.dispatch(changeSessionID(sessionID));
     stockDataService.changeCurrentSession(sessionID);

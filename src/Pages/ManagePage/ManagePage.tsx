@@ -22,7 +22,6 @@ function ManagePage(props: ManagePageProps){
     let leaveSession = ()=>{
         dispatch(changeSessionID(""));
         dispatch(clearSelectedStockData());
-        dispatch(clearUserStockData());
         localStorage.setItem('currentSessionID',"");
         history.push("/");
         window.location.reload();

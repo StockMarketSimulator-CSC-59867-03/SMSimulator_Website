@@ -21,7 +21,6 @@ function SignOut(){
           });
         dispatch(changeSessionID(""));
         dispatch(clearSelectedStockData());
-        dispatch(clearUserStockData());
         localStorage.setItem('currentSessionID',"");
         history.push("/");
     }
