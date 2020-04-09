@@ -27,6 +27,7 @@ import { changeSessionID,clearSelectedStockData, clearUserStockData } from "../r
 import LoginModalv2 from "../Components/LogInModal/loginv2";
 import SignOut from "../Components/SignOut/SignOut";
 import { Grid } from "@material-ui/core";
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 
 function NavigationSideMenu(props: any) {
   let history = useHistory();
@@ -89,6 +90,21 @@ function NavigationSideMenu(props: any) {
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="Home" />
+          </ListItem>
+          <ListItem
+            button
+            onClick={
+              props.enableSwitching
+                ? () => {}
+                : () => {
+                    history.push("/portfolio");
+                }
+            }
+          >
+            <ListItemIcon>
+              <AttachMoneyIcon />
+            </ListItemIcon>
+            <ListItemText primary="Portfolio" />
           </ListItem>
           <ListItem
             button

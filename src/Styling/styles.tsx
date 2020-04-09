@@ -22,6 +22,9 @@ export const theme = createMuiTheme({
         type: "dark",
         primary: {
             main: lightBlue[300],
+        },
+        secondary: {
+            main: lightBlue[100],
         }
     }
 });

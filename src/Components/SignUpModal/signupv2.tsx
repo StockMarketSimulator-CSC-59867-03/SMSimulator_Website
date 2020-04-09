@@ -1,11 +1,11 @@
-import React, { useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useRef, useState } from 'react';
 import firebase from 'firebase';
 
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal"
 import TextField from "@material-ui/core/TextField";
 import { Grid } from "@material-ui/core";
+import EmailIcon from '@material-ui/icons/Email';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         modalBackground: {
             position: 'relative',
-            width: '20%',
-            height: '30%',
+            width: '25%',
+            height: '35%',
             backgroundColor: theme.palette.background.default,
         },
         grid: {
@@ -39,16 +39,21 @@ const useStyles = makeStyles((theme: Theme) =>
             position: 'absolute',
             right: 0,
             color: "gray",
+        },
+        button: {
+            color: "black",
         }
     })
 );
 
-function LoginModalv2(props:any){
+function SignUpModalv2(props:any){
     const classes = useStyles();
-    let dispatch = useDispatch();
 
-    let email = useRef("");
+    //fields - these useRef so that they do not cause a rerender upon change
+    let username = useRef("");
+    let email    = useRef("");
     let password = useRef("");
+
     let [isModalOpen, setModalOpen] = useState(false);
 
     const handleOpenClose = () => {
@@ -58,6 +63,8 @@ function LoginModalv2(props:any){
     const handleChange = (event:any) => {
         let value = event.target.value;
         switch(event.target.name){
+            case 'username':
+                username.current = value; break;
             case 'email':
                 email.current = value; break;
             case 'password':
@@ -68,43 +75,49 @@ function LoginModalv2(props:any){
     const handleSubmit = (event:any) => {
         event.preventDefault();
 
-        firebase.auth().signInWithEmailAndPassword(email.current, password.current)
-        .then(function(user){
-          //to fetch user id:
-        //   alert("Succesfully Signed In!");
-          email.current = "";
-          password.current = "";
-          handleOpenClose();
+        firebase.auth().createUserWithEmailAndPassword(email.current, password.current)
+        .then((user) => {
+            alert("Successfully Signed Up!");
+            const currentUser = firebase.auth().currentUser;
+            if(user && currentUser!= null){
+                currentUser.updateProfile({ displayName : username.current });
+
+                const db = firebase.firestore();
+                db.collection('User').doc(currentUser.uid).set({
+                    username : username,
+                    sessions: [""]
+                });
+
+                //close modal
+                setModalOpen(false);
+            }
         })
-        .catch(
-          function(error){
+        .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             alert(errorMessage);
-            email.current = "";
-            password.current = "";
-          }
-        );
-        // console.log("it works");
+            
+            //close modal
+            setModalOpen(false);
+        });
     }
-    
-    return (
+
+    return(
         <div>
-            <Button color="secondary" variant="contained" onClick={handleOpenClose}>
-                Log In
-            </Button>
+            <Button className={classes.button} variant="outlined" onClick={handleOpenClose}>Sign Up</Button>
             <Modal className={classes.modal} open={isModalOpen} onClose={handleOpenClose}>
                 <div className={classes.modalBackground}>
                     <IconButton className={classes.closeIcon} onClick={handleOpenClose}><CloseIcon/></IconButton>
                     <Grid container className={classes.grid} direction="column">
                         <TextField id="standard-basic" label="Email" name="email" onChange={handleChange} autoComplete="off"/>
+                        <TextField id="standard-basic" label="Username" name="username" onChange={handleChange} autoComplete="off"/>
                         <TextField id="standard-basic" type="password" label="Password" name="password" onChange={handleChange}/>
-                        <Button className={classes.submitButton} color="primary" variant="contained" onClick={handleSubmit}>Log In</Button>
+                        <Button className={classes.submitButton} color="primary" variant="contained" onClick={handleSubmit}>Sign Up</Button>
                     </Grid>
                 </div>
             </Modal>
         </div>
-    );
+    )
 }
 
-export default LoginModalv2;
+export default SignUpModalv2;
