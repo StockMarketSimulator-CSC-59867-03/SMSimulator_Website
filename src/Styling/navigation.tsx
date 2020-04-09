@@ -16,7 +16,7 @@ import ManageIcon from '@material-ui/icons/Build';
 import App from '../App';
 import LogInModal from '../Components/LogInModal/LogInModal';
 import { Button, Menu, MenuItem } from '@material-ui/core';
-import SignUpModal from '../Components/SignUpModal/SignUpModal';
+import SignUpModalv2 from '../Components/SignUpModal/signupv2';
 import { useHistory, Link } from 'react-router-dom';
 import { withRouter } from "react-router-dom";
 import StoreIcon from '@material-ui/icons/Store';
@@ -129,7 +129,7 @@ function NavigationDrawer(props:any) {
                   <LoginModalv2 />
                 </div>
                 <div className={classes.button}>
-                  <SignUpModal />
+                  <SignUpModalv2 />
                 </div>
               </div>
             )}

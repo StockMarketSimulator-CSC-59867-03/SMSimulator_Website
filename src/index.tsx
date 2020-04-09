@@ -27,6 +27,7 @@ import { UserDataService } from './Services/UserDataService';
 import { Subject } from 'rxjs';
 import { ThemeProvider } from '@material-ui/core';
 import { theme } from './Styling/styles';
+import PortfolioPage from './Pages/PortfolioPage/PortfolioPage';
 
 
 
@@ -99,13 +100,16 @@ const routing = (
           <Route path="/signup" component={SignUp} />
           <Route style={{height:"100%"}} path="/transactionPage" component={TransactionPage} />
           <Route path="/manage" component={ManagePage} />
+          <Route path="/portfolio" component={PortfolioPage} />
         </NavigationDrawer>
       </NotificationComponent>
     </Router>
   </Provider>
 );
 
-ReactDOM.render(routing, document.getElementById('root'));
+
+
+ReactDOM.render(<ThemeProvider theme={theme}>{routing}</ThemeProvider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

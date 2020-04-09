@@ -27,7 +27,7 @@ function SignOut(){
 
     return(
         <div>
-            <Button variant="contained" onClick={handleClick}>Sign Out</Button>
+            <Button disableElevation color="secondary" variant="contained" onClick={handleClick}>Sign Out</Button>
         </div>
     )
 }
