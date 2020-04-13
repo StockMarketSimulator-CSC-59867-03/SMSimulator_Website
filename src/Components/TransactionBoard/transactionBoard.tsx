@@ -9,10 +9,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { withStyles, createStyles, Theme, makeStyles } from "@material-ui/core";
 
-
-
-
-
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
     head: {
@@ -39,13 +35,18 @@ const StyledTableRow = withStyles((theme: Theme) =>
 const useStyles = makeStyles({
     table: {},
   });
+
 function createData(date: any,symbol: any, cost: any,volume:number) {
-    return {date,symbol, cost,volume };
-  }
-  
+  return {date,symbol,cost,volume };
+}
+
 
 export function TransactionBoard(){
-var returnArr = [{ date: 123, symbol: "ba", cost: 1, volume: 1 }];
+let returnArr:Array<any> = [
+  createData(2201,"AMZN",1201,38),
+  createData(2205,"BE",1201,38),
+  createData(2205,"AMZN",1201,38),
+  createData(2203,"BE",1201,38)];
 const classes = useStyles();
 
 return (

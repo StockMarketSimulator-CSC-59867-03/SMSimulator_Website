@@ -22,9 +22,11 @@ import { changeSessionID, addToWatchList,clearSelectedStockData,clearUserStockDa
 import { StockDataService } from '../../Services/StockDataService';
 import LandingPage from '../LandingPage/LandingPage';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { TransactionListenerService } from '../../Services/TransactionListenerService';
 
 type SessionPageProps = {
     history: any,
+    transactionListenerService: TransactionListenerService,
     stockDataService: StockDataService,
     userID: any,
     userDataService: any
@@ -73,6 +75,7 @@ function SessionPage(props:SessionPageProps){
                         dispatch(changeSessionID(data));
                         props.stockDataService.changeCurrentSession(data);
                         props.userDataService.changeSessionID(data);
+                        props.transactionListenerService.changeSessionID(data);
                         localStorage.setItem('currentSessionID',data);
                     }
                     else{
@@ -150,6 +153,7 @@ function SessionPage(props:SessionPageProps){
         }
 
         props.stockDataService.changeCurrentSession(clickedSessionID);
+        props.transactionListenerService.changeSessionID(clickedSessionID);
         props.userDataService.changeSessionID(clickedSessionID);
         handleClose();
         props.history.push("/marketwindow");

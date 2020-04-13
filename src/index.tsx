@@ -28,6 +28,8 @@ import { Subject } from 'rxjs';
 import { ThemeProvider } from '@material-ui/core';
 import { theme } from './Styling/styles';
 import PortfolioPage from './Pages/PortfolioPage/PortfolioPage';
+import { TransactionListenerService } from './Services/TransactionListenerService';
+import transactionData from './redux/reducers/transactionDataReducer';
 
 
 
@@ -46,6 +48,7 @@ firebase.initializeApp(firebaseConfig);
 
 const notificationListenerService = new NotificationListenerService();
 const userDataService = new UserDataService();
+const transactionListenerService = new TransactionListenerService();
 
 
 let sessionID = localStorage.getItem('currentSessionID');
@@ -70,8 +73,6 @@ firebase.auth().onAuthStateChanged(function(user) {
     }
   });
 
-
-
 const stockDataService = new StockDataService();
 
 
@@ -80,6 +81,9 @@ if(sessionID != null && sessionID != ""){
     store.dispatch(changeSessionID(sessionID));
     stockDataService.changeCurrentSession(sessionID);
     userDataService.changeSessionID(sessionID);
+    transactionListenerService.changeSessionID(sessionID);
+    transactionListenerService.attachTransactionListener(sessionID);
+    console.log("changed");
 }
 
 const routing = (
@@ -91,7 +95,7 @@ const routing = (
             exact
             path="/"
             render={props => (
-              <App stockDataService={stockDataService} userDataService={userDataService} {...props} />
+              <App transactionListenerService={transactionListenerService} stockDataService={stockDataService} userDataService={userDataService} {...props} />
             )}
           />
           {/* <Route path="/marketwindow" render={(props)=> <MarketWindow {...props} />} /> */}

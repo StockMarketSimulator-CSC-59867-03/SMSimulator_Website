@@ -1,5 +1,7 @@
 import { StockDataModel } from "../../DataModels/stockData.model";
 import { Notification } from "../../DataModels/notification";
+import { Transaction } from "../../DataModels/transaction";
+
 
 export const changeSessionID = (id: string) => ({
     type: "CHANGE_SESSION_ID",
@@ -47,7 +49,10 @@ export const updateSearchInputValue = (inputValue: string) => {
 		payload: inputValue
 	}
 }
-
+export const addTransaction = (data: Transaction) => ({
+    type: "ADD_TRANSACTION",
+    payload: data
+});
 export const addNotification = (data: Notification) => ({
     type: "ADD_NOTIFICATION",
     payload: data
