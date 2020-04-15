@@ -16,7 +16,7 @@ import ManageIcon from '@material-ui/icons/Build';
 import App from '../App';
 import LogInModal from '../Components/LogInModal/LogInModal';
 import { Button, Menu, MenuItem } from '@material-ui/core';
-import SignUpModalv2 from '../Components/SignUpModal/signupv2';
+import SignUpModal from '../Components/SignUpModal/SignUpModal';
 import { useHistory, Link } from 'react-router-dom';
 import { withRouter } from "react-router-dom";
 import StoreIcon from '@material-ui/icons/Store';
@@ -129,7 +129,7 @@ function NavigationDrawer(props:any) {
                   <LoginModalv2 />
                 </div>
                 <div className={classes.button}>
-                  <SignUpModalv2 />
+                  <SignUpModal />
                 </div>
               </div>
             )}
@@ -138,6 +138,16 @@ function NavigationDrawer(props:any) {
                 <div className={classes.button}>
                   <p>Welcome, {props.currentUserData.username}!</p>
                 </div>
+                <Button
+                  onClick={
+                    props.enableSwitching
+                      ? () => {}
+                      : () => {
+                          history.push("/profile");
+                        }
+                  }
+                > Profile
+                </Button>
                 <div style={{ margin: 5, alignSelf: "center" }}>
                   <SignOut />
                 </div>
@@ -145,9 +155,7 @@ function NavigationDrawer(props:any) {
             )}
           </Toolbar>
         </AppBar>
-
           {sideMenu}
-
         <main className={classes.content}>
           <div className={classes.toolbar} />
           {props.children}
