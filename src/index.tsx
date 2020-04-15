@@ -100,7 +100,12 @@ const routing = (
           <Route path="/signup" component={SignUp} />
           <Route style={{height:"100%"}} path="/transactionPage" component={TransactionPage} />
           <Route path="/manage" component={ManagePage} />
-          <Route path="/profile" component={ProfilePage} />
+          <Route 
+            path="/profile"
+            render={props => (
+              <ProfilePage stockDataService={stockDataService} userDataService={userDataService} />
+            )}
+          />
         </NavigationDrawer>
       </NotificationComponent>
     </Router>

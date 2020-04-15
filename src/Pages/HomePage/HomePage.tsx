@@ -162,7 +162,7 @@ if(props.currentUserData.id != null){
 
         db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).get().then(function(doc) {
           if (doc.exists) {
-              console.log("Document data:", doc.data());
+
           } else {
             db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).set({
               id: props.currentUserData.id,

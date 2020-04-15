@@ -23,7 +23,7 @@ import StoreIcon from '@material-ui/icons/Store';
 import AppsIcon from '@material-ui/icons/Apps';
 import HomeIcon from '@material-ui/icons/Home';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { changeSessionID } from '../redux/actions';
+import { changeSessionID, addToWatchList,clearSelectedStockData,clearUserStockData } from '../redux/actions';
 import LoginModalv2 from '../Components/LogInModal/loginv2';
 import SignOut from '../Components/SignOut/SignOut';
 
@@ -32,6 +32,7 @@ import firebase from 'firebase';
 import { collection, collectionData, collectionChanges } from 'rxfire/firestore';
 import { Subject } from 'rxjs';
 import NavigationSideMenu from './navigationSideMenu';
+
 
 
 
@@ -143,6 +144,10 @@ function NavigationDrawer(props:any) {
                     props.enableSwitching
                       ? () => {}
                       : () => {
+                          dispatch(changeSessionID(""));
+                          dispatch(clearSelectedStockData());
+
+                          localStorage.setItem('currentSessionID',"");
                           history.push("/profile");
                         }
                   }
