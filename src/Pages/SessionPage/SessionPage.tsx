@@ -140,6 +140,7 @@ function SessionPage(props:SessionPageProps){
 
       const clickedYes = () => {
         dispatch(changeSessionID(clickedSessionID));
+        
         dispatch(clearSelectedStockData());
         localStorage.setItem('currentSessionID',clickedSessionID);
 

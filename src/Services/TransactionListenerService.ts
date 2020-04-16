@@ -2,11 +2,13 @@ import firebase from 'firebase';
 import { Subject } from 'rxjs';
 
 import store from '../redux/store';
-import { addNotification, addTransaction } from "../redux/actions";
+import { addNotification, setTransactionData } from "../redux/actions";
 import transactionData from '../redux/reducers/transactionDataReducer';
+import { useDispatch } from 'react-redux';
 
 
 let TransactionInstances = 0;
+
 
 
 function showError(errorText: string){
@@ -38,7 +40,10 @@ export class TransactionListenerService{
         if(sessionID == null ){
             return;
         }
+        
         this.sessionID = sessionID; 
+        console.log('changed session');
+        console.log(sessionID);
     }
 
     attachTransactionListener = (sessionId: string)=>{
@@ -53,14 +58,14 @@ export class TransactionListenerService{
                 if (change.type === "added") {
                     let data = change.doc.data();
                     let transaction = {
-                        time: data.time,
+                        date: data.time,
                         symbol: data.stock,
                         cost: data.price,
                         volume: data.quantity
                     };
-
+                console.log("addedTrans");
                 console.log(transaction);
-                store.dispatch(addTransaction(transaction));
+                store.dispatch(setTransactionData(transaction));
                 }
             });
         });

@@ -1,5 +1,5 @@
 export interface Transaction {
-    time: number;
+    date: number;
     symbol: string;
     cost: string;
     volume: string;

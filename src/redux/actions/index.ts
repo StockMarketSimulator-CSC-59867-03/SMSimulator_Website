@@ -49,8 +49,8 @@ export const updateSearchInputValue = (inputValue: string) => {
 		payload: inputValue
 	}
 }
-export const addTransaction = (data: Transaction) => ({
-    type: "ADD_TRANSACTION",
+export const setTransactionData = (data: Transaction) => ({
+    type: "SET_TRANSACTION_DATA",
     payload: data
 });
 export const addNotification = (data: Notification) => ({

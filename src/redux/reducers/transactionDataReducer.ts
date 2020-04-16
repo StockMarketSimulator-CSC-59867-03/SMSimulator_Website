@@ -1,17 +1,11 @@
-function transactionData(state = {}, action: any){
+function transactionData(state = [], action: any){
     switch(action.type){
         case 'SET_TRANSACTION_DATA':
-            return {
-                ...state,
-                
-                ...action.payload
-                
-            }
+            return [action.payload,...state]       
         case 'CLEAR_TRANSACTION_DATA':
-            return {
-            }
+            return [];
         default:
-            return {...state};
+            return state;
     }
 }
 

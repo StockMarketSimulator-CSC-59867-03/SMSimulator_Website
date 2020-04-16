@@ -83,7 +83,6 @@ if(sessionID != null && sessionID != ""){
     userDataService.changeSessionID(sessionID);
     transactionListenerService.changeSessionID(sessionID);
     transactionListenerService.attachTransactionListener(sessionID);
-    console.log("changed");
 }
 
 const routing = (
