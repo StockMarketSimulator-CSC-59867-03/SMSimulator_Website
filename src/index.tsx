@@ -28,6 +28,7 @@ import { Subject } from 'rxjs';
 import { ThemeProvider } from '@material-ui/core';
 import { theme } from './Styling/styles';
 import PortfolioPage from './Pages/PortfolioPage/PortfolioPage';
+import EventInjection from './Pages/EventInjectionPage/EventInjection';
 
 
 
@@ -101,6 +102,7 @@ const routing = (
           <Route style={{height:"100%"}} path="/transactionPage" component={TransactionPage} />
           <Route path="/manage" component={ManagePage} />
           <Route path="/portfolio" component={PortfolioPage} />
+          <Route path="/eventinjection" component={EventInjection} />
         </NavigationDrawer>
       </NotificationComponent>
     </Router>

@@ -23,10 +23,19 @@ import Page1 from "./CreateSessionForm1";
 import Page2 from "./CreateSessionStockSelecter";
 import { connect } from 'react-redux';
 
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = (theme:any) => ({
+  root: {
+    backgroundColor: theme.palette.background.default,
+  }
+});
+
 type sessionModalProps = {
   onSessionCreate: any;
   onStocksSelected: any;
   userID: string;
+  classes: any;
 };
 
 type sessionModalState = {
@@ -37,7 +46,7 @@ type sessionModalState = {
   pageNumber: number;
 };
 
-export default class SessionModal extends React.Component<
+class SessionModal extends React.Component<
   sessionModalProps,
   sessionModalState
 > {
@@ -58,11 +67,7 @@ export default class SessionModal extends React.Component<
   createSession() {}
 
   render() {
-    const styles = {
-      modalStyle: {
-        backgroundColor: "white"
-      }
-    };
+    const { classes } = this.props;
 
     const setOpen = (value: boolean) => {
       this.setState({
@@ -151,7 +156,7 @@ export default class SessionModal extends React.Component<
           }}
         >
           <Fade in={this.state.open}>
-            <div className="modal__background " onClick={() => {}}>
+            <div className={classes.root}>
               <Grid
               style={{height:"100%"}}
                 container
@@ -193,3 +198,5 @@ export default class SessionModal extends React.Component<
     );
   }
 }
+
+export default withStyles(styles, { withTheme: true })(SessionModal);

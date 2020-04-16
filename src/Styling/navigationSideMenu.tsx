@@ -28,6 +28,7 @@ import LoginModalv2 from "../Components/LogInModal/loginv2";
 import SignOut from "../Components/SignOut/SignOut";
 import { Grid } from "@material-ui/core";
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import ShowChartIcon from '@material-ui/icons/ShowChart';
 
 function NavigationSideMenu(props: any) {
   let history = useHistory();
@@ -122,6 +123,22 @@ function NavigationSideMenu(props: any) {
             <ListItemText primary="Transaction" />
           </ListItem>
           {props.isOwner ? (
+            <div>
+            <ListItem
+              button
+              onClick={
+                props.enableSwitching
+                  ? () => {}
+                  : () => {
+                      history.push("/eventinjection");
+                  }
+              }
+            >
+              <ListItemIcon>
+                <ShowChartIcon />
+              </ListItemIcon>
+              <ListItemText primary="Events" />
+            </ListItem>
             <ListItem
               button
               onClick={
@@ -137,6 +154,7 @@ function NavigationSideMenu(props: any) {
               </ListItemIcon>
               <ListItemText primary="Manage" />
             </ListItem>
+            </div>
 
             
           ) : (
