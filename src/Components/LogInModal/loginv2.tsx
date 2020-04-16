@@ -1,13 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import firebase from 'firebase';
+import { changeCurrentUserID, changeCurrentUsername } from '../../redux/actions';
 
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal"
 import TextField from "@material-ui/core/TextField";
 import { Grid } from "@material-ui/core";
-import CloseIcon from '@material-ui/icons/Close';
-import IconButton from '@material-ui/core/IconButton';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme: Theme) => 
@@ -20,8 +19,8 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         modalBackground: {
             position: 'relative',
-            width: '20%',
-            height: '30%',
+            width: '25%',
+            height: '25%',
             backgroundColor: theme.palette.background.default,
         },
         grid: {
@@ -34,11 +33,6 @@ const useStyles = makeStyles((theme: Theme) =>
             marginBottom: theme.spacing(2),
             position: 'absolute',
             bottom: 0
-        },
-        closeIcon: {
-            position: 'absolute',
-            right: 0,
-            color: "gray",
         }
     })
 );
@@ -85,7 +79,7 @@ function LoginModalv2(props:any){
             password.current = "";
           }
         );
-        // console.log("it works");
+        console.log("it works");
     }
     
     return (
@@ -95,11 +89,10 @@ function LoginModalv2(props:any){
             </Button>
             <Modal className={classes.modal} open={isModalOpen} onClose={handleOpenClose}>
                 <div className={classes.modalBackground}>
-                    <IconButton className={classes.closeIcon} onClick={handleOpenClose}><CloseIcon/></IconButton>
                     <Grid container className={classes.grid} direction="column">
-                        <TextField id="standard-basic" label="Email" name="email" onChange={handleChange} autoComplete="off"/>
+                        <TextField id="standard-basic" label="Email" name="email" onChange={handleChange}/>
                         <TextField id="standard-basic" type="password" label="Password" name="password" onChange={handleChange}/>
-                        <Button className={classes.submitButton} color="primary" variant="contained" onClick={handleSubmit}>Log In</Button>
+                        <Button className={classes.submitButton} color="secondary" variant="contained" onClick={handleSubmit}>Log In</Button>
                     </Grid>
                 </div>
             </Modal>

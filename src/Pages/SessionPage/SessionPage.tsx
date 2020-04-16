@@ -126,34 +126,33 @@ function SessionPage(props:SessionPageProps){
     }
 
     const handleClickOpen = (sessionID: string) => {
-        
-        setClickedSessionID(sessionID);
-        setOpenSessionDialog(true);
-      };
+      setClickedSessionID(sessionID);
+      setOpenSessionDialog(true);
+    };
     
-      const handleClose = () => {
-        setOpenSessionDialog(false);
-      };
+    const handleClose = () => {
+      setOpenSessionDialog(false);
+    };
 
-      const clickedYes = () => {
-        dispatch(changeSessionID(clickedSessionID));
-        dispatch(clearSelectedStockData());
-        localStorage.setItem('currentSessionID',clickedSessionID);
+    const clickedYes = () => {
+      dispatch(changeSessionID(clickedSessionID));
+      dispatch(clearSelectedStockData());
+      localStorage.setItem('currentSessionID',clickedSessionID);
 
-        let key = "session" + clickedSessionID + "watchedstocks";
-        let watchedstocks = localStorage.getItem(key);
-        if(watchedstocks !== null || watchedstocks !== "") {
-          dispatch(addToWatchList(watchedstocks?.split(",")));
-        }
-        else {
-          dispatch(addToWatchList([]));
-        }
+      let key = "session" + clickedSessionID + "watchedstocks";
+      let watchedstocks = localStorage.getItem(key);
+      if(watchedstocks !== null || watchedstocks !== "") {
+        dispatch(addToWatchList(watchedstocks?.split(",")));
+      }
+      else {
+        dispatch(addToWatchList([]));
+      }
 
-        props.stockDataService.changeCurrentSession(clickedSessionID);
-        props.userDataService.changeSessionID(clickedSessionID);
-        handleClose();
-        props.history.push("/marketwindow");
-      };
+      props.stockDataService.changeCurrentSession(clickedSessionID);
+      props.userDataService.changeSessionID(clickedSessionID);
+      handleClose();
+      props.history.push("/marketwindow");
+    };
 
     const isLoggedIn = props.userID;
     const showLoading = true;
