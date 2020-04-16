@@ -11,6 +11,7 @@ import StockData from '../OldPages/StockData/stockdata';
 import firebase from 'firebase';
 import { collection, collectionData, collectionChanges } from 'rxfire/firestore';
 import './ManagePage.scss';
+import AddStocks from './AddStocks';
 
 type ManagePageProps = {
     sessionData: any
@@ -128,6 +129,7 @@ function ManagePage(props: ManagePageProps){
         >
             <div>
               <p>Your invitation code is: <b>{joinKey}</b></p>
+             <AddStocks />
               <Button id="deleteButton" onClick={handleDeleteSession} variant="contained" color="secondary">
                   Completely delete this session
               </Button>

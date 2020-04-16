@@ -129,11 +129,11 @@ function SessionPage(props:SessionPageProps){
     }
 
     const handleClickOpen = (sessionID: string) => {
-        
-        setClickedSessionID(sessionID);
-        setOpenSessionDialog(true);
-      };
+      setClickedSessionID(sessionID);
+      setOpenSessionDialog(true);
+    };
     
+
       const handleClose = () => {
         setOpenSessionDialog(false);
       };
@@ -159,6 +159,7 @@ function SessionPage(props:SessionPageProps){
         handleClose();
         props.history.push("/marketwindow");
       };
+
 
     const isLoggedIn = props.userID;
     const showLoading = true;
