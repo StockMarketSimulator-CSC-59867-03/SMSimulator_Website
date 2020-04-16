@@ -7,6 +7,7 @@ import searchInput from './searchInputReducers';
 import notifications from './notificationReducer';
 import currentUserData from './userReducer';
 import userStocks from './userStockDataReducers';
+import transactionData from './transactionDataReducer';
 
 const rootReducer = combineReducers({
     sessionData: sessionData,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
     searchInput: searchInput,
     notifications: notifications,
     currentUserData: currentUserData,
-    userStocks: userStocks
+    userStocks: userStocks,
+    transactionData: transactionData
 });
 
 export default rootReducer;

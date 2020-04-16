@@ -26,7 +26,9 @@ import SessionStocks from './SessionStocks';
 import OwnedStocks from './OwnedStocks';
 import MainStockGraph from './MainStockGraph';
 import firebase from 'firebase';
+import { TransactionBoard } from '../../Components/TransactionBoard/transactionBoard';
 import PortfolioStockGraph from './PortfolioStockGraph';
+
 
 // type HomePageProps = {
 //     history: any,
@@ -188,8 +190,13 @@ if(props.currentUserData.id != null){
             <Container maxWidth="lg" className={classes.container}>
               {authenticationFlag ?
                 <Grid container spacing={3}>
+                    <Grid item xs={12} md={4} lg={4}>
+                      <Paper className={fixedHeightPaper}>
+                        <TransactionBoard/>
+                      </Paper>
+                    </Grid>
                     {/* MarketGraph */}
-                    <Grid item xs={12} md={8} lg={9}>
+                    <Grid item xs={10} md={6} lg={7}>
                         <Paper className={fixedHeightPaper}>
                             <Typography variant="h5">{ isViewingPortfolio ? "YOUR PORTFOLIO" : "MARKET GRAPH" }</Typography>
                             {/* <StockGraph width={500} height={400}></StockGraph> */}
