@@ -18,6 +18,7 @@ import TransactionPage from './Pages/TransactionPage/TransactionPage';
 import ManagePage from './Pages/ManagePage/ManagePage';
 import NavigationDrawer from './Styling/navigation';
 import HomePage from './Pages/HomePage/HomePage';
+import ProfilePage from './Pages/ProfilePage/ProfilePage';
 import { StockDataService } from './Services/StockDataService';
 import NotificationComponent from './Components/NotificationComponent/NotificationComponent';
 import LoginTest from './Components/LogInModal/loginv2';
@@ -103,15 +104,19 @@ const routing = (
           <Route path="/manage" component={ManagePage} />
           <Route path="/portfolio" component={PortfolioPage} />
           <Route path="/eventinjection" component={EventInjection} />
+          <Route 
+            path="/profile"
+            render={props => (
+              <ProfilePage stockDataService={stockDataService} userDataService={userDataService} />
+            )}
+          />
         </NavigationDrawer>
       </NotificationComponent>
     </Router>
   </Provider>
 );
 
-
-
-ReactDOM.render(<ThemeProvider theme={theme}>{routing}</ThemeProvider>, document.getElementById('root'));
+ReactDOM.render(routing, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

@@ -11,7 +11,8 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+import MailIcon from "@material-ui/icons/Mail"; 
+import ProfileIcon from "@material-ui/icons/Cake"
 import ManageIcon from "@material-ui/icons/Build";
 import App from "../App";
 import LogInModal from "../Components/LogInModal/LogInModal";
@@ -76,7 +77,6 @@ function NavigationSideMenu(props: any) {
               <ListItemText primary={sessionID} style={{ width: "10" }} />
             )}
           </ListItem>
-
           <ListItem
             button
             onClick={
@@ -91,21 +91,6 @@ function NavigationSideMenu(props: any) {
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="Home" />
-          </ListItem>
-          <ListItem
-            button
-            onClick={
-              props.enableSwitching
-                ? () => {}
-                : () => {
-                    history.push("/portfolio");
-                }
-            }
-          >
-            <ListItemIcon>
-              <AttachMoneyIcon />
-            </ListItemIcon>
-            <ListItemText primary="Portfolio" />
           </ListItem>
           <ListItem
             button
