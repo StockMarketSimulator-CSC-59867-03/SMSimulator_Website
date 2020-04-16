@@ -29,9 +29,9 @@ import { Subject } from 'rxjs';
 import { ThemeProvider } from '@material-ui/core';
 import { theme } from './Styling/styles';
 import PortfolioPage from './Pages/PortfolioPage/PortfolioPage';
+import EventInjection from './Pages/EventInjectionPage/EventInjection';
 import { TransactionListenerService } from './Services/TransactionListenerService';
 import transactionData from './redux/reducers/transactionDataReducer';
-
 
 
 
@@ -105,6 +105,8 @@ const routing = (
           <Route path="/signup" component={SignUp} />
           <Route style={{height:"100%"}} path="/transactionPage" component={TransactionPage} />
           <Route path="/manage" component={ManagePage} />
+          <Route path="/portfolio" component={PortfolioPage} />
+          <Route path="/eventinjection" component={EventInjection} />
           <Route 
             path="/profile"
             render={props => (
