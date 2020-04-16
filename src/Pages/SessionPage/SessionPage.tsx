@@ -22,9 +22,11 @@ import { changeSessionID, addToWatchList,clearSelectedStockData,clearUserStockDa
 import { StockDataService } from '../../Services/StockDataService';
 import LandingPage from '../LandingPage/LandingPage';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { TransactionListenerService } from '../../Services/TransactionListenerService';
 
 type SessionPageProps = {
     history: any,
+    transactionListenerService: TransactionListenerService,
     stockDataService: StockDataService,
     userID: any,
     userDataService: any
@@ -73,6 +75,7 @@ function SessionPage(props:SessionPageProps){
                         dispatch(changeSessionID(data));
                         props.stockDataService.changeCurrentSession(data);
                         props.userDataService.changeSessionID(data);
+                        props.transactionListenerService.changeSessionID(data);
                         localStorage.setItem('currentSessionID',data);
                     }
                     else{
@@ -130,29 +133,33 @@ function SessionPage(props:SessionPageProps){
       setOpenSessionDialog(true);
     };
     
-    const handleClose = () => {
-      setOpenSessionDialog(false);
-    };
 
-    const clickedYes = () => {
-      dispatch(changeSessionID(clickedSessionID));
-      dispatch(clearSelectedStockData());
-      localStorage.setItem('currentSessionID',clickedSessionID);
+      const handleClose = () => {
+        setOpenSessionDialog(false);
+      };
 
-      let key = "session" + clickedSessionID + "watchedstocks";
-      let watchedstocks = localStorage.getItem(key);
-      if(watchedstocks !== null || watchedstocks !== "") {
-        dispatch(addToWatchList(watchedstocks?.split(",")));
-      }
-      else {
-        dispatch(addToWatchList([]));
-      }
+      const clickedYes = () => {
+        dispatch(changeSessionID(clickedSessionID));
+        
+        dispatch(clearSelectedStockData());
+        localStorage.setItem('currentSessionID',clickedSessionID);
 
-      props.stockDataService.changeCurrentSession(clickedSessionID);
-      props.userDataService.changeSessionID(clickedSessionID);
-      handleClose();
-      props.history.push("/marketwindow");
-    };
+        let key = "session" + clickedSessionID + "watchedstocks";
+        let watchedstocks = localStorage.getItem(key);
+        if(watchedstocks !== null || watchedstocks !== "") {
+          dispatch(addToWatchList(watchedstocks?.split(",")));
+        }
+        else {
+          dispatch(addToWatchList([]));
+        }
+
+        props.stockDataService.changeCurrentSession(clickedSessionID);
+        props.transactionListenerService.changeSessionID(clickedSessionID);
+        props.userDataService.changeSessionID(clickedSessionID);
+        handleClose();
+        props.history.push("/marketwindow");
+      };
+
 
     const isLoggedIn = props.userID;
     const showLoading = true;
