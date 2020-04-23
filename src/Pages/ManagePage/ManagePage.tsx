@@ -1,5 +1,4 @@
 import React, { useState,useEffect } from 'react';
-import { Grid, Container } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { changeSessionID,clearSelectedStockData,clearUserStockData } from "../../redux/actions";
@@ -12,14 +11,33 @@ import firebase from 'firebase';
 import { collection, collectionData, collectionChanges } from 'rxfire/firestore';
 import './ManagePage.scss';
 import AddStocks from './AddStocks';
+import { createStyles, makeStyles, Theme, Container, Grid, Paper, Typography } from '@material-ui/core';
+import ArtificialSettings from './ArtificialSettings';
 
 type ManagePageProps = {
     sessionData: any
 };
 
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            display: "flex",
+        },
+        container: {
+            margin: theme.spacing(2),
+        },
+        paper: {
+            minHeight: `calc(100vh - ${theme.spacing(2)}vh)`,
+            padding: theme.spacing(2),
+        }
+    })
+)
+
+
 function ManagePage(props: ManagePageProps){
     const db = firebase.firestore();
     const [joinKey, setJoinKey] = useState("");
+    const classes = useStyles();
 
     let history = useHistory();
     let dispatch = useDispatch();
@@ -118,23 +136,32 @@ function ManagePage(props: ManagePageProps){
         .catch(reject);
     }
 
+    
     return(
-        <Grid
-            container
-            direction="row"
-            justify="flex-start"
-            alignItems="center"
-            style={{height:"100%"}}
-            
-        >
-            <div>
+      <div className={classes.root}>
+      <Container maxWidth="lg" className={classes.container}>
+          <Grid container spacing={2}>
+              <Grid item xs={12} md={3} lg={3}>
+                  <Paper className={classes.paper}>
+                  <div>
               <p>Your invitation code is: <b>{joinKey}</b></p>
              <AddStocks />
               <Button id="deleteButton" onClick={handleDeleteSession} variant="contained" color="secondary">
                   Completely delete this session
               </Button>
             </div>
-        </Grid>
+                  </Paper>
+              </Grid>
+              <Grid item xs={12} md={9} lg={9}>
+                  <Paper className={classes.paper}>
+                      <Typography>Artifical Buyers/Sellers</Typography>
+                      <ArtificialSettings />
+                  </Paper>
+              </Grid>
+          </Grid>
+      </Container>
+  </div>
+
     );
 }
 
