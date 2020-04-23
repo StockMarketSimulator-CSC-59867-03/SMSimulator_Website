@@ -98,6 +98,21 @@ function NavigationSideMenu(props: any) {
               props.enableSwitching
                 ? () => {}
                 : () => {
+                    history.push("/portfolio");
+                }
+            }
+          >
+            <ListItemIcon>
+              <AttachMoneyIcon />
+            </ListItemIcon>
+            <ListItemText primary="Portfolio" />
+          </ListItem>
+          <ListItem
+            button
+            onClick={
+              props.enableSwitching
+                ? () => {}
+                : () => {
                     history.push("/transactionPage");
                   }
             }
