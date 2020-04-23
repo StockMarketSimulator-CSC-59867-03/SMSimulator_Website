@@ -51,6 +51,41 @@ function EventInjectionForm(props:any){
     const handleChange = (event:React.ChangeEvent<{ value: unknown }>) => {
         setEvent(event.target.value as string);
         disableCustom.current = true;
+        switch(event.target.value as string)
+        {
+            case 'preset_tech_crash':
+                set_customName("Tech Sector Crash");
+                set_RaiseDrop("drop");
+                set_customSector("technology");
+                set_customPercent("20");
+                break;
+            case 'preset_pandemic_crash':
+                set_customName("Pandemic");
+                set_RaiseDrop("drop");
+                set_customSector("all");
+                set_customPercent("15");
+                break;
+            case 'preset_trade_deal':
+                set_customName("Trade Deal Passed");
+                set_RaiseDrop("raise");
+                set_customSector("all");
+                set_customPercent("5");
+                break;
+            case 'preset_bull':
+                set_customName("Bull Market");
+                set_RaiseDrop("raise");
+                set_customSector("all");
+                set_customPercent("15");
+                break;
+            case 'preset_bear':
+                set_customName("Bear Market");
+                set_RaiseDrop("drop");
+                set_customSector("all");
+                set_customPercent("10");
+                break;
+            default:
+                //do nothing
+        }
     }
     
     const handleCustomName = (event:React.ChangeEvent<{ value: unknown }>) => {
@@ -84,7 +119,19 @@ function EventInjectionForm(props:any){
     }
 
     const handleSubmit = () => {
-
+        //prep the data to be stored
+        db.collection("Sessions").doc(props.sessionData.id).collection("Events").add({
+            name: custom_Name,
+            direction: custom_RaiseDrop,
+            sector: custom_Sector,
+            percent: parseInt(custom_Percent)
+        })
+        .then(() => {
+            clear();
+        })
+        .catch((error) => {
+            console.log("Writing Event to DB Failed: ", error);
+        });
     }
 
     return(
@@ -133,6 +180,7 @@ function EventInjectionForm(props:any){
                         <MenuItem value={"finance"}>Finance</MenuItem>
                         <MenuItem value={"technology"}>Technology</MenuItem>
                         <MenuItem value={"health_care"}>Health Care</MenuItem>
+                        <MenuItem value={"all"}>All</MenuItem>
                     </Select>
                 </FormControl>
 
