@@ -46,7 +46,7 @@ function EventInjectionForm(props:any){
     const [custom_Sector, set_customSector] = useState("");
     const [custom_Percent, set_customPercent] = useState("");
     let disableCustom = useRef(false);
-    let disablePreset= useRef(false);
+    let disablePreset = useRef(false);
 
     const handleChange = (event:React.ChangeEvent<{ value: unknown }>) => {
         setEvent(event.target.value as string);
@@ -116,6 +116,18 @@ function EventInjectionForm(props:any){
         set_customPercent("");
         disableCustom.current = false;
         disablePreset.current = false;
+    }
+
+    const disableSubmit = () => {
+        if(custom_Name === "" || custom_Name === null)
+            return true;
+        if(custom_RaiseDrop === "" || custom_RaiseDrop === null)
+            return true;
+        if(custom_Sector === "" || custom_Sector === null)
+            return true;
+        if(custom_Percent === "" || custom_Percent === null)
+            return true;
+        return false;
     }
 
     const handleSubmit = () => {
@@ -198,7 +210,7 @@ function EventInjectionForm(props:any){
 
             <Divider className={classes.divider}/>
 
-            <Button className={classes.submit_button} variant="contained" color="secondary" onClick={handleSubmit}>Queue Event</Button>
+            <Button disabled={disableSubmit()} className={classes.submit_button} variant="contained" color="secondary" onClick={handleSubmit}>Queue Event</Button>
         </div>
     );
 }

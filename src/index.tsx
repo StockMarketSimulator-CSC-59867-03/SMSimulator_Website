@@ -32,6 +32,7 @@ import PortfolioPage from './Pages/PortfolioPage/PortfolioPage';
 import EventInjection from './Pages/EventInjectionPage/EventInjection';
 import { TransactionListenerService } from './Services/TransactionListenerService';
 import transactionData from './redux/reducers/transactionDataReducer';
+import { QueuedEventListenerService } from './Services/QueuedEventListenerService';
 
 
 
@@ -51,6 +52,7 @@ firebase.initializeApp(firebaseConfig);
 const notificationListenerService = new NotificationListenerService();
 const userDataService = new UserDataService();
 const transactionListenerService = new TransactionListenerService();
+const queuedEventListenerService = new QueuedEventListenerService();
 
 
 let sessionID = localStorage.getItem('currentSessionID');
@@ -71,6 +73,7 @@ firebase.auth().onAuthStateChanged(function(user) {
         store.dispatch(changeCurrentUserID(undefined));
         store.dispatch(changeCurrentUsername(undefined));
         notificationListenerService.detachUserListner();
+        queuedEventListenerService.detachQueuedEventListener();
         
     }
   });
@@ -85,6 +88,8 @@ if(sessionID != null && sessionID != ""){
     userDataService.changeSessionID(sessionID);
     transactionListenerService.changeSessionID(sessionID);
     transactionListenerService.attachTransactionListener(sessionID);
+    queuedEventListenerService.changeSessionID(sessionID);
+    queuedEventListenerService.attachQueuedEventListener(sessionID);
 }
 
 const routing = (
@@ -106,7 +111,8 @@ const routing = (
           <Route style={{height:"100%"}} path="/transactionPage" component={TransactionPage} />
           <Route path="/manage" component={ManagePage} />
           <Route path="/portfolio" component={PortfolioPage} />
-          <Route path="/eventinjection" component={EventInjection} />
+          <Route path="/eventinjection" 
+                 render={props => (<EventInjection queuedEventListenerService={queuedEventListenerService} />)} />
           <Route 
             path="/profile"
             render={props => (
