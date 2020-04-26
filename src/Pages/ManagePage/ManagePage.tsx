@@ -38,12 +38,12 @@ function ManagePage(props: ManagePageProps){
     const db = firebase.firestore();
     const [joinKey, setJoinKey] = useState("");
     const classes = useStyles();
-    const [playerLiquidData, setPlayerLiquidData] = useState([] as any);
+    const [playerData, setPlayerData] = useState([] as any);
 
     let history = useHistory();
     let dispatch = useDispatch();
-    let playerLiquidDataArray = [] as any;
-    let playerIDDataArray = [] as any;
+    let playerDataArray = [] as any;
+    let playerStockArray = [] as any;
 
 //  join key logic
     db.collection('Sessions').doc(props.sessionData.id).get().then(doc => {
@@ -54,7 +54,6 @@ function ManagePage(props: ManagePageProps){
       console.log("Error getting join key from firebase");
     });
 
-//  It works like this,
 //  component initializes and renders, after render useEffect is ran
 //  so, in useEffect, a listener is subscribed and is waiting for signal from database
 //  say data changed, so onSnapshot function is called, array is populated and state is set
@@ -63,25 +62,48 @@ function ManagePage(props: ManagePageProps){
     useEffect(()=>{
 //    player list logic
       let userRef = db.collection('Sessions').doc(props.sessionData.id).collection('Users');
+//    set listener for the "user" subcollection
       let unsubscribe = userRef.onSnapshot(querySnapshot => {
-        playerLiquidDataArray = [];
-        querySnapshot.forEach(doc => {
-          if(doc.data()?.type == "player"){
-            playerLiquidDataArray.push(
-              <div>
-                <p>{doc.data()?.username}({doc.data()?.id}) currently has {doc.data()?.liquid}</p>
-              </div>
-            )
-          }
-        })
-        setPlayerLiquidData(playerLiquidDataArray);
-      }, err => {
-        console.log("Encountered Error: ${err}");
-      })
+        let index = 0;
+        playerDataArray = [];
+        playerStockArray = [];
 
-      return() => {
-        unsubscribe();
-      }
+        function seedQuerySnapshot(doc: any){
+          return new Promise((resolve, reject) => {
+            if(doc.data()?.type == "player"){
+              doc.ref.collection('Stocks').get().then((stockDoc: any) => {
+                playerStockArray.push([]);
+                stockDoc.forEach((stocks: any) => {
+                  playerStockArray[index].push(
+                    <div>
+                      {stocks.id}: {stocks.data()?.quantity}
+                    </div>
+                  )
+                })
+
+                playerDataArray.push(
+                  <div>
+                    <p>{doc.data()?.username} currently has <span className="liquid"><b>{doc.data()?.liquid}</b></span></p>
+                    {playerStockArray[index]}
+                    <AddStocks id={doc.data()?.id} />
+                  </div>
+                )
+
+                index++;
+
+                resolve();
+              })
+            } else {
+              resolve();
+            }
+          })
+        }
+
+        Promise.all(querySnapshot.docs.map(seedQuerySnapshot)).then(() => {
+          console.log("Setting state now");
+          setPlayerData(playerDataArray);
+        })
+      })
     },[]);
 
     let leaveSession = ()=>{
@@ -173,6 +195,12 @@ function ManagePage(props: ManagePageProps){
       <div className={classes.root}>
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={2}>
+            <Grid item xs={12} md={12} lg={12}>
+              <div>
+                <h1>Player List</h1>
+                <div>{playerData}</div>
+              </div>
+            </Grid>
             <Grid item xs={12} md={3} lg={3}>
               <Paper className={classes.paper}>
                 <div>
