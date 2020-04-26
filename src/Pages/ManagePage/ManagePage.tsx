@@ -73,10 +73,7 @@ function ManagePage(props: ManagePageProps){
               </div>
             )
           }
-          console.log("reload occured");
         })
-
-        console.log("WTF" + playerLiquidDataArray);
         setPlayerLiquidData(playerLiquidDataArray);
       }, err => {
         console.log("Encountered Error: ${err}");
