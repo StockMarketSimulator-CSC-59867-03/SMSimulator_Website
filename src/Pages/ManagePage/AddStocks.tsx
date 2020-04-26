@@ -9,18 +9,23 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import firebase from 'firebase';
 import { useSelector } from 'react-redux';
+import { useHistory } from "react-router-dom";
 
+type AddStocksProps = {
+    id: any;
+};
 
-
-export default function AddStocks() {
+// this is "Addstock" component but its function is "Setstock"
+export default function AddStocks(props: AddStocksProps) {
   const [open, setOpen] = React.useState(false);
   let db = firebase.firestore();
   const [formState, setFormState] = React.useState({
-    userIDs: "",
+    userIDs: props.id,
     stocks:"",
     quantity:""
   });
   const sessionID = useSelector((state: any) => state.sessionData.id);
+  let history = useHistory();
 
 
   const handleChange = (event: any) =>{
@@ -44,25 +49,27 @@ export default function AddStocks() {
 
   const handleSubmit = () =>{
     console.log(formState);
-    let users = formState.userIDs.split(" ");
     let stocks = formState.stocks.split(" ");
 
-    users.forEach((id: string)=>{
-        stocks.forEach((stockSymbol: string)=>{
-            db.collection("Sessions").doc(sessionID).collection("Users").doc(id).collection("Stocks").doc(stockSymbol)
-            .set({"initialValue":10000, "quantity":parseInt(formState.quantity)});
-        });
-        
+    stocks.forEach((stockSymbol: string)=>{
+      db.collection("Sessions").doc(sessionID).collection("Users").doc(formState.userIDs).collection("Stocks").doc(stockSymbol)
+        .set({
+          "initialValue":10000, 
+          "quantity": parseInt(formState.quantity)
+        }).then(() => {
+          handleClose();
+          alert(parseInt(formState.quantity) + " of " + stockSymbol + " added!");
+          window.location.reload();
+        })
     });
+    
 
-    console.log(users);
-    handleClose()
 }
 
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Add Stocks
+        Set Stocks
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Add Stocks to Users</DialogTitle>
@@ -75,6 +82,7 @@ export default function AddStocks() {
             margin="dense"
             id="userIDs"
             label="User IDs"
+            value={props.id}
             onChange={handleChange}
             fullWidth
           />

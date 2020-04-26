@@ -38,18 +38,72 @@ function ManagePage(props: ManagePageProps){
     const db = firebase.firestore();
     const [joinKey, setJoinKey] = useState("");
     const classes = useStyles();
+    const [playerData, setPlayerData] = useState([] as any);
 
     let history = useHistory();
     let dispatch = useDispatch();
+    let playerDataArray = [] as any;
+    let playerStockArray = [] as any;
 
+//  join key logic
+    db.collection('Sessions').doc(props.sessionData.id).get().then(doc => {
+      if(doc.exists){
+        setJoinKey(doc.data()?.joinKey);
+      }
+    }).catch(err => {
+      console.log("Error getting join key from firebase");
+    });
+
+//  component initializes and renders, after render useEffect is ran
+//  so, in useEffect, a listener is subscribed and is waiting for signal from database
+//  say data changed, so onSnapshot function is called, array is populated and state is set
+//  after state set, clean up function is ran so it is unsubscribed.
+//  after clean up, re-render happens, useEffect is ran, and listener waits until further call from database
     useEffect(()=>{
-      db.collection('Sessions').doc(props.sessionData.id).get().then(doc => {
-        if(doc.exists){
-          setJoinKey(doc.data()?.joinKey);
+//    player list logic
+      let userRef = db.collection('Sessions').doc(props.sessionData.id).collection('Users');
+//    set listener for the "user" subcollection
+      let unsubscribe = userRef.onSnapshot(querySnapshot => {
+        let index = 0;
+        playerDataArray = [];
+        playerStockArray = [];
+
+        function seedQuerySnapshot(doc: any){
+          return new Promise((resolve, reject) => {
+            if(doc.data()?.type == "player"){
+              doc.ref.collection('Stocks').get().then((stockDoc: any) => {
+                playerStockArray.push([]);
+                stockDoc.forEach((stocks: any) => {
+                  playerStockArray[index].push(
+                    <div>
+                      {stocks.id}: {stocks.data()?.quantity}
+                    </div>
+                  )
+                })
+
+                playerDataArray.push(
+                  <Grid item xs={12} md={3} lg={3}>
+                    <p>{doc.data()?.username} currently has <span className="liquid"><b>${doc.data()?.liquid}</b></span></p>
+                    {playerStockArray[index]}
+                    <p><AddStocks id={doc.data()?.id} /></p>
+                  </Grid>
+                )
+
+                index++;
+
+                resolve();
+              })
+            } else {
+              resolve();
+            }
+          })
         }
-      }).catch(err => {
-        console.log("Error getting join key from firebase");
-      });
+
+        Promise.all(querySnapshot.docs.map(seedQuerySnapshot)).then(() => {
+          console.log("Setting state now");
+          setPlayerData(playerDataArray);
+        })
+      })
     },[]);
 
     let leaveSession = ()=>{
@@ -136,32 +190,33 @@ function ManagePage(props: ManagePageProps){
         .catch(reject);
     }
 
-    
     return(
       <div className={classes.root}>
-      <Container maxWidth="lg" className={classes.container}>
+        <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={2}>
-              <Grid item xs={12} md={3} lg={3}>
-                  <Paper className={classes.paper}>
-                  <div>
-              <p>Your invitation code is: <b>{joinKey}</b></p>
-             <AddStocks />
-              <Button id="deleteButton" onClick={handleDeleteSession} variant="contained" color="secondary">
-                  Completely delete this session
-              </Button>
-            </div>
-                  </Paper>
-              </Grid>
-              <Grid item xs={12} md={9} lg={9}>
-                  <Paper className={classes.paper}>
-                      <Typography>Artifical Buyers/Sellers</Typography>
-                      <ArtificialSettings />
-                  </Paper>
-              </Grid>
+            <h1 className="centerHeading">Player List</h1>
+            <Grid container spacing={2} className="listPadding">
+              {playerData}
+            </Grid>
+            <Grid item xs={12} md={3} lg={3}>
+              <Paper className={classes.paper}>
+                <div>
+                  <p>Your invitation code is: <b>{joinKey}</b></p>
+                  <Button id="deleteButton" onClick={handleDeleteSession} variant="contained" color="secondary">
+                    Completely delete this session
+                  </Button>
+                </div>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={9} lg={9}>
+                <Paper className={classes.paper}>
+                    <Typography>Artifical Buyers/Sellers</Typography>
+                    <ArtificialSettings />
+                </Paper>
+            </Grid>
           </Grid>
-      </Container>
-  </div>
-
+        </Container>
+      </div>
     );
 }
 

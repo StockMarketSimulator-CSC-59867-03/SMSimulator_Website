@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import firebase from 'firebase';
-
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal"
 import TextField from "@material-ui/core/TextField";
@@ -9,6 +8,9 @@ import EmailIcon from '@material-ui/icons/Email';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { useDispatch } from 'react-redux';
+import { changeCurrentUserID, changeCurrentUsername, changeSessionID, clearSelectedStockData,clearUserStockData } from '../../redux/actions';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -84,12 +86,15 @@ function SignUpModalv2(props:any){
 
                 const db = firebase.firestore();
                 db.collection('User').doc(currentUser.uid).set({
-                    username : username,
+                    username : username.current,
                     sessions: [""]
                 });
 
                 //close modal
                 setModalOpen(false);
+
+                //signout after sign up
+                signOut();
             }
         })
         .catch((error) => {
@@ -100,6 +105,22 @@ function SignUpModalv2(props:any){
             //close modal
             setModalOpen(false);
         });
+    }
+
+    let dispatch = useDispatch();
+    let history = useHistory();
+
+    const signOut = () => {
+        // NEED TO HANDLE ERROR HERE 
+        firebase.auth().signOut().then(function() {
+           console.log("Signed Out");
+          }).catch(function(error) {
+            console.log("Signed Out Failed");
+          });
+        dispatch(changeSessionID(""));
+        dispatch(clearSelectedStockData());
+        localStorage.setItem('currentSessionID',"");
+        history.push("/");
     }
 
     return(
