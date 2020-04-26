@@ -54,6 +54,12 @@ function ManagePage(props: ManagePageProps){
       console.log("Error getting join key from firebase");
     });
 
+//  It works like this,
+//  component initializes and renders, after render useEffect is ran
+//  so, in useEffect, a listener is subscribed and is waiting for signal from database
+//  say data changed, so onSnapshot function is called, array is populated and state is set
+//  after state set, clean up function is ran so it is unsubscribed.
+//  after clean up, re-render happens, useEffect is ran, and listener waits until further call from database
     useEffect(()=>{
 //    player list logic
       let userRef = db.collection('Sessions').doc(props.sessionData.id).collection('Users');
