@@ -164,6 +164,7 @@ if(props.currentUserData.id != null){
           } else {
             db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).set({
               id: props.currentUserData.id,
+              username: props.currentUserData.username,
               liquid: startingBalance,
               type: "player"
             })

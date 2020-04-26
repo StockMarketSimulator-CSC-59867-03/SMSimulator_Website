@@ -38,11 +38,14 @@ function ManagePage(props: ManagePageProps){
     const db = firebase.firestore();
     const [joinKey, setJoinKey] = useState("");
     const classes = useStyles();
+    const [playerLiquidData, setPlayerLiquidData] = useState([] as any);
 
     let history = useHistory();
     let dispatch = useDispatch();
+    let playerLiquidDataArray = [] as any;
 
     useEffect(()=>{
+//    join key logic
       db.collection('Sessions').doc(props.sessionData.id).get().then(doc => {
         if(doc.exists){
           setJoinKey(doc.data()?.joinKey);
@@ -50,6 +53,22 @@ function ManagePage(props: ManagePageProps){
       }).catch(err => {
         console.log("Error getting join key from firebase");
       });
+
+//    player list logic
+      db.collection('Sessions').doc(props.sessionData.id).collection('Users').get().then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          // get players only
+          if(doc.data()?.type == "player"){
+            playerLiquidDataArray.push(
+              <div>
+                <p>{doc.data()?.username} currently has {doc.data()?.liquid}</p>
+              </div>
+            )
+          }
+        })
+
+        setPlayerLiquidData(playerLiquidDataArray);
+      })
     },[]);
 
     let leaveSession = ()=>{
@@ -139,29 +158,28 @@ function ManagePage(props: ManagePageProps){
     
     return(
       <div className={classes.root}>
-      <Container maxWidth="lg" className={classes.container}>
+        <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={2}>
-              <Grid item xs={12} md={3} lg={3}>
-                  <Paper className={classes.paper}>
-                  <div>
-              <p>Your invitation code is: <b>{joinKey}</b></p>
-             <AddStocks />
-              <Button id="deleteButton" onClick={handleDeleteSession} variant="contained" color="secondary">
-                  Completely delete this session
-              </Button>
-            </div>
-                  </Paper>
-              </Grid>
-              <Grid item xs={12} md={9} lg={9}>
-                  <Paper className={classes.paper}>
-                      <Typography>Artifical Buyers/Sellers</Typography>
-                      <ArtificialSettings />
-                  </Paper>
-              </Grid>
+            <Grid item xs={12} md={3} lg={3}>
+              <Paper className={classes.paper}>
+                <div>
+                  <p>Your invitation code is: <b>{joinKey}</b></p>
+                  <AddStocks />
+                  <Button id="deleteButton" onClick={handleDeleteSession} variant="contained" color="secondary">
+                    Completely delete this session
+                  </Button>
+                </div>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={9} lg={9}>
+                <Paper className={classes.paper}>
+                    <Typography>Artifical Buyers/Sellers</Typography>
+                    <ArtificialSettings />
+                </Paper>
+            </Grid>
           </Grid>
-      </Container>
-  </div>
-
+        </Container>
+      </div>
     );
 }
 
