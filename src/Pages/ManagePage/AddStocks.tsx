@@ -58,7 +58,7 @@ export default function AddStocks(props: AddStocksProps) {
           "quantity": parseInt(formState.quantity)
         }).then(() => {
           handleClose();
-          alert("Stock added");
+          alert(parseInt(formState.quantity) + " of " + stockSymbol + " added!");
           window.location.reload();
         })
     });

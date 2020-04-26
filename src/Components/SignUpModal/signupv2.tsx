@@ -1,9 +1,5 @@
 import React, { useRef, useState } from 'react';
 import firebase from 'firebase';
-<<<<<<< HEAD
-
-=======
->>>>>>> fix git error
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal"
 import TextField from "@material-ui/core/TextField";
@@ -12,12 +8,9 @@ import EmailIcon from '@material-ui/icons/Email';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-<<<<<<< HEAD
-=======
 import { useDispatch } from 'react-redux';
 import { changeCurrentUserID, changeCurrentUsername, changeSessionID, clearSelectedStockData,clearUserStockData } from '../../redux/actions';
 import { useHistory } from 'react-router';
->>>>>>> fix git error
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -93,22 +86,15 @@ function SignUpModalv2(props:any){
 
                 const db = firebase.firestore();
                 db.collection('User').doc(currentUser.uid).set({
-<<<<<<< HEAD
-                    username : username,
-=======
                     username : username.current,
->>>>>>> fix git error
                     sessions: [""]
                 });
 
                 //close modal
                 setModalOpen(false);
-<<<<<<< HEAD
-=======
 
                 //signout after sign up
                 signOut();
->>>>>>> fix git error
             }
         })
         .catch((error) => {
@@ -121,8 +107,6 @@ function SignUpModalv2(props:any){
         });
     }
 
-<<<<<<< HEAD
-=======
     let dispatch = useDispatch();
     let history = useHistory();
 
@@ -139,8 +123,6 @@ function SignUpModalv2(props:any){
         history.push("/");
     }
 
-
->>>>>>> fix git error
     return(
         <div>
             <Button className={classes.button} variant="outlined" onClick={handleOpenClose}>Sign Up</Button>
