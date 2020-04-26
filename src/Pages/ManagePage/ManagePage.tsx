@@ -43,32 +43,42 @@ function ManagePage(props: ManagePageProps){
     let history = useHistory();
     let dispatch = useDispatch();
     let playerLiquidDataArray = [] as any;
+    let playerIDDataArray = [] as any;
+
+//  join key logic
+    db.collection('Sessions').doc(props.sessionData.id).get().then(doc => {
+      if(doc.exists){
+        setJoinKey(doc.data()?.joinKey);
+      }
+    }).catch(err => {
+      console.log("Error getting join key from firebase");
+    });
 
     useEffect(()=>{
-//    join key logic
-      db.collection('Sessions').doc(props.sessionData.id).get().then(doc => {
-        if(doc.exists){
-          setJoinKey(doc.data()?.joinKey);
-        }
-      }).catch(err => {
-        console.log("Error getting join key from firebase");
-      });
-
 //    player list logic
-      db.collection('Sessions').doc(props.sessionData.id).collection('Users').get().then(querySnapshot => {
+      let userRef = db.collection('Sessions').doc(props.sessionData.id).collection('Users');
+      let unsubscribe = userRef.onSnapshot(querySnapshot => {
+        playerLiquidDataArray = [];
         querySnapshot.forEach(doc => {
-          // get players only
           if(doc.data()?.type == "player"){
             playerLiquidDataArray.push(
               <div>
-                <p>{doc.data()?.username} currently has {doc.data()?.liquid}</p>
+                <p>{doc.data()?.username}({doc.data()?.id}) currently has {doc.data()?.liquid}</p>
               </div>
             )
           }
+          console.log("reload occured");
         })
 
+        console.log("WTF" + playerLiquidDataArray);
         setPlayerLiquidData(playerLiquidDataArray);
+      }, err => {
+        console.log("Encountered Error: ${err}");
       })
+
+      return() => {
+        unsubscribe();
+      }
     },[]);
 
     let leaveSession = ()=>{
