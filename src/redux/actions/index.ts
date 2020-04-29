@@ -1,6 +1,7 @@
 import { StockDataModel } from "../../DataModels/stockData.model";
 import { Notification } from "../../DataModels/notification";
 import { Transaction } from "../../DataModels/transaction";
+import { Event } from "../../DataModels/event";
 
 
 export const changeSessionID = (id: string) => ({
@@ -76,4 +77,9 @@ export const changeCurrentUsername = (username: any) => ({
 export const addToWatchList = (watchedStocks: any) => ({
     type: "ADD_TO_WATCHLIST",
     payload: watchedStocks
+})
+
+export const addToQueuedEvents = (data: Event) => ({
+    type: "ADD_TO_QUEUED_EVENTS",
+    payload: data
 })

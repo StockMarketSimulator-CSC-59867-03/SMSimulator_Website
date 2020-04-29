@@ -1,6 +1,8 @@
 import React from 'react';
+import clsx from 'clsx';
 import { createStyles, makeStyles, Theme, Container, Grid, Paper, Typography } from '@material-ui/core';
 import EventInjectionForm from './EventInjectionForm';
+import QueuedEvents from './QueuedEvents';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -13,12 +15,16 @@ const useStyles = makeStyles((theme: Theme) =>
         paper: {
             minHeight: `calc(100vh - ${theme.spacing(2)}vh)`,
             padding: theme.spacing(2),
+        },
+        overflow: {
+            overflow: 'auto'
         }
     })
 )
 
 function EventInjection(props:any){
     const classes = useStyles();
+    const overflowPaper = clsx(classes.paper, classes.overflow);
 
     return (
         <div className={classes.root}>
@@ -31,7 +37,7 @@ function EventInjection(props:any){
                     </Grid>
                     <Grid item xs={12} md={3} lg={3}>
                         <Paper className={classes.paper}>
-                            <Typography>Queue Goes Here</Typography>
+                            <div className={classes.overflow}><QueuedEvents/></div>
                         </Paper>
                     </Grid>
                     <Grid item xs={12} md={3} lg={3}>
