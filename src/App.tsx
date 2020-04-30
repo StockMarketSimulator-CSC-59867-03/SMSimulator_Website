@@ -9,12 +9,14 @@ import TransactionPage from './Pages/TransactionPage/TransactionPage';
 import { StockDataService } from './Services/StockDataService';
 import { UserDataService } from './Services/UserDataService';
 import { TransactionListenerService } from './Services/TransactionListenerService';
+import BotManager from './Services/BotManager';
 import { QueuedEventListenerService } from './Services/QueuedEventListenerService';
 
 interface IAppComponentProps { 
     history: any,
     stockDataService: StockDataService,
     transactionListenerService: TransactionListenerService,
+    botManager: BotManager,
     queuedEventListenerService: QueuedEventListenerService,
     userDataService: UserDataService
 }

@@ -1,0 +1,142 @@
+{
+    "10":{
+        "Quantity":{
+            "max":100,
+            "min": 30
+        },
+        "Buys":{
+            "priceMax": 30,
+            "priceMin": 25
+        },
+        "Sells":{
+            "priceMax": 30,
+            "priceMin": 25
+        }
+    },
+    "9":{
+        "Quantity":{
+            "max":100,
+            "min": 30
+        },
+        "Buys":{
+            "priceMax": 25,
+            "priceMin": 20
+        },
+        "Sells":{
+            "priceMax": 25,
+            "priceMin":20
+        }
+    },
+    "8":{
+        "Quantity":{
+            "max": 100,
+            "min": 30
+        },
+        "Buys":{
+            "priceMax": 20,
+            "priceMin": 15
+        },
+        "Sells":{
+            "priceMax": 20,
+            "priceMin":15
+        }
+    },
+    "7":{
+        "Quantity":{
+            "max": 100,
+            "min": 30
+        },
+        "Buys":{
+            "priceMax": 15,
+            "priceMin": 10
+        },
+        "Sells":{
+            "priceMax": 15,
+            "priceMin": 10
+        }
+    },
+    "6":{
+        "Quantity":{
+            "max": 100,
+            "min": 30
+        },
+        "Buys":{
+            "priceMax": 10,
+            "priceMin": 5
+        },
+        "Sells":{
+            "priceMax": 10,
+            "priceMin":5
+        }
+    },
+    "5":{
+        "Quantity":{
+            "max": 100,
+            "min": 30
+        },
+        "Buys":{
+            "priceMax": 5,
+            "priceMin": -5
+        },
+        "Sells":{
+            "priceMax": 5,
+            "priceMin": -5
+        }
+    },
+    "4":{
+        "Quantity":{
+            "max": 100,
+            "min": 30
+        },
+        "Buys":{
+            "priceMax": -5,
+            "priceMin": -10
+        },
+        "Sells":{
+            "priceMax": -5,
+            "priceMin":-10
+        }
+    },
+    "3":{
+        "Quantity":{
+            "max": 100,
+            "min": 30
+        },
+        "Buys":{
+            "priceMax": -10,
+            "priceMin": -15
+        },
+        "Sells":{
+            "priceMax": -10,
+            "priceMin": -15
+        }
+    },
+    "2":{
+        "Quantity":{
+            "max": 100,
+            "min": 30
+        },
+        "Buys":{
+            "priceMax": -15,
+            "priceMin": -20
+        },
+        "Sells":{
+            "priceMax": -15,
+            "priceMin": -20
+        }
+    },
+    "1":{
+        "Quantity":{
+            "max": 100,
+            "min": 30
+        },
+        "Buys":{
+            "priceMax": -20,
+            "priceMin": -30
+        },
+        "Sells":{
+            "priceMax": -20,
+            "priceMin":-30
+        }
+    }
+}

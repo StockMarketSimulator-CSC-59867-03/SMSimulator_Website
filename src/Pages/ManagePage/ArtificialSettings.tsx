@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -30,6 +30,12 @@ import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Slider from "@material-ui/core/Slider";
 import Switch from "@material-ui/core/Switch";
+import useInput from "../../hooks/useInput";
+import BotManager from "../../Services/BotManager";
+import { BotSettings } from "../../DataModels/botSettings";
+import store from "../../redux/store";
+import { addNotification } from "../../redux/actions";
+
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -66,19 +72,60 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function ArtificialSettings() {
+
+function showError(errorText: string){
+  store.dispatch(addNotification({
+      type:"INSTANT",
+      title:"Error",
+      body:errorText
+  }));
+}
+
+interface ArtificialSettingsProps {
+  botManager: BotManager
+}
+
+export default function ArtificialSettings(props:ArtificialSettingsProps) {
   let db = firebase.firestore();
   const classes = useStyles();
-  const [value, setValue] = React.useState<
-    number | string | Array<number | string>
-  >(50);
 
-  const handleSliderChange = (event: any, newValue: number | number[]) => {
-    setValue(newValue);
+  let savedBotSettings = localStorage.getItem('botSettings');
+
+  let defaultSettings: BotSettings = {
+    enabled: false,
+    orderRate: 5000,
+    successRate: 5,
+    matchRate: 5
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value === "" ? "" : Number(event.target.value));
+
+  if(savedBotSettings != null && savedBotSettings != ""){
+    defaultSettings = JSON.parse(savedBotSettings);
+  }
+
+  const {value: enableCheck, setValue: setEnableCheck, bind: bindEnableCheck} = useInput(defaultSettings.enabled, (event: any) => event.target.checked );
+  const {value: orderRate, setValue: setOrderRate, bind: bindOrderRate} = useInput(defaultSettings.orderRate / 1000, (event: any, newValue: any) => newValue );
+  const {value: successRate, setValue: setSuccessRate, bind: bindSuccessRate} = useInput(defaultSettings.successRate, (event: any, newValue: any) => newValue );
+  const {value: matchRate, setValue: setMatchRate, bind: bindMatchRate} = useInput(defaultSettings.matchRate, (event: any, newValue: any) => newValue );
+
+  const handleSuccessInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSuccessRate(Number(event.target.value));
+  };
+
+  const handleMatchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMatchRate(Number(event.target.value));
+  };
+
+  const onSubmit = ()=>{
+    let newSettings: BotSettings = {
+      enabled: enableCheck,
+      orderRate: orderRate * 1000, 
+      successRate: successRate, 
+      matchRate: matchRate
+    }
+    props.botManager.startLoop(newSettings);
+   localStorage.setItem('botSettings',JSON.stringify(newSettings));
+    showError("Settings Changed");
   };
 
 
@@ -91,7 +138,7 @@ export default function ArtificialSettings() {
       <Divider className={classes.divider} />
 
       <FormControlLabel
-        control={<Switch name="checkedB" color="primary" />}
+        control={<Switch checked={enableCheck} name="enableCheck" color="primary" {...bindEnableCheck}/>}
         label="Enable Artifical Buyers/Sellers"
       />
 
@@ -111,6 +158,7 @@ export default function ArtificialSettings() {
         marks
         min={1}
         max={10}
+        {...bindOrderRate}
       />
       <Divider className={classes.divider} />
 
@@ -120,15 +168,15 @@ export default function ArtificialSettings() {
       <p>Percent chance that any stock has to successfully place an order during one iteration. Iterations occur based on the rate chosen.</p>
       <div>
         <Slider
-          value={typeof value === "number" ? value : 0}
-          onChange={handleSliderChange}
+          value={typeof successRate === "number" ? successRate : 0}
+         {...bindSuccessRate}
           aria-labelledby="input-slider"
           style={{ width: 300, marginRight: 10 }}
         />
         <Input
-          value={value}
+          value={successRate}
           margin="dense"
-          onChange={handleInputChange}
+          onChange={handleSuccessInputChange}
           inputProps={{
             step: 10,
             min: 0,
@@ -146,15 +194,15 @@ export default function ArtificialSettings() {
       <p>Percent chance of auto matching. When a buy order is created automatically create a sell order to match with. </p>
       <div>
         <Slider
-          value={typeof value === "number" ? value : 0}
-          onChange={handleSliderChange}
+          value={typeof matchRate === "number" ? matchRate : 0}
+          {...bindMatchRate}
           aria-labelledby="input-slider"
           style={{ width: 300, marginRight: 10 }}
         />
         <Input
-          value={value}
+          value={matchRate}
           margin="dense"
-          onChange={handleInputChange}
+          onChange={handleMatchInputChange}
           inputProps={{
             step: 10,
             min: 0,
@@ -165,7 +213,7 @@ export default function ArtificialSettings() {
         />
       </div>
 
-      <Button style={{marginTop:50}}variant="contained" color="primary">
+      <Button style={{marginTop:50}}variant="contained" color="primary" onClick={onSubmit}>
         Save Changes
       </Button>
     </div>

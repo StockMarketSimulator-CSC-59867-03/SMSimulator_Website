@@ -33,18 +33,21 @@ import EventInjection from './Pages/EventInjectionPage/EventInjection';
 import { TransactionListenerService } from './Services/TransactionListenerService';
 import transactionData from './redux/reducers/transactionDataReducer';
 import { QueuedEventListenerService } from './Services/QueuedEventListenerService';
+import ReduxStateListner from './ReduxStateListner';
+import BotManager from './Services/BotManager';
+import { BotSettings } from './DataModels/botSettings';
 
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCWFa5caoShYrHxcLFlVeHyIzM3mXWgJo0",
-    authDomain: "stock-market-sim.firebaseapp.com",
-    databaseURL: "https://stock-market-sim.firebaseio.com",
-    projectId: "stock-market-sim",
-    storageBucket: "stock-market-sim.appspot.com",
-    messagingSenderId: "6930575821",
-    appId: "1:6930575821:web:ffa7c8cafc0ed7bb595484",
-    measurementId: "G-6SR01THDJM"
+  apiKey: "AIzaSyApzhpZ4-U8-mZNM0LVKlC6qYytnoOnktI",
+  authDomain: "stocksimtest.firebaseapp.com",
+  databaseURL: "https://stocksimtest.firebaseio.com",
+  projectId: "stocksimtest",
+  storageBucket: "stocksimtest.appspot.com",
+  messagingSenderId: "1016983407789",
+  appId: "1:1016983407789:web:a1532af9a0f250f1914a24",
+  measurementId: "G-VQB64J53YS"
   };
 
 firebase.initializeApp(firebaseConfig);
@@ -56,7 +59,14 @@ const queuedEventListenerService = new QueuedEventListenerService();
 
 
 let sessionID = localStorage.getItem('currentSessionID');
+let savedBotSettings = localStorage.getItem('botSettings');
 
+let botManager = new BotManager(firebase.firestore());
+
+if(savedBotSettings != null && savedBotSettings != ""){
+  let parsedSettings: BotSettings = JSON.parse(savedBotSettings);
+  botManager.startLoop(parsedSettings);
+}
 
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -68,6 +78,7 @@ firebase.auth().onAuthStateChanged(function(user) {
         store.dispatch(changeCurrentUsername(username));
         notificationListenerService.attachUserNotificationListerner(uid);
         userDataService.changeUserID(uid);
+        botManager.changeUserID(uid);
         
     } else {
         store.dispatch(changeCurrentUserID(undefined));
@@ -81,6 +92,9 @@ firebase.auth().onAuthStateChanged(function(user) {
 const stockDataService = new StockDataService();
 
 
+
+
+
 if(sessionID != null && sessionID != ""){
     store.dispatch(clearSelectedStockData());
     store.dispatch(changeSessionID(sessionID));
@@ -90,10 +104,12 @@ if(sessionID != null && sessionID != ""){
     transactionListenerService.attachTransactionListener(sessionID);
     queuedEventListenerService.changeSessionID(sessionID);
     queuedEventListenerService.attachQueuedEventListener(sessionID);
+    
 }
 
 const routing = (
   <Provider store={store}>
+    <ReduxStateListner botManager={botManager}></ReduxStateListner>
     <Router>
       <NotificationComponent >
         <NavigationDrawer>
@@ -101,7 +117,7 @@ const routing = (
             exact
             path="/"
             render={props => (
-              <App transactionListenerService={transactionListenerService} stockDataService={stockDataService} userDataService={userDataService} queuedEventListenerService={queuedEventListenerService} {...props} />
+              <App transactionListenerService={transactionListenerService} stockDataService={stockDataService} userDataService={userDataService} queuedEventListenerService={queuedEventListenerService} botManager={botManager} {...props} />
             )}
           />
           {/* <Route path="/marketwindow" render={(props)=> <MarketWindow {...props} />} /> */}
@@ -109,19 +125,20 @@ const routing = (
           <Route path="/stockdata" component={StockData} />
           <Route path="/signup" component={SignUp} />
           <Route style={{height:"100%"}} path="/transactionPage" component={TransactionPage} />
-          <Route path="/manage" component={ManagePage} />
+          <Route path="/manage" render = {props => (<ManagePage botManager={botManager}></ManagePage>)} />
           <Route path="/portfolio" component={PortfolioPage} />
           <Route path="/eventinjection" 
                  render={props => (<EventInjection queuedEventListenerService={queuedEventListenerService} />)} />
           <Route 
             path="/profile"
             render={props => (
-              <ProfilePage stockDataService={stockDataService} userDataService={userDataService} />
+              <ProfilePage stockDataService={stockDataService} userDataService={userDataService} botManager={botManager} />
             )}
           />
         </NavigationDrawer>
       </NotificationComponent>
     </Router>
+  
   </Provider>
 );
 

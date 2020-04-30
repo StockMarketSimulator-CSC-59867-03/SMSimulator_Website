@@ -13,9 +13,11 @@ import './ManagePage.scss';
 import AddStocks from './AddStocks';
 import { createStyles, makeStyles, Theme, Container, Grid, Paper, Typography } from '@material-ui/core';
 import ArtificialSettings from './ArtificialSettings';
+import BotManager from '../../Services/BotManager';
 
 type ManagePageProps = {
-    sessionData: any
+    sessionData: any,
+    botManager: BotManager
 };
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -211,7 +213,7 @@ function ManagePage(props: ManagePageProps){
             <Grid item xs={12} md={9} lg={9}>
                 <Paper className={classes.paper}>
                     <Typography>Artifical Buyers/Sellers</Typography>
-                    <ArtificialSettings />
+                    <ArtificialSettings botManager={props.botManager}/>
                 </Paper>
             </Grid>
           </Grid>
