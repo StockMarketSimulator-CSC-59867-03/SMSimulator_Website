@@ -56,7 +56,7 @@ function SessionPage(props:SessionPageProps){
         console.log("DATA: " + data.ownerID);
 
         return new Promise((resolve,reject)=>{
-            fetch('/createSession', {
+            fetch('https://thawing-shore-19302.herokuapp.com/createSession', {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ function SessionPage(props:SessionPageProps){
                 return;
             }
 
-            fetch('/addStocks', {
+            fetch('https://thawing-shore-19302.herokuapp.com/addStocks', {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
