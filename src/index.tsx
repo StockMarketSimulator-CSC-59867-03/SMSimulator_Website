@@ -34,6 +34,7 @@ import { TransactionListenerService } from './Services/TransactionListenerServic
 import transactionData from './redux/reducers/transactionDataReducer';
 import { QueuedEventListenerService } from './Services/QueuedEventListenerService';
 import ReduxStateListner from './ReduxStateListner';
+import BotManager from './Services/BotManager';
 
 
 
@@ -58,7 +59,6 @@ const queuedEventListenerService = new QueuedEventListenerService();
 
 let sessionID = localStorage.getItem('currentSessionID');
 
-
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         console.log("User is signed in:");
@@ -82,6 +82,9 @@ firebase.auth().onAuthStateChanged(function(user) {
 const stockDataService = new StockDataService();
 
 
+let botM = new BotManager(firebase.firestore());
+botM.changeSessionId("n3NZMzuj3BALTWsyeWOe","HC8mYNAJcnWYtbTtbMydZYVZNXw1");
+
 if(sessionID != null && sessionID != ""){
     store.dispatch(clearSelectedStockData());
     store.dispatch(changeSessionID(sessionID));
@@ -95,7 +98,6 @@ if(sessionID != null && sessionID != ""){
 
 const routing = (
   <Provider store={store}>
-    <ReduxStateListner ></ReduxStateListner>
     <Router>
       <NotificationComponent >
         <NavigationDrawer>
