@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 import store from '../redux/store';
-import { addToQueuedEvents } from '../redux/actions';
+import { addToQueuedEvents, clearQueuedEvents } from '../redux/actions';
 
 export class QueuedEventListenerService {
     private db:any;
@@ -21,7 +21,7 @@ export class QueuedEventListenerService {
         if(sid == null ){
             return;
         }
-        
+        store.dispatch(clearQueuedEvents());
         this.sessionID = sid;
     }
 
@@ -30,16 +30,32 @@ export class QueuedEventListenerService {
         this.queuedEventListener = this.db.collection("Sessions").doc(sessionID).collection("Events")
         .onSnapshot((snapshot:any) => {
             snapshot.docChanges().forEach((change: any) => {
+                let data = change.doc.data();
                 if (change.type === "added") {
-                    let data = change.doc.data();
                     let event = {
                         name: data.name,
-                        direction: data.direction,
                         sector: data.sector,
-                        percent: data.percent,
+                        favorability: data.favorability
                     };
                     // console.log(event);
                     store.dispatch(addToQueuedEvents(event));
+                    //then update the stock favorability
+                    let collectionRef;
+                    if(data.sector === "all")
+                        collectionRef = this.db.collection("Sessions").doc(sessionID).collection("Stocks");
+                    else
+                        collectionRef = this.db.collection("Sessions").doc(sessionID).collection("Stocks").where("sector", "==", data.sector);
+                    
+                    collectionRef.get().then((querySnapshot:any) => {
+                        querySnapshot.forEach((doc:any) => {
+                            doc.ref.set({
+                                favorability: data.favorability
+                            }, { merge: true });
+                        })
+                    })
+                    .catch((error:any) => {
+                        console.log("Event Listener Favorability Error: ", error);
+                    })
                 }
             });
         })

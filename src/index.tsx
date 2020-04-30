@@ -101,7 +101,7 @@ const routing = (
             exact
             path="/"
             render={props => (
-              <App transactionListenerService={transactionListenerService} stockDataService={stockDataService} userDataService={userDataService} {...props} />
+              <App transactionListenerService={transactionListenerService} stockDataService={stockDataService} userDataService={userDataService} queuedEventListenerService={queuedEventListenerService} {...props} />
             )}
           />
           {/* <Route path="/marketwindow" render={(props)=> <MarketWindow {...props} />} /> */}
