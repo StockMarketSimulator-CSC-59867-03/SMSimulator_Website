@@ -29,9 +29,8 @@ function QueuedEvents(props:any){
     Object.entries(events).forEach((event:any) => {
         // console.log(event[1]);
         let name = event[1].name;
-        let direction = event[1].direction;
         let sector = event[1].sector;
-        let percent = event[1].percent;
+        let favorability = event[1].favorability;
 
         queuedEvents.push(
             <ExpansionPanel>
@@ -43,7 +42,7 @@ function QueuedEvents(props:any){
                 <Typography className={classes.heading}>{name}</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    <Typography>{direction} {sector} {percent}</Typography>
+                    <Typography>{sector} {favorability}</Typography>
                 </ExpansionPanelDetails>
             </ExpansionPanel>
         )

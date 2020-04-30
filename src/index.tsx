@@ -35,6 +35,7 @@ import transactionData from './redux/reducers/transactionDataReducer';
 import { QueuedEventListenerService } from './Services/QueuedEventListenerService';
 import ReduxStateListner from './ReduxStateListner';
 import BotManager from './Services/BotManager';
+import { BotSettings } from './DataModels/botSettings';
 
 
 
@@ -58,7 +59,14 @@ const queuedEventListenerService = new QueuedEventListenerService();
 
 
 let sessionID = localStorage.getItem('currentSessionID');
+let savedBotSettings = localStorage.getItem('botSettings');
+
 let botManager = new BotManager(firebase.firestore());
+
+if(savedBotSettings != null && savedBotSettings != ""){
+  let parsedSettings: BotSettings = JSON.parse(savedBotSettings);
+  botManager.startLoop(parsedSettings);
+}
 
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -109,7 +117,7 @@ const routing = (
             exact
             path="/"
             render={props => (
-              <App transactionListenerService={transactionListenerService} stockDataService={stockDataService} userDataService={userDataService} botManager={botManager} {...props} />
+              <App transactionListenerService={transactionListenerService} stockDataService={stockDataService} userDataService={userDataService} queuedEventListenerService={queuedEventListenerService} botManager={botManager} {...props} />
             )}
           />
           {/* <Route path="/marketwindow" render={(props)=> <MarketWindow {...props} />} /> */}

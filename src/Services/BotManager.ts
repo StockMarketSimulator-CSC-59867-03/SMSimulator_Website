@@ -62,11 +62,13 @@ export default class BotManager {
 
     changeSessionID = (sessionID: any) =>{
         this.sessionID = sessionID;
+        this.isOwner = false;
         this.verifyUser(this.sessionID,this.userID);  
     }
 
     changeUserID = (userID: any) => {
         this.userID = userID;
+        this.isOwner = false;
         this.verifyUser(this.sessionID,this.userID);  
 
     }
@@ -103,7 +105,6 @@ export default class BotManager {
     }
 
     getStocks(stockData: any){  // Might need to change to listners // COULD BE A BOTTLENECK
-        console.log("BOTMANAGER STOCKS");
         console.log(stockData);
         this.stockMap = new Map();
         const keys = Object.keys(stockData);
@@ -111,7 +112,6 @@ export default class BotManager {
             console.log(key)
             this.stockMap.set(key,stockData[key].data);
         }
-        console.log("BOTMANAGER STOCKS");
 
     }
 
@@ -132,7 +132,7 @@ export default class BotManager {
          if(!(randomizeInteger(100,0) < this.botSettings.successRate) ){ // performs random check on order skips loop if not met
              continue;
          }
-         
+         console.log(`Creatings Buys/Sells for ${symbol} `);
          let buyOrderDoc = this.db.collection("BuyOrders").doc();
          let sellOrderDoc = this.db.collection("SellOrders").doc();
          let favorability = data.favorability;
@@ -145,7 +145,6 @@ export default class BotManager {
          const {max: buyPriceMax, min: buyPriceMin} = this.computePercentRange(buyConfig.priceMax,buyConfig.priceMin,data.price);
          let buyPrice = randomizeFloat(buyPriceMax,buyPriceMin); 
          let buyQuantity = randomizeInteger(qunatityConfig.max,qunatityConfig.min);
-
          let newBuyOrder: Order = {
              price: buyPrice ,
              quantity: buyQuantity,
@@ -168,7 +167,6 @@ export default class BotManager {
              batch.set(matchedSellOrderDoc, matchedBuyOrder);
          }
 
-         console.log(newBuyOrder);
          batch.set(buyOrderDoc, newBuyOrder);
 
          // SELL ORDER
@@ -183,13 +181,11 @@ export default class BotManager {
              user: "bot"
          };
 
-         console.log(newSellOrder);
          batch.set(sellOrderDoc, newSellOrder);
 
        }
-       console.log("Loop Iteration Complete");
        batch.commit().then(function () {
-         console.log("Completed Batch");
+         console.log("Completed Batch Loop");
      });
 
     }

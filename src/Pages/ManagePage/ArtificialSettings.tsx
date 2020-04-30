@@ -89,10 +89,24 @@ export default function ArtificialSettings(props:ArtificialSettingsProps) {
   let db = firebase.firestore();
   const classes = useStyles();
 
-  const {value: enableCheck, setValue: setEnableCheck, bind: bindEnableCheck} = useInput(false, (event: any) => event.target.checked );
-  const {value: orderRate, setValue: setOrderRate, bind: bindOrderRate} = useInput(5, (event: any, newValue: any) => newValue );
-  const {value: successRate, setValue: setSuccessRate, bind: bindSuccessRate} = useInput(50, (event: any, newValue: any) => newValue );
-  const {value: matchRate, setValue: setMatchRate, bind: bindMatchRate} = useInput(50, (event: any, newValue: any) => newValue );
+  let savedBotSettings = localStorage.getItem('botSettings');
+
+  let defaultSettings: BotSettings = {
+    enabled: false,
+    orderRate: 5000,
+    successRate: 5,
+    matchRate: 5
+  };
+
+
+  if(savedBotSettings != null && savedBotSettings != ""){
+    defaultSettings = JSON.parse(savedBotSettings);
+  }
+
+  const {value: enableCheck, setValue: setEnableCheck, bind: bindEnableCheck} = useInput(defaultSettings.enabled, (event: any) => event.target.checked );
+  const {value: orderRate, setValue: setOrderRate, bind: bindOrderRate} = useInput(defaultSettings.orderRate / 1000, (event: any, newValue: any) => newValue );
+  const {value: successRate, setValue: setSuccessRate, bind: bindSuccessRate} = useInput(defaultSettings.successRate, (event: any, newValue: any) => newValue );
+  const {value: matchRate, setValue: setMatchRate, bind: bindMatchRate} = useInput(defaultSettings.matchRate, (event: any, newValue: any) => newValue );
 
   const handleSuccessInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSuccessRate(Number(event.target.value));
@@ -110,6 +124,7 @@ export default function ArtificialSettings(props:ArtificialSettingsProps) {
       matchRate: matchRate
     }
     props.botManager.startLoop(newSettings);
+   localStorage.setItem('botSettings',JSON.stringify(newSettings));
     showError("Settings Changed");
   };
 

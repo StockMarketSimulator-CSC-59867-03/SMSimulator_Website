@@ -18,16 +18,18 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useHistory } from "react-router-dom";
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { changeSessionID, addToWatchList,clearSelectedStockData,clearUserStockData } from '../../redux/actions';
+import { changeSessionID, addToWatchList,clearSelectedStockData,clearUserStockData, clearQueuedEvents } from '../../redux/actions';
 import { StockDataService } from '../../Services/StockDataService';
 import LandingPage from '../LandingPage/LandingPage';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { TransactionListenerService } from '../../Services/TransactionListenerService';
+import { QueuedEventListenerService } from '../../Services/QueuedEventListenerService';
 
 type SessionPageProps = {
     history: any,
     transactionListenerService: TransactionListenerService,
     stockDataService: StockDataService,
+    queuedEventListenerService: QueuedEventListenerService,
     userID: any,
     userDataService: any
 };
@@ -140,7 +142,6 @@ function SessionPage(props:SessionPageProps){
 
       const clickedYes = () => {
         dispatch(changeSessionID(clickedSessionID));
-        
         dispatch(clearSelectedStockData());
         localStorage.setItem('currentSessionID',clickedSessionID);
 
@@ -156,6 +157,7 @@ function SessionPage(props:SessionPageProps){
         props.stockDataService.changeCurrentSession(clickedSessionID);
         props.transactionListenerService.changeSessionID(clickedSessionID);
         props.userDataService.changeSessionID(clickedSessionID);
+        props.queuedEventListenerService.changeSessionID(clickedSessionID);
         handleClose();
         props.history.push("/marketwindow");
       };
