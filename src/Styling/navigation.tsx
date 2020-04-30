@@ -1,36 +1,20 @@
 import React , { useState }from 'react';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import ManageIcon from '@material-ui/icons/Build';
-import App from '../App';
-import LogInModal from '../Components/LogInModal/LogInModal';
-import { Button, Menu, MenuItem } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import SignUpModalv2 from '../Components/SignUpModal/signupv2';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { withRouter } from "react-router-dom";
-import StoreIcon from '@material-ui/icons/Store';
-import AppsIcon from '@material-ui/icons/Apps';
-import HomeIcon from '@material-ui/icons/Home';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { changeSessionID, addToWatchList,clearSelectedStockData,clearUserStockData } from '../redux/actions';
+import { connect, useDispatch } from 'react-redux';
+import { changeSessionID,clearSelectedStockData } from '../redux/actions';
 import LoginModalv2 from '../Components/LogInModal/loginv2';
 import SignOut from '../Components/SignOut/SignOut';
 
 // is it worth to do this firebase connectio separately?
 import firebase from 'firebase';
-import { collection, collectionData, collectionChanges } from 'rxfire/firestore';
-import { Subject } from 'rxjs';
 import NavigationSideMenu from './navigationSideMenu';
 
 

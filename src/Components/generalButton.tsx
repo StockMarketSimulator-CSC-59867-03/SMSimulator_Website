@@ -1,6 +1,4 @@
 import React from 'react';
-import MarketWindow from '../Pages/OldPages/MarketWindow/marketwindow';
-import { Link } from 'react-router-dom';
 
 
 type gBprops = {

@@ -1,32 +1,14 @@
 import React from "react";
-
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import firebase from "firebase";
-import { useSelector } from "react-redux";
 import {
   createStyles,
   makeStyles,
   Theme,
-  Container,
-  Grid,
-  Paper,
   Typography,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormHelperText,
   Divider,
   Input,
-  TextField,
   Button,
 } from "@material-ui/core";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Slider from "@material-ui/core/Slider";
 import Switch from "@material-ui/core/Switch";

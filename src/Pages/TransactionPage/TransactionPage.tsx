@@ -2,18 +2,14 @@ import React, { useState,useEffect } from 'react';
 import StockList from './StockList/StockList';
 import StockView from './StockView/StockView';
 import "./TransactionPage.scss";
-import Button from '@material-ui/core/Button';
 import clsx from 'clsx';
 
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { StockDataModel } from '../../DataModels/stockData.model';
 import {setSelectedStockData} from '../../redux/actions';
-import { TransactionPageModel } from './TransactionPage.model';
-import { StockDataService } from '../../Services/StockDataService';
-import StockData from '../OldPages/StockData/stockdata';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Paper, Grid, Card, Container, Fab, Divider } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import GridList from '@material-ui/core/GridList';
 
 

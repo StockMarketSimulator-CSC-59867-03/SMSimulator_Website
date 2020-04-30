@@ -1,15 +1,8 @@
 import firebase from 'firebase';
-import { Subject } from 'rxjs';
-
 import store from '../redux/store';
-import { addNotification, setTransactionData } from "../redux/actions";
-import transactionData from '../redux/reducers/transactionDataReducer';
-import { useDispatch } from 'react-redux';
-
+import { setTransactionData } from "../redux/actions";
 
 let TransactionInstances = 0;
-
-
 
 function showError(errorText: string){
     console.log("error");

@@ -1,27 +1,18 @@
 
 import React, { useState, useEffect } from 'react';
-// import "./LandingPage.scss";
-import { Link } from 'react-router-dom';
-import StockGraph from '../../Components/StockGraph/stockGraph';
 import SessionSearch from '../../Components/sessionSearch';
 import ScrollableButtonList from '../../Components/SessionList/scrollableButtonList';
-import GeneralButton from '../../Components/generalButton';
 import Button from '@material-ui/core/Button';
 import CreateSessionModal from '../../Components/CreateSessionModal/CreateSessionModal'
-import MarketWindow from '../OldPages/MarketWindow/marketwindow';
-import LogInModal from '../../Components/LogInModal/LogInModal';
-import SignUpModal from '../../Components/SignUpModal/SignUpModal';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { useHistory } from "react-router-dom";
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { changeSessionID, addToWatchList,clearSelectedStockData,clearUserStockData, clearQueuedEvents } from '../../redux/actions';
+import { changeSessionID, addToWatchList,clearSelectedStockData } from '../../redux/actions';
 import { StockDataService } from '../../Services/StockDataService';
 import LandingPage from '../LandingPage/LandingPage';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { TransactionListenerService } from '../../Services/TransactionListenerService';
 import { QueuedEventListenerService } from '../../Services/QueuedEventListenerService';
 

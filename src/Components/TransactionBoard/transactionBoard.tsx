@@ -1,4 +1,3 @@
-import firebase, { firestore } from "firebase";
 import React from "react";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,7 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { withStyles, createStyles, Theme, makeStyles } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -52,7 +51,7 @@ export function TransactionBoard(){
 
 const classes = useStyles();
 let transactions = useSelector((state: any)=> state.transactionData);
-if(transactions == undefined){
+if(transactions === undefined){
   transactions = [
     createData(2201,"AMZN",1201,38),
     createData(2205,"BE",1201,38),

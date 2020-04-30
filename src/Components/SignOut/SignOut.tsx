@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { changeCurrentUserID, changeCurrentUsername, changeSessionID, clearSelectedStockData,clearUserStockData } from '../../redux/actions';
+import { changeSessionID, clearSelectedStockData } from '../../redux/actions';
 import { Button } from '@material-ui/core';
 import * as firebase from 'firebase';
 import { useHistory } from 'react-router';

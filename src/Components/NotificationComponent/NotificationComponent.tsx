@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -53,7 +53,7 @@ function NotificationComponent(props: any){
         });
     };
 
-    if(notifications.length > 0 && instant.open == false && snackBar.open == false){
+    if(notifications.length > 0 && instant.open === false && snackBar.open === false){
         let notif = notifications[0];
         let filteredArray = notifications.filter((item: any) => item !== notif);
 

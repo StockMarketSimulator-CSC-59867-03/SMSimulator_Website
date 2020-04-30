@@ -1,33 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
-// import "./h.css";
-import { Link } from 'react-router-dom';
-import StockGraph from '../../Components/StockGraph/stockGraph';
-import SessionSearch from '../../Components/sessionSearch';
-import ScrollableButtonList from '../../Components/SessionList/scrollableButtonList';
-import GeneralButton from '../../Components/generalButton';
-import Button from '@material-ui/core/Button';
-import CreateSessionModal from '../../Components/CreateSessionModal/CreateSessionModal'
-import MarketWindow from '../../Pages/OldPages/MarketWindow/marketwindow';
-import LogInModal from '../../Components/LogInModal/LogInModal';
-import SignUpModal from '../../Components/SignUpModal/SignUpModal';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { useHistory } from "react-router-dom";
 import { connect } from 'react-redux';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Paper, Grid, Card, Container, Fab, Divider } from '@material-ui/core';
+import { Paper, Grid, Container } from '@material-ui/core';
 import WatchedStocks from './WatchedStocks';
 import Typography from '@material-ui/core/Typography';
 import SessionStocks from './SessionStocks';
-import OwnedStocks from '../PortfolioPage/OwnedStocks';
 import MainStockGraph from './MainStockGraph';
 import firebase from 'firebase';
 import { TransactionBoard } from '../../Components/TransactionBoard/transactionBoard';
-import PortfolioStockGraph from '../PortfolioPage/PortfolioStockGraph';
 
 
 // type HomePageProps = {

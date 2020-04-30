@@ -1,14 +1,9 @@
 import React, { useState,useEffect } from 'react';
 import Button from '@material-ui/core/Button';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { changeSessionID,clearSelectedStockData,clearUserStockData } from "../../redux/actions";
+import { connect, useDispatch } from 'react-redux';
+import { changeSessionID,clearSelectedStockData } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
-import { StockDataModel } from '../../DataModels/stockData.model';
-import { setSelectedStockData } from '../../redux/actions';
-import { StockDataService } from '../../Services/StockDataService';
-import StockData from '../OldPages/StockData/stockdata';
 import firebase from 'firebase';
-import { collection, collectionData, collectionChanges } from 'rxfire/firestore';
 import './ManagePage.scss';
 import AddStocks from './AddStocks';
 import { createStyles, makeStyles, Theme, Container, Grid, Paper, Typography } from '@material-ui/core';
@@ -39,7 +34,7 @@ function ManagePage(props: ManagePageProps){
     const [joinKey, setJoinKey] = useState("");
     const classes = useStyles();
     const [playerData, setPlayerData] = useState([] as any);
-
+    
     let history = useHistory();
     let dispatch = useDispatch();
     let playerDataArray = [] as any;

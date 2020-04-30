@@ -1,6 +1,6 @@
 import React from 'react';
 import StockGraph from '../../Components/StockGraph/stockGraph';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { isNumber } from 'util';
 
 var min = 0.0;

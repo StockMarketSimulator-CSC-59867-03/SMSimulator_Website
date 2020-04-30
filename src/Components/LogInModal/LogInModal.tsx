@@ -10,8 +10,6 @@ import TextField from "@material-ui/core/TextField";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import { Grid } from "@material-ui/core";
-import { connect, useDispatch } from 'react-redux';
-import { changeCurrentUserID } from '../../redux/actions';
 
 type LogInProps = {
 };
