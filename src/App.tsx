@@ -9,11 +9,13 @@ import TransactionPage from './Pages/TransactionPage/TransactionPage';
 import { StockDataService } from './Services/StockDataService';
 import { UserDataService } from './Services/UserDataService';
 import { TransactionListenerService } from './Services/TransactionListenerService';
+import { QueuedEventListenerService } from './Services/QueuedEventListenerService';
 
 interface IAppComponentProps { 
     history: any,
     stockDataService: StockDataService,
     transactionListenerService: TransactionListenerService,
+    queuedEventListenerService: QueuedEventListenerService,
     userDataService: UserDataService
 }
 interface IAppComponentState { }
@@ -45,7 +47,7 @@ class App extends React.Component<IAppComponentProps, IAppComponentState> {
          }} />*/}
 
             {/**  */} 
-            <SessionPage history={this.props.history} stockDataService={this.props.stockDataService} transactionListenerService={this.props.transactionListenerService} userDataService={this.props.userDataService} />
+            <SessionPage history={this.props.history} stockDataService={this.props.stockDataService} transactionListenerService={this.props.transactionListenerService} userDataService={this.props.userDataService} queuedEventListenerService={this.props.queuedEventListenerService}/>
             </div>
         );
     }

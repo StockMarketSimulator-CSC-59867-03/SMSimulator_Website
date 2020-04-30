@@ -83,3 +83,8 @@ export const addToQueuedEvents = (data: Event) => ({
     type: "ADD_TO_QUEUED_EVENTS",
     payload: data
 })
+
+export const clearQueuedEvents = () => ({
+    type: "CLEAR_QUEUED_EVENTS",
+    payload: []
+});
