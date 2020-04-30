@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../TransactionPage.scss'
 import StockListItem from '../../../Components/StockListItem/StockListItem';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import GridList from '@material-ui/core/GridList';
-import { List } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,7 +17,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 function StockList(props: any){
-    const classes = useStyles();
     let stocksToDisplay = props.stocks;
     let stockList: any = [];
     stocksToDisplay.forEach((stock: any)=> {

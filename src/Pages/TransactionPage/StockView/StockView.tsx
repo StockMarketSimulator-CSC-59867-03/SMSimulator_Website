@@ -1,6 +1,6 @@
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React from "react";
 import "../TransactionPage.scss";
-import { Grid, Button } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import StockViewHeader from "./StockViewHeader";
 import StockGraph from "../../../Components/StockGraph/stockGraph";
 import StockViewFooter from "./StockViewFooter";
@@ -8,7 +8,6 @@ import './StockView.scss'
 import BuyModalv2 from "../../../Components/BuyModalv2/BuyModalv2";
 import SellModalv2 from "../../../Components/SellModalv2/SellModalv2";
 import { useSelector } from "react-redux";
-import { ButtonGroup } from '@material-ui/core';
 
 function StockView() {
   const selectedStock = useSelector((state: any) => state.selectedStockData);

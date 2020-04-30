@@ -1,5 +1,4 @@
 import React from 'react';
-import clsx from 'clsx';
 import { createStyles, makeStyles, Theme, Container, Grid, Paper, Typography } from '@material-ui/core';
 import EventInjectionForm from './EventInjectionForm';
 import QueuedEvents from './QueuedEvents';
@@ -24,7 +23,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function EventInjection(props:any){
     const classes = useStyles();
-    const overflowPaper = clsx(classes.paper, classes.overflow);
 
     return (
         <div className={classes.root}>

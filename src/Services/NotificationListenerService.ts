@@ -1,6 +1,4 @@
 import firebase from 'firebase';
-import { Subject } from 'rxjs';
-
 import store from '../redux/store';
 import { addNotification } from "../redux/actions";
 

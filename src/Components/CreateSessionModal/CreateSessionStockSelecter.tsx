@@ -1,6 +1,6 @@
 import React from "react";
 import { FormControlLabel, Button } from "@material-ui/core";
-import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
+import Checkbox from "@material-ui/core/Checkbox";
 import Grid from "@material-ui/core/Grid";
 import "../../App.scss";
 import CircularProgress from '@material-ui/core/CircularProgress';

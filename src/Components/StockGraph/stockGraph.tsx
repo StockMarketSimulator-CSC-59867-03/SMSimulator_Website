@@ -1,15 +1,5 @@
-
-import React, { useState } from 'react';
-import { LineChart, XAxis, YAxis, CartesianGrid, Line, Tooltip, ResponsiveContainer } from 'recharts';
-import { Link } from 'react-router-dom';
-
-import {
-    RadioGroup,
-    FormControlLabel,
-    Radio,
-    Grid,
-    FormControl
-  } from "@material-ui/core";
+import React from 'react';
+import { LineChart, XAxis, YAxis, Line, Tooltip, ResponsiveContainer } from 'recharts';
 
 
 function StockGraph(props: any){
@@ -19,8 +9,8 @@ function StockGraph(props: any){
         props.handleClick({name:props.name, domain: props.domain, data: props.data})
     };
 
-    let animationOn = !(props.animationOn == false) ;
-    let showToolTip = !(props.showToolTip == false);
+    let animationOn = !(props.animationOn === false) ;
+    let showToolTip = !(props.showToolTip === false);
 
     let lineColor = "#008006";
     

@@ -1,11 +1,6 @@
 import React from 'react';
 import './App.scss';
-import SessionInitiation from './Components/sessioninitiation';
-import { Link } from 'react-router-dom';
-import SIState from './Components/sessioninitiation';
-import {connect} from 'react-redux';
 import SessionPage from './Pages/SessionPage/SessionPage';
-import TransactionPage from './Pages/TransactionPage/TransactionPage';
 import { StockDataService } from './Services/StockDataService';
 import { UserDataService } from './Services/UserDataService';
 import { TransactionListenerService } from './Services/TransactionListenerService';

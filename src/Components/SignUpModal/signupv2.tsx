@@ -4,12 +4,11 @@ import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal"
 import TextField from "@material-ui/core/TextField";
 import { Grid } from "@material-ui/core";
-import EmailIcon from '@material-ui/icons/Email';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
-import { changeCurrentUserID, changeCurrentUsername, changeSessionID, clearSelectedStockData,clearUserStockData } from '../../redux/actions';
+import { changeSessionID, clearSelectedStockData } from '../../redux/actions';
 import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme: Theme) => 
@@ -98,7 +97,6 @@ function SignUpModalv2(props:any){
             }
         })
         .catch((error) => {
-            const errorCode = error.code;
             const errorMessage = error.message;
             alert(errorMessage);
             

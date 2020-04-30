@@ -1,28 +1,27 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Grid, Paper, List, ListItem, Card, GridList, GridListTile, ListItemText, GridListTileBar } from '@material-ui/core';
+import React from 'react';
+import { GridList } from '@material-ui/core';
 import StockGraph from '../../Components/StockGraph/stockGraph';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToWatchList } from '../../redux/actions';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-      paper: {
-        display: 'flex',
-        // justifyContent: 'space-between',
-        margin: 50,
-      },
-      gridList: {
-        flexWrap: 'nowrap',
-      },
-      titleBar: {
-        background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
-      },
-      title: {
-        color: "white",
-      },
-  }),
-);
+// const useStyles = makeStyles((theme: Theme) =>
+//   createStyles({
+//       paper: {
+//         display: 'flex',
+//         // justifyContent: 'space-between',
+//         margin: 50,
+//       },
+//       gridList: {
+//         flexWrap: 'nowrap',
+//       },
+//       titleBar: {
+//         background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
+//       },
+//       title: {
+//         color: "white",
+//       },
+//   }),
+// );
 
 function SessionStocks(props:any) {
   let stocks = useSelector((state: any) => state.stockData); //handle for global stockData

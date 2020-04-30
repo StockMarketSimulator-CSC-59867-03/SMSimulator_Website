@@ -1,13 +1,12 @@
 import React, { useState,useEffect } from 'react';
-import { Grid, Container } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { Grid } from '@material-ui/core';
+import { connect, useDispatch } from 'react-redux';
 import { useHistory } from "react-router-dom";
 import firebase from 'firebase';
 import GeneralButton from '../../Components/generalButton';
 import { StockDataService } from '../../Services/StockDataService';
 import { UserDataService } from '../../Services/UserDataService';
-import { changeSessionID, addToWatchList,clearSelectedStockData,clearUserStockData } from '../../redux/actions';
+import { changeSessionID, addToWatchList,clearSelectedStockData } from '../../redux/actions';
 
 type ProfilePageProps = {
     sessionData: any,
@@ -38,7 +37,7 @@ function ProfilePage(props: ProfilePageProps){
         // next step is to search and get the sessions document from the session array
         sessionIDs.forEach(async(session: any, index) => {
           await db.collection("Sessions").doc(session).get().then(docFields => {
-            if(docFields.data()?.ownerID == props.currentUserData.id){
+            if(docFields.data()?.ownerID === props.currentUserData.id){
               ownedSessions.push(<GeneralButton text={docFields.data()?.name} onClick={() => handleClick(session)} sessionID={session} />);
             } else {
               notOwnedSessions.push(<GeneralButton text={docFields.data()?.name} onClick={() => handleClick(session)} sessionID={session} />);
@@ -46,7 +45,7 @@ function ProfilePage(props: ProfilePageProps){
           })
 
           // set state ONLY once the for loop ends  
-          if(index == sessionIDs.length - 1){
+          if(index === sessionIDs.length - 1){
             sessionButtons.push(ownedSessions);
             sessionButtons.push(notOwnedSessions);
             setSessions(sessionButtons);

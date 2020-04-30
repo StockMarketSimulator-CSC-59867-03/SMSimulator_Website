@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import firebase from 'firebase';
-import { createStyles, makeStyles, Theme, Container, Grid, Paper, Typography, FormControl, InputLabel, Select, MenuItem, FormHelperText, Divider, Input, TextField, Button, Slider } from '@material-ui/core';
+import { createStyles, makeStyles, Theme, Typography, FormControl, InputLabel, Select, MenuItem, Divider, TextField, Button, Slider } from '@material-ui/core';
 import { connect } from 'react-redux';
 
 const useStyles = makeStyles((theme:Theme) => 

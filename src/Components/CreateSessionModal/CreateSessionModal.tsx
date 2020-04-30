@@ -1,27 +1,16 @@
 import React from "react";
-
+import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
-import { render } from "@testing-library/react";
-import { makeStyles } from "@material-ui/core/styles";
 import "./CreateSessionModal.scss";
 import "../../App.scss";
-import TextField from "@material-ui/core/TextField";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import {
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  Grid,
-  FormControl,
-
-  Icon
+  Grid
 } from "@material-ui/core";
-import Pagination from "@material-ui/lab/Pagination";
 import Page1 from "./CreateSessionForm1";
 import Page2 from "./CreateSessionStockSelecter";
-import { connect } from 'react-redux';
 
 import { withStyles } from "@material-ui/core/styles";
 

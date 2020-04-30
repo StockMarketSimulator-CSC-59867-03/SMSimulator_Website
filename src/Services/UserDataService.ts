@@ -1,6 +1,4 @@
 import firebase from 'firebase';
-import { Subject } from 'rxjs';
-
 import store from '../redux/store';
 import { addNotification,changeSessionBalance,setUserStockData,clearUserStockData } from "../redux/actions";
 
@@ -113,7 +111,6 @@ export class UserDataService{
         this.sessionID = sessionID;
         this.userNotifListener = userId;
         
-        let date = new Date();
         this.userNotifListener = this.db.collection("Sessions").doc(sessionID).collection("Users").doc(userId)
         .onSnapshot(function(doc: any) {
                     let data = doc.data();

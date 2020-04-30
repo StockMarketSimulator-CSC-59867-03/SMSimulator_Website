@@ -1,8 +1,6 @@
 import React , {useState, useEffect }from 'react';
 import GeneralButton from '../generalButton';
-import firebase from 'firebase';
 import SessionListModel from './SessionList.model';
-import store from '../../redux/store';
 import { connect } from 'react-redux';
 
 type sbProps = {

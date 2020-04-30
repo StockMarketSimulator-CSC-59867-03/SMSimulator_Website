@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -9,7 +8,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import firebase from 'firebase';
 import { useSelector } from 'react-redux';
-import { useHistory } from "react-router-dom";
 
 type AddStocksProps = {
     id: any;
@@ -25,8 +23,6 @@ export default function AddStocks(props: AddStocksProps) {
     quantity:""
   });
   const sessionID = useSelector((state: any) => state.sessionData.id);
-  let history = useHistory();
-
 
   const handleChange = (event: any) =>{
     let value;
@@ -36,8 +32,6 @@ export default function AddStocks(props: AddStocksProps) {
         [event.target.id]: value,
     })
   }
-
-
 
   const handleClickOpen = () => {
     setOpen(true);

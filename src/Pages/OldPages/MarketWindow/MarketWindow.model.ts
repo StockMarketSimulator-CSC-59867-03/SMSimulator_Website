@@ -1,7 +1,6 @@
 import firebase from 'firebase';
 import { Subject } from 'rxjs';
 import { collection } from 'rxfire/firestore';
-import { map } from 'rxjs/operators';
 
 
 export default class MarketWindowModel{

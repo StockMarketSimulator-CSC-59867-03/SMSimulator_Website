@@ -1,12 +1,10 @@
 import React from 'react';
-import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
-import { FormControlLabel, InputLabel, FormControl, Input, Button, Grid } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
 import firebase from 'firebase';
 import { connect, useSelector,useDispatch } from 'react-redux';
-import stockData from '../../redux/reducers/stockDataReducer';
-import { PassThrough } from 'stream';
 import currentUserData from '../../redux/reducers/userReducer';
 import {addNotification} from '../../redux/actions';
 

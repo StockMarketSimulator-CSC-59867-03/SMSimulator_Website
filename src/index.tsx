@@ -1,16 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
+import { Route, BrowserRouter as Router } from 'react-router-dom';
 import './index.scss';
 import * as serviceWorker from './serviceWorker';
 import * as firebase from 'firebase';
 
 import App from './App';
-import Login from './Pages/OldPages/login';
-import MarketWindow from './Pages/OldPages/MarketWindow/marketwindow';
 import SignUp from './Pages/OldPages/signup'
-
-import { Session } from 'inspector';
 import StockData from './Pages/OldPages/StockData/stockdata';
 import { Provider } from 'react-redux';
 import store from "./redux/store";
@@ -21,17 +17,14 @@ import HomePage from './Pages/HomePage/HomePage';
 import ProfilePage from './Pages/ProfilePage/ProfilePage';
 import { StockDataService } from './Services/StockDataService';
 import NotificationComponent from './Components/NotificationComponent/NotificationComponent';
-import LoginTest from './Components/LogInModal/loginv2';
-import { changeCurrentUserID, changeCurrentUsername, changeSessionID, addToWatchList, clearSelectedStockData, clearUserStockData } from './redux/actions';
+import { changeCurrentUserID, changeCurrentUsername, changeSessionID, clearSelectedStockData } from './redux/actions';
 import { NotificationListenerService } from './Services/NotificationListenerService';
 import { UserDataService } from './Services/UserDataService';
-import { Subject } from 'rxjs';
 import { ThemeProvider } from '@material-ui/core';
 import { theme } from './Styling/styles';
 import PortfolioPage from './Pages/PortfolioPage/PortfolioPage';
 import EventInjection from './Pages/EventInjectionPage/EventInjection';
 import { TransactionListenerService } from './Services/TransactionListenerService';
-import transactionData from './redux/reducers/transactionDataReducer';
 import { QueuedEventListenerService } from './Services/QueuedEventListenerService';
 
 

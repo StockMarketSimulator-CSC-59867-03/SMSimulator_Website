@@ -1,8 +1,6 @@
 import firebase from 'firebase';
-import { collection, collectionData, collectionChanges } from 'rxfire/firestore';
-import { map, flatMap } from 'rxjs/operators';
+import { collectionChanges } from 'rxfire/firestore';
 import { Subject } from 'rxjs';
-
 
 class SessionListModel{
     public sessionList: any = []
@@ -11,12 +9,12 @@ class SessionListModel{
 
     constructor(){}
     init(){
-        if(this.loaded != false){return;}
+        if(this.loaded !== false){return;}
 
         const db = firebase.firestore()
         collectionChanges(db.collection('Sessions')).subscribe((data)=>{
             data.forEach((docData : any) =>{
-                if(docData.type == "added"){
+                if(docData.type === "added"){
                     let sessionData = docData.doc.data();
                     this.sessionList.push({id:docData.doc.id, name: sessionData.name});
                 }

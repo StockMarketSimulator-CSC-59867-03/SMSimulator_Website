@@ -1,8 +1,6 @@
 import firebase from 'firebase';
-import { collection, collectionData, collectionChanges } from 'rxfire/firestore';
-import { map, flatMap } from 'rxjs/operators';
-import { Subject, Observable } from 'rxjs';
-import { Session } from 'inspector';
+import { collectionChanges } from 'rxfire/firestore';
+import { Subject } from 'rxjs';
 
 export class TransactionPageModel {
     public stockList: any = []
