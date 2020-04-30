@@ -14,7 +14,7 @@ function sleep(ms: any) {
   }
 
 export default class BotManager {
-    sessionID: string;
+    
     stockMap: Map<string,any>; // favoribility settings
     db: any;
     stockDataListner: any;
@@ -28,6 +28,9 @@ export default class BotManager {
         matchRate: 5
 
     };
+    sessionID: string;
+    userID: any;
+
     constructor(db: any) {
         this.sessionID = "";
         this.db = db;
@@ -53,12 +56,29 @@ export default class BotManager {
         });
     }
 
-    async changeSessionId(sessionID: string, userID: string){
+    changeSessionID = (sessionID: any) =>{
+        this.sessionID = sessionID;
+        this.verifyUser(this.sessionID,this.userID);  
+    }
 
-        // Need To disable any intervals
-        let ownerID = await this.getOwnerID(sessionID);
+    changeUserID = (userID: any) => {
+        this.userID = userID;
+        this.verifyUser(this.sessionID,this.userID);  
+
+    }
+
+    async verifyUser(sessionID: string, userID: string){
+        if (this.loopInterval != "" && this.loopInterval != null){ // Stop the loop
+            clearInterval(this.loopInterval);
+        }
+
+        if(this.userID == "" || this.userID == null || this.sessionID == "" || this.sessionID == null){ // Verify the sessionID and userID
+            console.log("RETURING");
+            return;
+        }
+
+        let ownerID = await this.getOwnerID(sessionID); // Get current ownerID of the current session
         this.isOwner = (ownerID == userID);
-        console.log(this.isOwner);
         if(this.isOwner){
             this.startLoop(this.botSettings);
         }
@@ -66,11 +86,11 @@ export default class BotManager {
 
     // Starts the Bot Manager loop based on the given settings. Or changes the settings 
     startLoop(newSettings: BotSettings){
-        this.botSettings = newSettings;
-        if (this.loopInterval != "" && this.loopInterval != null){
+        if (this.loopInterval != "" && this.loopInterval != null){ // Stop the loop
             clearInterval(this.loopInterval);
         }
-
+        
+        this.botSettings = newSettings;
         if(this.isOwner){
             if(this.botSettings.enabled){
                 this.loopInterval = setInterval(this.loop.bind(this),this.botSettings.orderRate);

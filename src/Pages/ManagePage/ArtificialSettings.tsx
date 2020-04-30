@@ -31,6 +31,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Slider from "@material-ui/core/Slider";
 import Switch from "@material-ui/core/Switch";
 import useInput from "../../hooks/useInput";
+import BotManager from "../../Services/BotManager";
+import { BotSettings } from "../../DataModels/botSettings";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -68,7 +70,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function ArtificialSettings() {
+interface ArtificialSettingsProps {
+  botManager: BotManager
+}
+
+export default function ArtificialSettings(props:ArtificialSettingsProps) {
   let db = firebase.firestore();
   const classes = useStyles();
 
@@ -86,10 +92,13 @@ export default function ArtificialSettings() {
   };
 
   const onSubmit = ()=>{
-    console.log(enableCheck);
-    console.log(orderRate);
-    console.log(successRate);
-    console.log(matchRate);
+    let newSettings: BotSettings = {
+      enabled: enableCheck,
+      orderRate: orderRate * 100, 
+      successRate: successRate, 
+      matchRate: matchRate
+    }
+    props.botManager.startLoop(newSettings);
   };
 
 

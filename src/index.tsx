@@ -58,6 +58,7 @@ const queuedEventListenerService = new QueuedEventListenerService();
 
 
 let sessionID = localStorage.getItem('currentSessionID');
+let botManager = new BotManager(firebase.firestore());
 
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -69,6 +70,7 @@ firebase.auth().onAuthStateChanged(function(user) {
         store.dispatch(changeCurrentUsername(username));
         notificationListenerService.attachUserNotificationListerner(uid);
         userDataService.changeUserID(uid);
+        botManager.changeUserID(uid);
         
     } else {
         store.dispatch(changeCurrentUserID(undefined));
@@ -82,8 +84,8 @@ firebase.auth().onAuthStateChanged(function(user) {
 const stockDataService = new StockDataService();
 
 
-let botM = new BotManager(firebase.firestore());
-botM.changeSessionId("n3NZMzuj3BALTWsyeWOe","HC8mYNAJcnWYtbTtbMydZYVZNXw1");
+
+
 
 if(sessionID != null && sessionID != ""){
     store.dispatch(clearSelectedStockData());
@@ -94,10 +96,12 @@ if(sessionID != null && sessionID != ""){
     transactionListenerService.attachTransactionListener(sessionID);
     queuedEventListenerService.changeSessionID(sessionID);
     queuedEventListenerService.attachQueuedEventListener(sessionID);
+    
 }
 
 const routing = (
   <Provider store={store}>
+    <ReduxStateListner botManager={botManager}></ReduxStateListner>
     <Router>
       <NotificationComponent >
         <NavigationDrawer>
@@ -105,7 +109,7 @@ const routing = (
             exact
             path="/"
             render={props => (
-              <App transactionListenerService={transactionListenerService} stockDataService={stockDataService} userDataService={userDataService} {...props} />
+              <App transactionListenerService={transactionListenerService} stockDataService={stockDataService} userDataService={userDataService} botManager={botManager} {...props} />
             )}
           />
           {/* <Route path="/marketwindow" render={(props)=> <MarketWindow {...props} />} /> */}
@@ -113,14 +117,14 @@ const routing = (
           <Route path="/stockdata" component={StockData} />
           <Route path="/signup" component={SignUp} />
           <Route style={{height:"100%"}} path="/transactionPage" component={TransactionPage} />
-          <Route path="/manage" component={ManagePage} />
+          <Route path="/manage" render = {props => (<ManagePage botManager={botManager}></ManagePage>)} />
           <Route path="/portfolio" component={PortfolioPage} />
           <Route path="/eventinjection" 
                  render={props => (<EventInjection queuedEventListenerService={queuedEventListenerService} />)} />
           <Route 
             path="/profile"
             render={props => (
-              <ProfilePage stockDataService={stockDataService} userDataService={userDataService} />
+              <ProfilePage stockDataService={stockDataService} userDataService={userDataService} botManager={botManager} />
             )}
           />
         </NavigationDrawer>

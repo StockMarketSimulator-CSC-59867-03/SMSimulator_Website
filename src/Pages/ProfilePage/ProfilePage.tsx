@@ -8,12 +8,14 @@ import GeneralButton from '../../Components/generalButton';
 import { StockDataService } from '../../Services/StockDataService';
 import { UserDataService } from '../../Services/UserDataService';
 import { changeSessionID, addToWatchList,clearSelectedStockData,clearUserStockData } from '../../redux/actions';
+import BotManager from '../../Services/BotManager';
 
 type ProfilePageProps = {
     sessionData: any,
     currentUserData: any,
     stockDataService: StockDataService,
-    userDataService: UserDataService
+    userDataService: UserDataService,
+    botManager: BotManager
 };
 
 function ProfilePage(props: ProfilePageProps){

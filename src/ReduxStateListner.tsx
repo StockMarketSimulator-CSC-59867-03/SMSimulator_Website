@@ -1,20 +1,23 @@
 import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { useSelector } from "react-redux";
+import BotManager from './Services/BotManager';
 
+interface ReduxStateListnerProps { 
+    botManager: BotManager
+}
 
-function ReduxStateListner(props: any){
+function ReduxStateListner(props: ReduxStateListnerProps){
     const sessionID = useSelector((state: any) => state.sessionData.id);
 
     useEffect(()=>{
         console.log(`SESSION ID HAS CHANGED TO ${sessionID}`);
-        if(sessionID != ""){
-
-        }
+        props.botManager.changeSessionID(sessionID);
+        
     },[sessionID]);
     
    return (
-    <div id="hello"></div>
+    <div id="ReduxStateListner"></div>
    );
 }
 
