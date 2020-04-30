@@ -33,6 +33,8 @@ import Switch from "@material-ui/core/Switch";
 import useInput from "../../hooks/useInput";
 import BotManager from "../../Services/BotManager";
 import { BotSettings } from "../../DataModels/botSettings";
+import store from "../../redux/store";
+import { addNotification } from "../../redux/actions";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -70,6 +72,15 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+
+function showError(errorText: string){
+  store.dispatch(addNotification({
+      type:"INSTANT",
+      title:"Error",
+      body:errorText
+  }));
+}
+
 interface ArtificialSettingsProps {
   botManager: BotManager
 }
@@ -94,11 +105,12 @@ export default function ArtificialSettings(props:ArtificialSettingsProps) {
   const onSubmit = ()=>{
     let newSettings: BotSettings = {
       enabled: enableCheck,
-      orderRate: orderRate * 100, 
+      orderRate: orderRate * 1000, 
       successRate: successRate, 
       matchRate: matchRate
     }
     props.botManager.startLoop(newSettings);
+    showError("Settings Changed");
   };
 
 

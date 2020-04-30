@@ -9,12 +9,20 @@ interface ReduxStateListnerProps {
 
 function ReduxStateListner(props: ReduxStateListnerProps){
     const sessionID = useSelector((state: any) => state.sessionData.id);
+    const stockData = useSelector((state: any) => state.stockData);
 
     useEffect(()=>{
         console.log(`SESSION ID HAS CHANGED TO ${sessionID}`);
         props.botManager.changeSessionID(sessionID);
         
     },[sessionID]);
+
+
+    useEffect(()=>{
+        
+        props.botManager.getStocks(stockData);
+        
+    },[stockData]);
     
    return (
     <div id="ReduxStateListner"></div>

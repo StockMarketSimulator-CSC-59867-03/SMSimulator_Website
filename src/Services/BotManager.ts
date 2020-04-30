@@ -1,4 +1,6 @@
 import {BotSettings} from '../DataModels/botSettings';
+import * as favorabilityConfigJSON from '../botConfiguration.json';
+import { Order } from '../DataModels/order.model';
 
 // Returns a number within the range (starting - range) and (starting + range)
 function randomizeInteger(max: number, min: number){
@@ -9,12 +11,11 @@ function randomizeFloat(max: number, min: number){ //Need to add random decimal
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function sleep(ms: any) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
+const  favorabilityConfig = Object(favorabilityConfigJSON).default;
 
+let createdBotManager = false;
 export default class BotManager {
-    
+    private static instance: BotManager;
     stockMap: Map<string,any>; // favoribility settings
     db: any;
     stockDataListner: any;
@@ -23,7 +24,7 @@ export default class BotManager {
     loopInterval: any;
     botSettings: BotSettings = {
         enabled: false,
-        orderRate: 100,
+        orderRate: 5000,
         successRate: 5,
         matchRate: 5
 
@@ -32,11 +33,14 @@ export default class BotManager {
     userID: any;
 
     constructor(db: any) {
+        if(createdBotManager == true){
+            throw "Two Bot Managers Created At once"; // Only done so the website crashes because two bot managers would cause A LOT of reads/writes
+        }
+        
         this.sessionID = "";
         this.db = db;
         console.log("BotManager Created");
         this.stockMap = new Map();
-        this.getStocks();
     }
 
     getOwnerID(sessionID: string): Promise<string>{
@@ -98,8 +102,16 @@ export default class BotManager {
         }
     }
 
-    getStocks(){
- 
+    getStocks(stockData: any){  // Might need to change to listners // COULD BE A BOTTLENECK
+        console.log("BOTMANAGER STOCKS");
+        console.log(stockData);
+        this.stockMap = new Map();
+        const keys = Object.keys(stockData);
+        for (const key of keys) {
+            console.log(key)
+            this.stockMap.set(key,stockData[key].data);
+        }
+        console.log("BOTMANAGER STOCKS");
 
     }
 
@@ -112,8 +124,74 @@ export default class BotManager {
     }
 
    async loop(){
-    console.log("HI");
-    console.log(this.botSettings);
+    console.log("BOT LOOP");
+    let batch = this.db.batch();
+    let date = new Date();
+     for (let [symbol, data] of this.stockMap) {
+         // Random check to perform the orders
+         if(!(randomizeInteger(100,0) < this.botSettings.successRate) ){ // performs random check on order skips loop if not met
+             continue;
+         }
+         
+         let buyOrderDoc = this.db.collection("BuyOrders").doc();
+         let sellOrderDoc = this.db.collection("SellOrders").doc();
+         let favorability = data.favorability;
+        
+         let buyConfig = favorabilityConfig[favorability].Buys;
+         let sellConfig = favorabilityConfig[favorability].Sells;
+         let qunatityConfig = favorabilityConfig[favorability].Quantity;
+
+         // BUY ORDER
+         const {max: buyPriceMax, min: buyPriceMin} = this.computePercentRange(buyConfig.priceMax,buyConfig.priceMin,data.price);
+         let buyPrice = randomizeFloat(buyPriceMax,buyPriceMin); 
+         let buyQuantity = randomizeInteger(qunatityConfig.max,qunatityConfig.min);
+
+         let newBuyOrder: Order = {
+             price: buyPrice ,
+             quantity: buyQuantity,
+             sessionID: this.sessionID,
+             stock: symbol,
+             time: date.getTime(),
+             user: "bot"
+         };
+
+         if(randomizeInteger(100,0) < this.botSettings.matchRate ){ // Chance of a perfect match. 
+             let matchedSellOrderDoc = this.db.collection("SellOrders").doc();
+             let matchedBuyOrder: Order = {
+                 price: buyPrice,
+                 quantity: buyQuantity,
+                 sessionID: this.sessionID,
+                 stock: symbol,
+                 time: date.getTime(),
+                 user: "bot"
+             };
+             batch.set(matchedSellOrderDoc, matchedBuyOrder);
+         }
+
+         console.log(newBuyOrder);
+         batch.set(buyOrderDoc, newBuyOrder);
+
+         // SELL ORDER
+         const {max: sellPriceMax, min: sellPriceMin} = this.computePercentRange(sellConfig.priceMax,sellConfig.priceMin,data.price);
+
+         let newSellOrder: Order = {
+             price: randomizeFloat(sellPriceMax, sellPriceMin),
+             quantity: randomizeInteger(qunatityConfig.max,qunatityConfig.min),
+             sessionID: this.sessionID,
+             stock: symbol,
+             time: date.getTime(),
+             user: "bot"
+         };
+
+         console.log(newSellOrder);
+         batch.set(sellOrderDoc, newSellOrder);
+
+       }
+       console.log("Loop Iteration Complete");
+       batch.commit().then(function () {
+         console.log("Completed Batch");
+     });
+
     }
 
 }
