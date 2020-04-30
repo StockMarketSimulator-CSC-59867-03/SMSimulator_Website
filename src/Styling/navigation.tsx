@@ -16,14 +16,14 @@ import ManageIcon from '@material-ui/icons/Build';
 import App from '../App';
 import LogInModal from '../Components/LogInModal/LogInModal';
 import { Button, Menu, MenuItem } from '@material-ui/core';
-import SignUpModal from '../Components/SignUpModal/SignUpModal';
+import SignUpModalv2 from '../Components/SignUpModal/signupv2';
 import { useHistory, Link } from 'react-router-dom';
 import { withRouter } from "react-router-dom";
 import StoreIcon from '@material-ui/icons/Store';
 import AppsIcon from '@material-ui/icons/Apps';
 import HomeIcon from '@material-ui/icons/Home';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { changeSessionID } from '../redux/actions';
+import { changeSessionID, addToWatchList,clearSelectedStockData,clearUserStockData } from '../redux/actions';
 import LoginModalv2 from '../Components/LogInModal/loginv2';
 import SignOut from '../Components/SignOut/SignOut';
 
@@ -32,6 +32,7 @@ import firebase from 'firebase';
 import { collection, collectionData, collectionChanges } from 'rxfire/firestore';
 import { Subject } from 'rxjs';
 import NavigationSideMenu from './navigationSideMenu';
+
 
 
 
@@ -129,7 +130,7 @@ function NavigationDrawer(props:any) {
                   <LoginModalv2 />
                 </div>
                 <div className={classes.button}>
-                  <SignUpModal />
+                  <SignUpModalv2 />
                 </div>
               </div>
             )}
@@ -138,6 +139,20 @@ function NavigationDrawer(props:any) {
                 <div className={classes.button}>
                   <p>Welcome, {props.currentUserData.username}!</p>
                 </div>
+                <Button
+                  onClick={
+                    props.enableSwitching
+                      ? () => {}
+                      : () => {
+                          dispatch(changeSessionID(""));
+                          dispatch(clearSelectedStockData());
+
+                          localStorage.setItem('currentSessionID',"");
+                          history.push("/profile");
+                        }
+                  }
+                > Profile
+                </Button>
                 <div style={{ margin: 5, alignSelf: "center" }}>
                   <SignOut />
                 </div>
@@ -145,9 +160,7 @@ function NavigationDrawer(props:any) {
             )}
           </Toolbar>
         </AppBar>
-
           {sideMenu}
-
         <main className={classes.content}>
           <div className={classes.toolbar} />
           {props.children}

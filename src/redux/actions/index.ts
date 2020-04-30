@@ -1,5 +1,8 @@
 import { StockDataModel } from "../../DataModels/stockData.model";
 import { Notification } from "../../DataModels/notification";
+import { Transaction } from "../../DataModels/transaction";
+import { Event } from "../../DataModels/event";
+
 
 export const changeSessionID = (id: string) => ({
     type: "CHANGE_SESSION_ID",
@@ -47,7 +50,10 @@ export const updateSearchInputValue = (inputValue: string) => {
 		payload: inputValue
 	}
 }
-
+export const setTransactionData = (data: Transaction) => ({
+    type: "SET_TRANSACTION_DATA",
+    payload: data
+});
 export const addNotification = (data: Notification) => ({
     type: "ADD_NOTIFICATION",
     payload: data
@@ -72,3 +78,13 @@ export const addToWatchList = (watchedStocks: any) => ({
     type: "ADD_TO_WATCHLIST",
     payload: watchedStocks
 })
+
+export const addToQueuedEvents = (data: Event) => ({
+    type: "ADD_TO_QUEUED_EVENTS",
+    payload: data
+})
+
+export const clearQueuedEvents = () => ({
+    type: "CLEAR_QUEUED_EVENTS",
+    payload: []
+});

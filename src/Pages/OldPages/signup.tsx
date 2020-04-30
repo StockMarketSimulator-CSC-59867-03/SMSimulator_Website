@@ -55,7 +55,7 @@ handleSubmit(event : any) {
       }
     );
     const db = firebase.firestore();
-    db.collection('User').add({
+    db.collection('User').doc(username).set({
       id: username,
       sessions: [""]
     });

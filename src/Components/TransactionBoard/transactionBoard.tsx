@@ -8,10 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { withStyles, createStyles, Theme, makeStyles } from "@material-ui/core";
-
-
-
-
+import { useDispatch, useSelector } from "react-redux";
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -39,15 +36,30 @@ const StyledTableRow = withStyles((theme: Theme) =>
 const useStyles = makeStyles({
     table: {},
   });
+
 function createData(date: any,symbol: any, cost: any,volume:number) {
-    return {date,symbol, cost,volume };
-  }
-  
+
+  return {date,symbol,cost,volume };
+}
+
 
 export function TransactionBoard(){
-var returnArr = [{ date: 123, symbol: "ba", cost: 1, volume: 1 }];
-const classes = useStyles();
+/*let returnArr:Array<any> = [
+  createData(2201,"AMZN",1201,38),
+  createData(2205,"BE",1201,38),
+  createData(2205,"AMZN",1201,38),
+  createData(2203,"BE",1201,38)];*/
 
+const classes = useStyles();
+let transactions = useSelector((state: any)=> state.transactionData);
+if(transactions == undefined){
+  transactions = [
+    createData(2201,"AMZN",1201,38),
+    createData(2205,"BE",1201,38),
+    createData(2205,"AMZN",1201,38),
+    createData(2203,"BE",1201,38)]
+}
+let returnArr = transactions;
 return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="customized table">
@@ -60,7 +72,7 @@ return (
           </TableRow>
         </TableHead>
         <TableBody>
-          {returnArr.map((returnArr) => (
+          {returnArr.map((returnArr:any) => (
             <StyledTableRow key={returnArr.date}>
               <StyledTableCell component="th" scope="row">
                 {returnArr.date}

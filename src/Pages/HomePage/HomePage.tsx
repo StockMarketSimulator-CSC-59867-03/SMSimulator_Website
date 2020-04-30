@@ -23,10 +23,12 @@ import { Paper, Grid, Card, Container, Fab, Divider } from '@material-ui/core';
 import WatchedStocks from './WatchedStocks';
 import Typography from '@material-ui/core/Typography';
 import SessionStocks from './SessionStocks';
-import OwnedStocks from './OwnedStocks';
+import OwnedStocks from '../PortfolioPage/OwnedStocks';
 import MainStockGraph from './MainStockGraph';
 import firebase from 'firebase';
-import PortfolioStockGraph from './PortfolioStockGraph';
+import { TransactionBoard } from '../../Components/TransactionBoard/transactionBoard';
+import PortfolioStockGraph from '../PortfolioPage/PortfolioStockGraph';
+
 
 // type HomePageProps = {
 //     history: any,
@@ -93,15 +95,11 @@ const useStyles = makeStyles((theme: Theme) =>
 function HomePage(props:any) {
     const db = firebase.firestore();
 
-    //homepage states to toggle between marketview/portfolioview
-    const [isViewingPortfolio, togglePortfolioView] = useState(false);
     const [joinKeyValue, setJoinKeyValue] = useState("");
     const [authenticationFlag, setAuthenticationFlag] = useState(false);
 
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-    const fixedHeightPaperPreview = clsx(classes.paper, classes.fixedHeightPreview);
-    const fixedHeightPaperStocks = clsx(classes.paper, classes.fixedHeightStocks);
 
 //  two check to "skip" join key, either public or user already existing
 //  check if public, skip join key but still log the user into the collection
@@ -162,12 +160,18 @@ if(props.currentUserData.id != null){
 
         db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).get().then(function(doc) {
           if (doc.exists) {
-              console.log("Document data:", doc.data());
+
           } else {
             db.collection('Sessions').doc(props.sessionData.id).collection('Users').doc(props.currentUserData.id).set({
               id: props.currentUserData.id,
+              username: props.currentUserData.username,
               liquid: startingBalance,
               type: "player"
+            })
+
+            // Also update outside user table's session array (to track user's ownership of sessions)
+            db.collection("User").doc(props.currentUserData.id).update({
+              sessions: firebase.firestore.FieldValue.arrayUnion(props.sessionData.id)
             })
           }
         }).catch(function(error) {
@@ -183,33 +187,25 @@ if(props.currentUserData.id != null){
             <Container maxWidth="lg" className={classes.container}>
               {authenticationFlag ?
                 <Grid container spacing={3}>
+                    <Grid item xs={12} md={4} lg={4}>
+                      <Paper className={fixedHeightPaper}>
+                        <TransactionBoard/>
+                      </Paper>
+                    </Grid>
                     {/* MarketGraph */}
-                    <Grid item xs={12} md={8} lg={9}>
+                    <Grid item xs={10} md={6} lg={7}>
                         <Paper className={fixedHeightPaper}>
-                            <Typography variant="h5">{ isViewingPortfolio ? "YOUR PORTFOLIO" : "MARKET GRAPH" }</Typography>
-                            {/* <StockGraph width={500} height={400}></StockGraph> */}
-                            { !isViewingPortfolio && <MainStockGraph/> }
-                            { isViewingPortfolio && <PortfolioStockGraph/> }
-                            {/* <MainStockGraph/> */}
+                            <Typography variant="h5">MARKET GRAPH</Typography>
+                            <MainStockGraph/>
                         </Paper>
                     </Grid>
                     {/* Right Side Panel */}
                     <Grid item xs={12} md={4} lg={3}>
-                        <Paper className={fixedHeightPaperPreview}>
-                            <Card className={classes.card}>
-                                <Button variant="contained" color="primary" className={classes.button} onClick={() => togglePortfolioView(!isViewingPortfolio)}>
-                                    { isViewingPortfolio ? "View Market" : "View Portfolio" }
-                                </Button>
-                                { !isViewingPortfolio && <div className={classes.preview}>
-                                    <Typography variant="subtitle2">Buying Power: ${props.sessionData.balance}</Typography>
-                                    <Typography variant="subtitle2">Total Return: $425.07</Typography>
-                                </div> }
-                            </Card>
-                        </Paper>
-                        <Paper className={fixedHeightPaperStocks}>
-                            <Typography variant="subtitle2">{ isViewingPortfolio ? "STOCKS YOU OWN" : "MARKET STOCKS" }</Typography>
-                            { !isViewingPortfolio && <div className={classes.sessionStocks}><SessionStocks sessionData={props.sessionData} currentUserData={props.currentUserData}/></div> }
-                            { isViewingPortfolio && <div className={classes.sessionStocks}><OwnedStocks/></div> }
+                        <Paper className={fixedHeightPaper}>
+                            <Typography variant="subtitle2">MARKET STOCKS</Typography>
+                            <div className={classes.sessionStocks}>
+                              <SessionStocks sessionData={props.sessionData} currentUserData={props.currentUserData}/>
+                            </div>
                         </Paper>
                     </Grid>
                     {/* Watched Stocks */}
