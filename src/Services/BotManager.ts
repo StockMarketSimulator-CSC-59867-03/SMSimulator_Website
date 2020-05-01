@@ -147,7 +147,7 @@ export default class BotManager {
          let buyQuantity = randomizeInteger(qunatityConfig.max,qunatityConfig.min);
          let newBuyOrder: Order = {
              price: buyPrice ,
-             quantity: buyQuantity,
+             quantity: 1,
              sessionID: this.sessionID,
              stock: symbol,
              time: date.getTime(),
@@ -158,7 +158,7 @@ export default class BotManager {
              let matchedSellOrderDoc = this.db.collection("SellOrders").doc();
              let matchedBuyOrder: Order = {
                  price: buyPrice,
-                 quantity: buyQuantity,
+                 quantity: 1,
                  sessionID: this.sessionID,
                  stock: symbol,
                  time: date.getTime(),
@@ -174,7 +174,7 @@ export default class BotManager {
 
          let newSellOrder: Order = {
              price: randomizeFloat(sellPriceMax, sellPriceMin),
-             quantity: randomizeInteger(qunatityConfig.max,qunatityConfig.min),
+             quantity: 1,
              sessionID: this.sessionID,
              stock: symbol,
              time: date.getTime(),
