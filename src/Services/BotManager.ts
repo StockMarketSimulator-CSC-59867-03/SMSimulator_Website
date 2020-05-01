@@ -119,7 +119,7 @@ export default class BotManager {
     computePercentRange(percentMax: number, percentMin: number, initialValue: number) : {max: any,min: any}{
         return {
             max: ((percentMax/100) * initialValue) + initialValue ,
-            min: initialValue - ((percentMin/100) * initialValue)
+            min: initialValue + ((percentMin/100) * initialValue)
         }
     }
 
