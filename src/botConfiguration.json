@@ -52,7 +52,7 @@
         },
         "Sells":{
             "priceMax": 15,
-            "priceMin":- 10
+            "priceMin":-10
         }
     },
     "6":{
