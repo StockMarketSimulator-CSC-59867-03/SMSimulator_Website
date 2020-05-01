@@ -155,7 +155,7 @@ function SellModalv2(props:any){
           onChange= {handlePriceChange}
         />
         <br/>
-        <label>Total ({Number(quantity)} x {Number(price)}): ${var_total}</label>
+        <label>Total ({Number(quantity)} x {Number(price).toFixed(2)}): ${var_total.toFixed(2)}</label>
         <br/>
         <br/>
         <Button disabled ={isDisabled} variant="contained" color="primary" onClick = {submitSell}>

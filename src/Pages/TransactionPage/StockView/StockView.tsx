@@ -20,7 +20,7 @@ function StockView() {
 
   let stockData = allStockData[selectedStock.symbol];
 
-  let stockPrice = stockData.history[stockData.history.length - 1]["price"];
+  let stockPrice = (stockData.history[stockData.history.length - 1]["price"]).toFixed(2);
 
 
   return (
