@@ -19,7 +19,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { useHistory } from "react-router-dom";
 import { connect } from 'react-redux';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Paper, Grid, Card, Container, Fab, Divider } from '@material-ui/core';
+import { Paper, Grid, Card, Container, Fab, Divider, ButtonGroup } from '@material-ui/core';
 import WatchedStocks from './WatchedStocks';
 import Typography from '@material-ui/core/Typography';
 import SessionStocks from './SessionStocks';
@@ -54,7 +54,13 @@ const useStyles = makeStyles((theme: Theme) =>
         flexDirection: 'column',
       },
       fixedHeight: {
-          height: 475,
+          height: 675,
+      },
+      fixedHeightGraph: {
+          height: 500,
+      },
+      fixedHeightSectors: {
+          height:160,
       },
       fixedHeightPreview: {
           height: 150,
@@ -100,6 +106,9 @@ function HomePage(props:any) {
 
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+    const fixedHeightGraphPaper = clsx(classes.paper,classes.fixedHeightGraph);
+    const fixedSectors = clsx(classes.paper,classes.fixedHeightSectors);
+    
 
 //  two check to "skip" join key, either public or user already existing
 //  check if public, skip join key but still log the user into the collection
@@ -184,19 +193,37 @@ if(props.currentUserData.id != null){
 
     return (
         <div className={classes.root}>
-            <Container maxWidth="lg" className={classes.container}>
+            <Container maxWidth="xl" className={classes.container}>
               {authenticationFlag ?
                 <Grid container spacing={3}>
-                    <Grid item xs={12} md={4} lg={4}>
+                    <Grid item xs={12} md={4} lg={3}>
                       <Paper className={fixedHeightPaper}>
                         <TransactionBoard/>
                       </Paper>
                     </Grid>
                     {/* MarketGraph */}
-                    <Grid item xs={10} md={6} lg={7}>
-                        <Paper className={fixedHeightPaper}>
+                    <Grid item xs={10} md={6} lg={6} className ={classes.container}>
+                        <Paper className={fixedHeightGraphPaper}>
                             <Typography variant="h5">MARKET GRAPH</Typography>
                             <MainStockGraph/>
+                        </Paper>
+                        <Paper className={fixedSectors} style={{marginTop:15}}>
+                          <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group" fullWidth>
+                            <Button>All Sectors</Button>
+                            <Button>Material</Button>
+                            <Button>Industrial</Button>
+                            <Button>Financial</Button>
+                            <Button>Energy</Button>
+                            <Button>Consumer</Button>
+                          </ButtonGroup>
+                          <ButtonGroup style={{marginTop:10}} variant="contained" color="primary" aria-label="contained primary button group" fullWidth>
+                            <Button>Utilities</Button>
+                            <Button>Technology</Button>
+                            <Button>Comms</Button>
+                            <Button>Real Estate</Button>
+                            <Button>Health Care</Button>
+                            <Button>Consumer Staples</Button>
+                          </ButtonGroup>
                         </Paper>
                     </Grid>
                     {/* Right Side Panel */}
@@ -206,13 +233,6 @@ if(props.currentUserData.id != null){
                             <div className={classes.sessionStocks}>
                               <SessionStocks sessionData={props.sessionData} currentUserData={props.currentUserData}/>
                             </div>
-                        </Paper>
-                    </Grid>
-                    {/* Watched Stocks */}
-                    <Grid item xs={12}>
-                        <Paper className={classes.paper}>
-                            <Typography variant="subtitle2">Watch List</Typography>
-                            <WatchedStocks sessionData={props.sessionData} currentUserData={props.currentUserData}/>
                         </Paper>
                     </Grid>
                 </Grid>
