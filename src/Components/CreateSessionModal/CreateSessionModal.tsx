@@ -28,6 +28,9 @@ import { withStyles } from "@material-ui/core/styles";
 const styles = (theme:any) => ({
   root: {
     backgroundColor: theme.palette.background.default,
+    width: "50%",
+    height: "50%",
+    outline:'none',
   }
 });
 

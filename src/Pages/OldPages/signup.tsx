@@ -1,6 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import firebase from 'firebase';
+import store from '../../redux/store';
+import { addNotification } from '../../redux/actions';
 
 type SignUpProps = {};
 type SignUpState = {
@@ -8,6 +10,22 @@ type SignUpState = {
   password:       string,
   username:       string,
 };
+
+function showNotification(text: string){
+  store.dispatch(addNotification({
+      type:"SNACKINFO",
+      title:text,
+      body:""
+  }));
+}
+
+function showError(errorText: string){
+  store.dispatch(addNotification({
+      type:"INSTANT",
+      title:"Sign Up",
+      body:errorText
+  }));
+}
 
 class SignUp extends React.Component<SignUpProps, SignUpState> {
   
@@ -39,7 +57,7 @@ handleSubmit(event : any) {
     const password = this.state.password;
     firebase.auth().createUserWithEmailAndPassword(email,password)
     .then(function(user){
-      alert("Successfully Signed Up!");
+      showNotification("Successfully Signed Up!");
       const currentUser = firebase.auth().currentUser;
       if(user && currentUser!= null){
         currentUser.updateProfile({
@@ -51,7 +69,7 @@ handleSubmit(event : any) {
       function(error){
         const errorCode = error.code;
         const errorMessage = error.message;
-        alert(errorMessage);
+        showError(errorMessage);
       }
     );
     const db = firebase.firestore();
