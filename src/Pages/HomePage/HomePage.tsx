@@ -28,6 +28,8 @@ import MainStockGraph from './MainStockGraph';
 import firebase from 'firebase';
 import { TransactionBoard } from '../../Components/TransactionBoard/transactionBoard';
 import PortfolioStockGraph from '../PortfolioPage/PortfolioStockGraph';
+import store from '../../redux/store';
+import { addNotification } from '../../redux/actions';
 
 
 // type HomePageProps = {
@@ -98,6 +100,22 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
+function showNotification(text: string){
+  store.dispatch(addNotification({
+      type:"SNACKINFO",
+      title:text,
+      body:""
+  }));
+}
+
+function showError(errorText: string){
+  store.dispatch(addNotification({
+      type:"INSTANT",
+      title:"Invitation Code",
+      body:errorText
+  }));
+}
+
 function HomePage(props:any) {
     const db = firebase.firestore();
 
@@ -155,7 +173,7 @@ if(props.currentUserData.id != null){
             logUser();
             setAuthenticationFlag(true);
           } else {
-            alert("Invitation code is wrong, ask session administrator");
+            showError("Invitation code is wrong, ask session administrator");
           }
         }
       }).catch(err => {

@@ -8,6 +8,8 @@ import { Grid } from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import store from '../../redux/store';
+import { addNotification } from '../../redux/actions';
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -42,6 +44,22 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
+function showNotification(text: string){
+    store.dispatch(addNotification({
+        type:"SNACKINFO",
+        title:text,
+        body:""
+    }));
+  }
+
+  function showError(errorText: string){
+    store.dispatch(addNotification({
+        type:"INSTANT",
+        title:"Login",
+        body:errorText
+    }));
+  }
+
 function LoginModalv2(props:any){
     const classes = useStyles();
 
@@ -68,7 +86,7 @@ function LoginModalv2(props:any){
 
         firebase.auth().signInWithEmailAndPassword(email.current, password.current)
         .then(function(user){
-          alert("Succesfully Signed In!");
+        showNotification("Succesfully Signed In!");
           email.current = "";
           password.current = "";
           handleOpenClose();
@@ -77,7 +95,7 @@ function LoginModalv2(props:any){
           function(error){
             const errorCode = error.code;
             const errorMessage = error.message;
-            alert(errorMessage);
+            showError(errorMessage);
             email.current = "";
             password.current = "";
           }

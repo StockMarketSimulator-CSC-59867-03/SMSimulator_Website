@@ -10,6 +10,8 @@ import TextField from "@material-ui/core/TextField";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import { Grid } from "@material-ui/core";
+import store from '../../redux/store';
+import { addNotification } from '../../redux/actions';
 
 type SignUpProps = {
 };
@@ -19,6 +21,22 @@ type SignUpState = {
   password:       string,
   open:           boolean,
 };
+
+function showNotification(text: string){
+  store.dispatch(addNotification({
+      type:"SNACKINFO",
+      title:text,
+      body:""
+  }));
+}
+
+function showError(errorText: string){
+  store.dispatch(addNotification({
+      type:"INSTANT",
+      title:"Sign Up",
+      body:errorText
+  }));
+}
 
 class SignUpModal extends React.Component<SignUpProps, SignUpState> {
   constructor(props : any){
@@ -52,7 +70,7 @@ handleSubmit(event : any) {
     const loginModal = this;
     firebase.auth().createUserWithEmailAndPassword(email,password)
     .then(function(user){
-      alert("Successfully Signed Up!");
+      showNotification("Successfully Signed Up!");
       const currentUser = firebase.auth().currentUser;
       if(user && currentUser!= null){
         currentUser.updateProfile({
@@ -73,7 +91,7 @@ handleSubmit(event : any) {
       function(error){
         const errorCode = error.code;
         const errorMessage = error.message;
-        alert(errorMessage);
+        showError(errorMessage);
         loginModal.setState({
           username : '',
           email : '',
