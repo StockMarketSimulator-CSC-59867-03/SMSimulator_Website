@@ -129,7 +129,7 @@ export default function ArtificialSettings(props:ArtificialSettingsProps) {
     }
     props.botManager.startLoop(newSettings);
    localStorage.setItem('botSettings',JSON.stringify(newSettings));
-    showError("Settings Changed");
+    showError("The settings in artificial buy/sells in the current session have been saved.");
   };
 
 
