@@ -2,8 +2,18 @@ import React, { useState } from "react";
 import { Grid } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import "./StockView.scss"
+import { useSelector } from "react-redux";
 
 function StockViewHeader(props: any) {
+  const allStockData = useSelector((state: any) => state.stockData);
+  let stockData = allStockData[props.symbol];
+  var lastStockPrice = (stockData.history[stockData.history.length - 1]["price"]).toFixed(2);
+  var firstStockPrice = (stockData.history[0]["price"]).toFixed(2);
+  var priceDiff = (lastStockPrice - firstStockPrice);
+  var actualChange = priceDiff.toFixed(2);
+  var percentageChange = ((priceDiff/firstStockPrice)*100).toFixed(2);
+  var isGain = (priceDiff > 0);
+
   return (
     <Grid
       container
@@ -40,7 +50,7 @@ function StockViewHeader(props: any) {
           alignItems="center"
         >
           <Typography variant="subtitle1" component="h6">
-            <span style={{ color: "green" }}>+10.73 (5.73%)</span>
+            <span style={isGain ? { color: "green" } : {color: "red"}}>{actualChange} ({percentageChange}%)</span>
             <span> TODAY</span>
           </Typography>
           <Typography variant="subtitle1" component="h6">

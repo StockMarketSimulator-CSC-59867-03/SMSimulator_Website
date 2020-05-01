@@ -29,7 +29,6 @@ function OwnedStocks(props:any){
                 <div style={{display: 'flex', borderTop: '1px solid black'}}>
                     <div>
                         <p>{tickerSymbol} ({ownedStock})</p>
-                        <p style={{backgroundColor: 'red', color: 'white', padding: '2px', borderRadius: 3, alignSelf: 'center'}}>-6.21%</p>
                     </div>
                     <div style={{flexGrow: 1}}/>
                     <div style={{display: 'flex'}}>

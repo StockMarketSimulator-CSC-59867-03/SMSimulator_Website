@@ -12,9 +12,9 @@ function StockListItem(props: any) {
   let stockData = allStockData[props.stockData.symbol];
 
   
-  let stockPrice = 0;
+  let stockPrice = "0.00";
   if(stockData != null && stockData.history != null ){
-    stockPrice = stockData.history[stockData.history.length - 1]["price"];
+    stockPrice = (stockData.history[stockData.history.length - 1]["price"]).toFixed(2);
   }
   
 

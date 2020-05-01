@@ -6,11 +6,11 @@
         },
         "Buys":{
             "priceMax": 30,
-            "priceMin": 25
+            "priceMin": -5
         },
         "Sells":{
             "priceMax": 30,
-            "priceMin": 25
+            "priceMin": -5
         }
     },
     "9":{
@@ -20,11 +20,11 @@
         },
         "Buys":{
             "priceMax": 25,
-            "priceMin": 20
+            "priceMin": -5
         },
         "Sells":{
             "priceMax": 25,
-            "priceMin":20
+            "priceMin":-5
         }
     },
     "8":{
@@ -34,11 +34,11 @@
         },
         "Buys":{
             "priceMax": 20,
-            "priceMin": 15
+            "priceMin": -10
         },
         "Sells":{
             "priceMax": 20,
-            "priceMin":15
+            "priceMin":-10
         }
     },
     "7":{
@@ -48,11 +48,11 @@
         },
         "Buys":{
             "priceMax": 15,
-            "priceMin": 10
+            "priceMin": -10
         },
         "Sells":{
             "priceMax": 15,
-            "priceMin": 10
+            "priceMin":- 10
         }
     },
     "6":{
@@ -62,11 +62,11 @@
         },
         "Buys":{
             "priceMax": 10,
-            "priceMin": 5
+            "priceMin": -5
         },
         "Sells":{
             "priceMax": 10,
-            "priceMin":5
+            "priceMin":-5
         }
     },
     "5":{
@@ -89,11 +89,11 @@
             "min": 30
         },
         "Buys":{
-            "priceMax": -5,
+            "priceMax": 5,
             "priceMin": -10
         },
         "Sells":{
-            "priceMax": -5,
+            "priceMax": 5,
             "priceMin":-10
         }
     },
@@ -103,11 +103,11 @@
             "min": 30
         },
         "Buys":{
-            "priceMax": -10,
+            "priceMax": 5,
             "priceMin": -15
         },
         "Sells":{
-            "priceMax": -10,
+            "priceMax": 5,
             "priceMin": -15
         }
     },
@@ -117,11 +117,11 @@
             "min": 30
         },
         "Buys":{
-            "priceMax": -15,
+            "priceMax": 5,
             "priceMin": -20
         },
         "Sells":{
-            "priceMax": -15,
+            "priceMax": 5,
             "priceMin": -20
         }
     },
@@ -131,11 +131,11 @@
             "min": 30
         },
         "Buys":{
-            "priceMax": -20,
+            "priceMax": 5,
             "priceMin": -30
         },
         "Sells":{
-            "priceMax": -20,
+            "priceMax": 5,
             "priceMin":-30
         }
     }

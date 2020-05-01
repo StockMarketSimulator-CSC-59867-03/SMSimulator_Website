@@ -86,7 +86,7 @@ function LoginModalv2(props:any){
 
         firebase.auth().signInWithEmailAndPassword(email.current, password.current)
         .then(function(user){
-        showNotification("Succesfully Signed In!");
+        showNotification("Successfully Signed In!");
           email.current = "";
           password.current = "";
           handleOpenClose();
