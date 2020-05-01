@@ -42,7 +42,11 @@ function QueuedEvents(props:any){
                 <Typography className={classes.heading}>{name}</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    <Typography>{sector} {favorability}</Typography>
+                    <Typography variant="body2">
+                        Targeted Sector: {(sector as string).charAt(0).toUpperCase() + (sector as string).substring(1)}
+                        <br/>
+                        Favorability: {favorability}
+                    </Typography>
                 </ExpansionPanelDetails>
             </ExpansionPanel>
         )
@@ -52,7 +56,7 @@ function QueuedEvents(props:any){
     // console.log(events);
     return(
         <div>
-            <Typography className={classes.title} variant="h6">Queued</Typography>
+            <Typography className={classes.title} variant="h6">History</Typography>
             {queuedEvents}
         </div>
     )
