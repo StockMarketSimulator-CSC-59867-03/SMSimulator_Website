@@ -17,6 +17,7 @@ let createdBotManager = false;
 export default class BotManager {
     private static instance: BotManager;
     stockMap: Map<string,any>; // favoribility settings
+    stockDataMap: Map<string,any>; // favoribility settings
     db: any;
     stockDataListner: any;
     isOwner: boolean = false;
@@ -41,6 +42,7 @@ export default class BotManager {
         this.db = db;
         console.log("BotManager Created");
         this.stockMap = new Map();
+        this.stockDataMap = new Map();
     }
 
     getOwnerID(sessionID: string): Promise<string>{
@@ -64,6 +66,7 @@ export default class BotManager {
         this.sessionID = sessionID;
         this.isOwner = false;
         this.verifyUser(this.sessionID,this.userID);  
+        this.createFavorabilityListner();
     }
 
     changeUserID = (userID: any) => {
@@ -109,10 +112,31 @@ export default class BotManager {
         this.stockMap = new Map();
         const keys = Object.keys(stockData);
         for (const key of keys) {
-            console.log(key)
-            this.stockMap.set(key,stockData[key].data);
+            this.stockMap.set(key,{data:stockData[key].data, history:stockData[key].history });
         }
 
+
+    }
+
+    createFavorabilityListner(){
+        this.stockDataMap = new Map();
+        let stockDoc = this.db.collection("Sessions").doc(this.sessionID).collection("Stocks");
+
+        if(this.stockDataListner != null){
+            this.stockDataListner();
+        }
+
+       this.stockDataListner = stockDoc
+        .onSnapshot((snapshot: any) => {
+            snapshot.docChanges().forEach((change: any) => {
+            if (change.type === "added" || change.type === "modified") {
+                this.stockDataMap.set(change.doc.id,change.doc.data());
+            }
+            if (change.type === "removed") {
+                console.log("Removed city: ", change.doc.data());
+            }
+        });
+    });
     }
 
     //Computes a range with based on precentage increase from the parameters percentMax and percentMin
@@ -133,16 +157,19 @@ export default class BotManager {
              continue;
          }
          console.log(`Creatings Buys/Sells for ${symbol} `);
+         
+         let price = Number((data.history[data.history.length - 1]["price"]).toFixed(2));
          let buyOrderDoc = this.db.collection("BuyOrders").doc();
          let sellOrderDoc = this.db.collection("SellOrders").doc();
-         let favorability = data.favorability;
-        
+         let favorability = this.stockDataMap.get(symbol).favorability;
+        console.log(favorability);
          let buyConfig = favorabilityConfig[favorability].Buys;
          let sellConfig = favorabilityConfig[favorability].Sells;
          let qunatityConfig = favorabilityConfig[favorability].Quantity;
 
+         
          // BUY ORDER
-         const {max: buyPriceMax, min: buyPriceMin} = this.computePercentRange(buyConfig.priceMax,buyConfig.priceMin,data.price);
+         const {max: buyPriceMax, min: buyPriceMin} = this.computePercentRange(buyConfig.priceMax,buyConfig.priceMin,price);
          let buyPrice = randomizeFloat(buyPriceMax,buyPriceMin); 
          let buyQuantity = randomizeInteger(qunatityConfig.max,qunatityConfig.min);
          let newBuyOrder: Order = {
@@ -153,7 +180,7 @@ export default class BotManager {
              time: date.getTime(),
              user: "bot"
          };
-
+         batch.set(buyOrderDoc, newBuyOrder);
          if(randomizeInteger(100,0) < this.botSettings.matchRate ){ // Chance of a perfect match. 
              let matchedSellOrderDoc = this.db.collection("SellOrders").doc();
              let matchedBuyOrder: Order = {
@@ -165,12 +192,14 @@ export default class BotManager {
                  user: "bot"
              };
            batch.set(matchedSellOrderDoc, matchedBuyOrder);
-         }
+         } else{
 
-         batch.set(buyOrderDoc, newBuyOrder);
+         
+
+         
 
          // SELL ORDER
-         const {max: sellPriceMax, min: sellPriceMin} = this.computePercentRange(sellConfig.priceMax,sellConfig.priceMin,data.price);
+         const {max: sellPriceMax, min: sellPriceMin} = this.computePercentRange(sellConfig.priceMax,sellConfig.priceMin,price);
 
          let newSellOrder: Order = {
              price: randomizeFloat(sellPriceMax, sellPriceMin),
@@ -182,9 +211,8 @@ export default class BotManager {
          };
 
          batch.set(sellOrderDoc, newSellOrder);
-
+        }
        }
-       
        batch.commit().then(function () {
          console.log("Completed Batch Loop");
      });
