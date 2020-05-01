@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme: Theme) =>
 function showError(errorText: string){
   store.dispatch(addNotification({
       type:"INSTANT",
-      title:"Error",
+      title:"Changed Settings",
       body:errorText
   }));
 }
@@ -116,6 +116,10 @@ export default function ArtificialSettings(props:ArtificialSettingsProps) {
     setMatchRate(Number(event.target.value));
   };
 
+  const handleOrderRateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setOrderRate(Number(event.target.value));
+  };
+
   const onSubmit = ()=>{
     let newSettings: BotSettings = {
       enabled: enableCheck,
@@ -148,18 +152,26 @@ export default function ArtificialSettings(props:ArtificialSettingsProps) {
         New Order Rate
       </Typography>
       <p>The rate in seconds that artifical orders should be created</p>
-
-      <Slider
-        style={{ width: 300 }}
-        defaultValue={5}
-        aria-labelledby="discrete-slider"
-        valueLabelDisplay="auto"
-        step={1}
-        marks
-        min={1}
-        max={10}
-        {...bindOrderRate}
-      />
+      <div>
+        <Slider
+          value={typeof orderRate === "number" ? orderRate : 0}
+         {...bindOrderRate}
+          aria-labelledby="input-slider"
+          style={{ width: 300, marginRight: 10 }}
+        />
+        <Input
+          value={orderRate}
+          margin="dense"
+          onChange={handleOrderRateChange}
+          inputProps={{
+            step: 10,
+            min: 0,
+            max: 100,
+            type: "number",
+            "aria-labelledby": "input-slider",
+          }}
+        />
+      </div>
       <Divider className={classes.divider} />
 
       <Typography id="discrete-slider" gutterBottom>

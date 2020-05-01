@@ -52,7 +52,7 @@ export class TransactionListenerService{
         console.log("transAttached");
         console.log(sessionId);
         
-        this.transListener = this.db.collection("Sessions").doc(sessionId).collection("CompletedOrders")
+        this.transListener = this.db.collection("Sessions").doc(sessionId).collection("CompletedOrders").orderBy("time").limitToLast(30)
         .onSnapshot((snapshot:any) => {
             snapshot.docChanges().forEach((change: any) => {
                 if (change.type === "added") {

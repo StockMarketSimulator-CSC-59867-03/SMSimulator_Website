@@ -192,31 +192,40 @@ function ManagePage(props: ManagePageProps){
         .catch(reject);
     }
 
-    return(
+    return (
       <div className={classes.root}>
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={2}>
-            <h1 className="centerHeading">Player List</h1>
-            <Grid container spacing={2} className="listPadding">
-              {playerData}
-            </Grid>
             <Grid item xs={12} md={3} lg={3}>
               <Paper className={classes.paper}>
                 <div>
-                  <p>Your invitation code is: <b>{joinKey}</b></p>
-                  <Button id="deleteButton" onClick={handleDeleteSession} variant="contained" color="secondary">
+                  <p>
+                    Your invitation code is: <b>{joinKey}</b>
+                  </p>
+                  <Button
+                    id="deleteButton"
+                    onClick={handleDeleteSession}
+                    variant="contained"
+                    color="secondary"
+                  >
                     Completely delete this session
                   </Button>
                 </div>
               </Paper>
             </Grid>
             <Grid item xs={12} md={9} lg={9}>
-                <Paper className={classes.paper}>
-                    <Typography>Artifical Buyers/Sellers</Typography>
-                    <ArtificialSettings botManager={props.botManager}/>
-                </Paper>
+              <Paper className={classes.paper}>
+                <Typography>Artifical Buyers/Sellers</Typography>
+                <ArtificialSettings botManager={props.botManager} />
+              </Paper>
             </Grid>
           </Grid>
+          <Paper className={classes.paper} style={{marginTop:20}}>
+              <h1 className="centerHeading">Player List</h1>
+              <Grid container spacing={2} className="listPadding">
+                {playerData}
+              </Grid>
+            </Paper>
         </Container>
       </div>
     );
