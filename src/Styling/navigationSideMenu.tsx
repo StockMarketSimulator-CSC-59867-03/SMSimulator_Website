@@ -50,7 +50,7 @@ function NavigationSideMenu(props: any) {
   }
 
 
-  let fundText = (props.sessionData == null || props.sessionData.balance == null) ? "" : `Funds: $${props.sessionData.balance}`;
+  let fundText = (props.sessionData == null || props.sessionData.balance == null) ? "" : `Funds: $${props.sessionData.balance.toFixed(2)}`;
 
   return (
     <Drawer
