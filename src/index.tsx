@@ -40,14 +40,14 @@ import { BotSettings } from './DataModels/botSettings';
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyApzhpZ4-U8-mZNM0LVKlC6qYytnoOnktI",
-  authDomain: "stocksimtest.firebaseapp.com",
-  databaseURL: "https://stocksimtest.firebaseio.com",
-  projectId: "stocksimtest",
-  storageBucket: "stocksimtest.appspot.com",
-  messagingSenderId: "1016983407789",
-  appId: "1:1016983407789:web:a1532af9a0f250f1914a24",
-  measurementId: "G-VQB64J53YS"
+  apiKey: "AIzaSyCWFa5caoShYrHxcLFlVeHyIzM3mXWgJo0",
+  authDomain: "stock-market-sim.firebaseapp.com",
+  databaseURL: "https://stock-market-sim.firebaseio.com",
+  projectId: "stock-market-sim",
+  storageBucket: "stock-market-sim.appspot.com",
+  messagingSenderId: "6930575821",
+  appId: "1:6930575821:web:ffa7c8cafc0ed7bb595484",
+  measurementId: "G-6SR01THDJM"
   };
 
 firebase.initializeApp(firebaseConfig);
