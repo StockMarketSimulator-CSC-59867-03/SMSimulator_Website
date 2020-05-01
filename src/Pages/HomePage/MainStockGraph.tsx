@@ -6,41 +6,56 @@ import { isNumber } from 'util';
 var min = 0.0;
 var max = 0.0;
 
+function calculateDomain(value : Array<any>){
+    let min = 1000000;
+    let max = 0;
+    for(let i = 0; i < value.length; i++){
+        let price = value[i]["price"]
+        if(price < min){
+            min = price;
+        }
+        if(price > max){
+            max = price;
+        }
+    }
+    return [min - 20, max + 20];
+  }
+
 function calcAvg(arr_points:[]){
     let sum = 0.0;
     let num_points = arr_points.length;
+    console.log(arr_points);
     arr_points.forEach((x:any) => {
         if(isNumber(x))
             sum += x;
         else
             sum += parseFloat(x);
     })
-    let avg = parseFloat((sum/num_points).toFixed(2));
-    if(avg < min || min === 0.0)
-        min = avg;
-    if(avg > max || max === 0.0)
-        max = avg;
-    return avg;
+
+    return sum;
 }
 
 function MainStockGraph(props:any){
     let stocks = useSelector((state:any) => state.stockData);
     let graph_points = new Map<any, any>();
 
+    
     Object.entries(stocks).forEach((stock:any) => {
         console.log(stock);
         let stockHistory = stock[1].history;
         if(stockHistory !== null){
+            let count = 0;
             stockHistory.forEach((entry:any) => {
-                let temp = graph_points.get(entry['dateTime']);
+                count++;
+                let temp = graph_points.get(count);
                 if(temp === null || temp === undefined)
                 {
-                    graph_points.set(entry['dateTime'], [entry['price']]);
+                    graph_points.set(count, [entry['price']]);
                 }
                 else
                 {
                     temp.push(entry['price']);
-                    graph_points.set(entry['dateTime'], temp);
+                    graph_points.set(count, temp);
                 }
             })
         }
@@ -59,7 +74,8 @@ function MainStockGraph(props:any){
 
     console.log(history);
     console.log(min, max);
+    let domain = calculateDomain(history);
 
-    return(<div><StockGraph domain={[min, max]} data={history} handleClick={() => {}} width={500} height={400}/></div>)
+    return(<div><StockGraph domain={domain} data={history} handleClick={() => {}} width={500} height={400}/></div>)
 }
 export default MainStockGraph;
