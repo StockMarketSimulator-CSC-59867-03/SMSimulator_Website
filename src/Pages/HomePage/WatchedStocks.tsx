@@ -41,7 +41,6 @@ export default function WatchedStocks(props:any) {
           <div style={{display: 'flex', borderTop: '1px solid black', margin: '2px'}}>
               <div>
                 <p>{tickerSymbol}</p>
-                <p style={{backgroundColor: 'red', color: 'white', padding: '2px', borderRadius: 3}}>-6.21%</p>
               </div>
               <div style={{flexGrow: 1}}/>
               <div style={{display: 'flex'}}>
