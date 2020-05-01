@@ -24,25 +24,19 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function EventInjection(props:any){
     const classes = useStyles();
-    const overflowPaper = clsx(classes.paper, classes.overflow);
 
     return (
         <div className={classes.root}>
             <Container maxWidth="lg" className={classes.container}>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} md={6} lg={6}>
+                    <Grid item xs={12} md={7} lg={7}>
                         <Paper className={classes.paper}>
                             <EventInjectionForm/>
                         </Paper>
                     </Grid>
-                    <Grid item xs={12} md={3} lg={3}>
+                    <Grid item xs={12} md={5} lg={5}>
                         <Paper className={classes.paper}>
                             <div className={classes.overflow}><QueuedEvents/></div>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <Paper className={classes.paper}>
-                            <Typography>Completed Goes Here</Typography>
                         </Paper>
                     </Grid>
                 </Grid>

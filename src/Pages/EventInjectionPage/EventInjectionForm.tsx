@@ -1,7 +1,9 @@
 import React, { useState, useRef } from 'react';
 import firebase from 'firebase';
-import { createStyles, makeStyles, Theme, Container, Grid, Paper, Typography, FormControl, InputLabel, Select, MenuItem, FormHelperText, Divider, Input, TextField, Button, Slider } from '@material-ui/core';
+import { createStyles, makeStyles, Theme, Container, Grid, Paper, Typography, FormControl, InputLabel, Select, MenuItem, FormHelperText, Divider, Input, TextField, Button, Slider, withStyles } from '@material-ui/core';
 import { connect } from 'react-redux';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import Tooltip, { TooltipProps } from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles((theme:Theme) => 
     createStyles({
@@ -45,9 +47,22 @@ const useStyles = makeStyles((theme:Theme) =>
         },
         slider: {
             marginTop: theme.spacing(2)
+        },
+        tooltip: {
+            marginTop: theme.spacing(2),
+            marginLeft: theme.spacing(1)
         }
     })
 )
+
+const HtmlTooltip = withStyles((theme: Theme) => ({
+    tooltip: {
+      backgroundColor: theme.palette.secondary.light,
+      color: 'rgba(0, 0, 0, 0.87)',
+      maxWidth: 220,
+      fontSize: theme.typography.pxToRem(12),
+    },
+  }))(Tooltip);
 
 function EventInjectionForm(props:any){
     const classes = useStyles();
@@ -200,6 +215,17 @@ function EventInjectionForm(props:any){
                     value={custom_Favorability}
                     onChange={(e, val) => {set_Favorability(val as number)}}
                 />
+                <HtmlTooltip
+                    title={
+                    <React.Fragment>
+                        <Typography color="inherit">What is Favorability?</Typography>
+                        {"Affects how the artificial buyers/sellers create orders."}
+                        <br/>
+                        {"The higher the number, the greater the increase of targeted stocks' price."}
+                    </React.Fragment>
+                    }>
+                    <HelpOutlineIcon className={classes.tooltip}/>
+                </HtmlTooltip>                
             </div>
 
             <Divider className={classes.divider2}/>
