@@ -119,7 +119,7 @@ export default class BotManager {
     computePercentRange(percentMax: number, percentMin: number, initialValue: number) : {max: any,min: any}{
         return {
             max: ((percentMax/100) * initialValue) + initialValue ,
-            min: initialValue - ((percentMin/100) * initialValue)
+            min: initialValue + ((percentMin/100) * initialValue)
         }
     }
 
@@ -164,10 +164,10 @@ export default class BotManager {
                  time: date.getTime(),
                  user: "bot"
              };
-             batch.set(matchedSellOrderDoc, matchedBuyOrder);
+          //   batch.set(matchedSellOrderDoc, matchedBuyOrder);
          }
 
-         batch.set(buyOrderDoc, newBuyOrder);
+       //  batch.set(buyOrderDoc, newBuyOrder);
 
          // SELL ORDER
          const {max: sellPriceMax, min: sellPriceMin} = this.computePercentRange(sellConfig.priceMax,sellConfig.priceMin,data.price);
@@ -181,9 +181,10 @@ export default class BotManager {
              user: "bot"
          };
 
-         batch.set(sellOrderDoc, newSellOrder);
+       //  batch.set(sellOrderDoc, newSellOrder);
 
        }
+       return;
        batch.commit().then(function () {
          console.log("Completed Batch Loop");
      });

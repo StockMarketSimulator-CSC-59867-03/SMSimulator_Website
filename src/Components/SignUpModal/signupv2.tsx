@@ -9,8 +9,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
-import { changeCurrentUserID, changeCurrentUsername, changeSessionID, clearSelectedStockData,clearUserStockData } from '../../redux/actions';
+import { changeCurrentUserID, changeCurrentUsername, changeSessionID, clearSelectedStockData,clearUserStockData, addNotification } from '../../redux/actions';
 import { useHistory } from 'react-router';
+import store from '../../redux/store';
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -48,6 +49,22 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
+function showNotification(text: string){
+    store.dispatch(addNotification({
+        type:"SNACKINFO",
+        title:text,
+        body:""
+    }));
+  }
+  
+  function showError(errorText: string){
+    store.dispatch(addNotification({
+        type:"INSTANT",
+        title:"Sign Up",
+        body:errorText
+    }));
+  }
+
 function SignUpModalv2(props:any){
     const classes = useStyles();
 
@@ -79,7 +96,7 @@ function SignUpModalv2(props:any){
 
         firebase.auth().createUserWithEmailAndPassword(email.current, password.current)
         .then((user) => {
-            alert("Successfully Signed Up!");
+            showNotification("Successfully Signed Up!");
             const currentUser = firebase.auth().currentUser;
             if(user && currentUser!= null){
                 currentUser.updateProfile({ displayName : username.current });
@@ -100,10 +117,10 @@ function SignUpModalv2(props:any){
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            alert(errorMessage);
+            showError(errorMessage);
             
             //close modal
-            setModalOpen(false);
+            
         });
     }
 
