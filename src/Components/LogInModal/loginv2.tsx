@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         modalBackground: {
             position: 'relative',
-            width: '20%',
-            height: '30%',
+            width: '25%',
+            height: '35%',
             backgroundColor: theme.palette.background.default,
         },
         grid: {
@@ -111,8 +111,13 @@ function LoginModalv2(props:any){
                 <div className={classes.modalBackground}>
                     <IconButton className={classes.closeIcon} onClick={handleOpenClose}><CloseIcon/></IconButton>
                     <Grid container className={classes.grid} direction="column">
-                        <TextField id="standard-basic" label="Email" name="email" onChange={handleChange} autoComplete="off"/>
-                        <TextField id="standard-basic" type="password" label="Password" name="password" onChange={handleChange}/>
+                        <br/>
+                        <h1>Log In</h1>
+                        <br/>
+                        <TextField id="outlined-required" variant = "outlined" label="Email" name="email" onChange={handleChange} autoComplete="off"/>
+                        <br/>
+                        <TextField id="outlined-required" variant = "outlined" type="password" label="Password" name="password" onChange={handleChange}/>
+                        <br/>                       
                         <Button className={classes.submitButton} color="primary" variant="contained" onClick={handleSubmit}>Log In</Button>
                     </Grid>
                 </div>
