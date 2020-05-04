@@ -75,10 +75,10 @@ return (
           {returnArr.map((returnArr:any) => (
             <StyledTableRow key={returnArr.date}>
               <StyledTableCell component="th" scope="row">
-                {returnArr.date}
+                {new Date(returnArr.date).getMonth() + "/" + new Date(returnArr.date).getDate() + "/" + new Date(returnArr.date).getFullYear()}
               </StyledTableCell>
               <StyledTableCell align="center">{returnArr.symbol}</StyledTableCell>
-              <StyledTableCell align="center">{returnArr.cost}</StyledTableCell>
+              <StyledTableCell align="center">{returnArr.cost.toFixed(2)}</StyledTableCell>
               <StyledTableCell align="center">{returnArr.volume}</StyledTableCell>
             </StyledTableRow>
           ))}

@@ -36,12 +36,25 @@ export default function WatchedStocks(props:any) {
       let tickerSymbol = stock[1].data['symbol'];
       let graphDomain = stock[1].domain;
       let stockHistory = stock[1].history;
+      
+      let stockData = stocks[tickerSymbol];
+      var percentageChange = '0';
+      var isGain = false;
+      if(stockData != null && stockData.history != null){
+        var lastStockPrice = (stockData.history[stockData.history.length - 1]["price"]);
+        var firstStockPrice = (stockData.history[0]["price"]);
+        var priceDiff = (lastStockPrice - firstStockPrice);
+        percentageChange = ((priceDiff/firstStockPrice)*100).toFixed(2);
+        var isGain = (priceDiff > 0);
+      }
+
+
       if(stocksToList.indexOf(tickerSymbol) !== -1){
         stockGraphs.push(
           <div style={{display: 'flex', borderTop: '1px solid black', margin: '2px'}}>
               <div>
                 <p>{tickerSymbol}</p>
-                <p style={{backgroundColor: 'red', color: 'white', padding: '2px', borderRadius: 3}}>-6.21%</p>
+                <p style={{backgroundColor: isGain ? 'green' : 'red', color: 'white', padding: '2px', borderRadius: 3}}>{percentageChange}%</p>
               </div>
               <div style={{flexGrow: 1}}/>
               <div style={{display: 'flex'}}>
@@ -51,6 +64,8 @@ export default function WatchedStocks(props:any) {
         )
       }
     })
+
+
 
     return (
       <GridList className={classes.list} cols={3.5} cellHeight='auto'>

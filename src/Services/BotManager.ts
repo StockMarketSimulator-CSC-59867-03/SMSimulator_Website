@@ -120,23 +120,26 @@ export default class BotManager {
 
     createFavorabilityListner(){
         this.stockDataMap = new Map();
-        let stockDoc = this.db.collection("Sessions").doc(this.sessionID).collection("Stocks");
+        if(this.sessionID != undefined && this.sessionID!=""){
+            let stockDoc = this.db.collection("Sessions").doc(this.sessionID).collection("Stocks");
 
-        if(this.stockDataListner != null){
-            this.stockDataListner();
+            if(this.stockDataListner != null){
+                this.stockDataListner();
+            }
+
+        this.stockDataListner = stockDoc
+            .onSnapshot((snapshot: any) => {
+                snapshot.docChanges().forEach((change: any) => {
+                if (change.type === "added" || change.type === "modified") {
+                    this.stockDataMap.set(change.doc.id,change.doc.data());
+                }
+                if (change.type === "removed") {
+                    console.log("Removed city: ", change.doc.data());
+                }
+            });
+        });
         }
 
-       this.stockDataListner = stockDoc
-        .onSnapshot((snapshot: any) => {
-            snapshot.docChanges().forEach((change: any) => {
-            if (change.type === "added" || change.type === "modified") {
-                this.stockDataMap.set(change.doc.id,change.doc.data());
-            }
-            if (change.type === "removed") {
-                console.log("Removed city: ", change.doc.data());
-            }
-        });
-    });
     }
 
     //Computes a range with based on precentage increase from the parameters percentMax and percentMin

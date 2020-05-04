@@ -7,8 +7,8 @@ import { useSelector } from "react-redux";
 function StockViewHeader(props: any) {
   const allStockData = useSelector((state: any) => state.stockData);
   let stockData = allStockData[props.symbol];
-  var lastStockPrice = (stockData.history[stockData.history.length - 1]["price"]).toFixed(2);
-  var firstStockPrice = (stockData.history[0]["price"]).toFixed(2);
+  var lastStockPrice = (stockData.history[stockData.history.length - 1]["price"]);
+  var firstStockPrice = (stockData.history[0]["price"]);
   var priceDiff = (lastStockPrice - firstStockPrice);
   var actualChange = priceDiff.toFixed(2);
   var percentageChange = ((priceDiff/firstStockPrice)*100).toFixed(2);
