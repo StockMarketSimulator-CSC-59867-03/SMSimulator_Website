@@ -26,6 +26,36 @@ import PortfolioStockGraph from './PortfolioStockGraph';
 import OwnedStockItem from './OwnedStockItem';
 import { useSelector } from 'react-redux';
 import { lightBlue } from '@material-ui/core/colors';
+import { isNumber } from 'util';
+
+function calculateDomain(value : Array<any>){
+    let min = 1000000;
+    let max = 0;
+    for(let i = 0; i < value.length; i++){
+        let price = value[i]["price"]
+        if(price < min){
+            min = price;
+        }
+        if(price > max){
+            max = price;
+        }
+    }
+    return [min - 20, max + 20];
+  }
+
+function calcAvg(arr_points:[]){
+    let sum = 0.0;
+    let num_points = arr_points.length;
+    console.log(arr_points);
+    arr_points.forEach((x:any) => {
+        if(isNumber(x))
+            sum += x;
+        else
+            sum += parseFloat(x);
+    })
+
+    return sum;
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -104,7 +134,7 @@ function PortfolioPage(props:any) {
     let userStocks = useSelector((state: any) => state.userStocks);
 
     let stockItems: JSX.Element[] = [];
-
+    let graph_points = new Map<any, any>();
     // Go through the array of userStocks 
     // Calculate the value of stock they have and percentage gain and pass into OwnerStockItem
     let totalValue = 0; // While going through the array add up the value of all stocks which give total portofolio value
@@ -135,6 +165,20 @@ function PortfolioPage(props:any) {
                          </Grid>
                     ));
                 }
+                    let count = 0;
+                    stockData.history.forEach((entry:any) => {
+                        count++;
+                        let temp = graph_points.get(count);
+                        if(temp === null || temp === undefined)
+                        {
+                            graph_points.set(count, [entry['price']]);
+                        }
+                        else
+                        {
+                            temp.push(entry['price']);
+                            graph_points.set(count, temp);
+                        }
+                    })
             }
         }
        
@@ -142,6 +186,23 @@ function PortfolioPage(props:any) {
 
     let portfolioGain = calculatePercentageGain(totalInitialValue, totalValue);
     let isGain = portfolioGain > 0;
+
+
+    let history = new Array;
+
+    graph_points.forEach((value:any, key:any) => {
+        // console.log(calcAvg(value));
+        let avgPrice = calcAvg(value);
+        history.push({dateTime: key, price: avgPrice});
+    })
+
+    history.sort((a, b) => (a.dateTime > b.dateTime) ? 1 : -1);
+
+    let domain = calculateDomain(history);
+
+
+
+
     return (
       <div className={classes.root}>
         <Container maxWidth="lg" className={classes.container}>
@@ -168,7 +229,7 @@ function PortfolioPage(props:any) {
               {portfolioGain > 0 ? '+' : ''}{portfolioGain.toFixed(2)}%
             </Typography>
             <div>
-              <PortfolioStockGraph />
+              <PortfolioStockGraph domain={domain} history={history} />
             </div>
           </Grid>
           <div>

@@ -70,6 +70,6 @@ function PortfolioStockGraph(props:any){
     console.log(history);
     console.log(min, max);
 
-    return(<div><StockGraph  handleClick={() => {}} width={800} height={500}/></div>)
+    return(<div><StockGraph  domain={props.domain} data={props.history} handleClick={() => {}} width={800} height={500}/></div>)
 }
 export default PortfolioStockGraph;
