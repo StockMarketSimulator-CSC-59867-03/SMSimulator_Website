@@ -1,61 +1,39 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import StockGraph from '../../Components/StockGraph/stockGraph';
-import { GridList } from '@material-ui/core';
+import { GridList, Grid, GridListTile } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import OwnedStockItem from './OwnedStockItem';
+
 
 function OwnedStocks(props:any){
     let sessionStocks = useSelector((state: any) => state.stockData);
     let stocks = useSelector((state: any) => state.userStocks);
     let stockmap = new Map<any, any>();
     let stockGraphs: JSX.Element[] = []; //array of stocks we want to display
-    console.log(stocks);
 
-    //insertting userStocks into a map, Symbol => Quantity
-    Object.entries(stocks).forEach((stock:any) => {
-        stockmap.set(stock[0], stock[1].quantity);
-    });
-    console.log(stockmap);
+    let stockItems: JSX.Element[] = [];
 
-    Object.entries(sessionStocks).forEach((stock:any) => {
-        let tickerSymbol = stock[1].data['symbol'];
-        let graphDomain = stock[1].domain;
-        let stockHistory = stock[1].history;
-
-        let ownedStock = stockmap.get(tickerSymbol);
-
-        let stockData = sessionStocks[tickerSymbol];
-        var percentageChange = '0';
-        var isGain = true;
-        if(stockData != null && stockData.history != null){
-          var lastStockPrice = (stockData.history[stockData.history.length - 1]["price"]);
-          var firstStockPrice = (stockData.history[0]["price"]);
-          var priceDiff = (lastStockPrice - firstStockPrice);
-          percentageChange = ((priceDiff/firstStockPrice)*100).toFixed(2);
-          var isGain = (priceDiff > 0);
-        }
-
-        if(ownedStock !== undefined)
-        {
-            stockGraphs.push(
-                <div style={{display: 'flex', borderTop: '1px solid black'}}>
-                    <div>
-                        <p>{tickerSymbol} ({ownedStock})</p>
-                        <p style={{backgroundColor: isGain ? 'green' : 'red', color: 'white', padding: '2px', borderRadius: 3, alignSelf: 'center'}}>{percentageChange}%</p>
-                    </div>
-                    <div style={{flexGrow: 1}}/>
-                    <div style={{display: 'flex'}}>
-                        <StockGraph name={tickerSymbol} domain={graphDomain} data={stockHistory} handleClick={() => {}} width={100} height={80} animationOn={false} showToolTip={false}/>
-                    </div>
-                </div>
-            )
-        }
-    })
+    for(let i = 0; i < 6; i++){
+        stockItems.push(( 
+            <Grid item xs={4}>
+                <OwnedStockItem></OwnedStockItem>
+             </Grid>
+        ));
+    }
 
     return(
         <div>
-            {stockmap.size === 0 ? <p>You don't own any stocks. Buy some!</p> : <GridList cols={1} cellHeight='auto'>{[...stockGraphs]}</GridList>}
+            <Typography variant="h4" gutterBottom>
+              Your Stocks:
+            </Typography>
+            <Grid container spacing={3} >
+            {stockItems}
+         </Grid>
         </div>
+
     );
+
 }
 
 export default OwnedStocks;

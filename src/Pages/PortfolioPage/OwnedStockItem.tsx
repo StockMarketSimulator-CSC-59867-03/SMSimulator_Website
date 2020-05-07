@@ -16,7 +16,7 @@ function OwnedStockItem(props: any) {
   
 
   return (
-    <Paper style={{ marginTop: 10 }} elevation={2}>
+    <Paper  elevation={2}>
       <Grid
         container
         direction="row"

@@ -91,6 +91,7 @@ const useStyles = makeStyles((theme: Theme) =>
 function PortfolioPage(props:any) {
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+    
 
     return (
       <div className={classes.root}>
@@ -113,41 +114,8 @@ function PortfolioPage(props:any) {
             <div>
               <PortfolioStockGraph />
             </div>
-
           </Grid>
-          <Typography variant="h4" gutterBottom>
-              Your Stocks:
-            </Typography>
-            
-            <Grid container spacing={1}>
-        <Grid container item xs={12} spacing={3}>
-        <React.Fragment>
-        <Grid item xs={4}>
-          <OwnedStockItem></OwnedStockItem>
-        </Grid>
-        <Grid item xs={4}>
-        <OwnedStockItem></OwnedStockItem>
-        </Grid>
-        <Grid item xs={4}>
-         <OwnedStockItem></OwnedStockItem>
-        </Grid>
-      </React.Fragment>
-        </Grid>
-        <Grid container item xs={12} spacing={3}>
-        <React.Fragment>
-        <Grid item xs={4}>
-         <OwnedStockItem></OwnedStockItem>
-        </Grid>
-        <Grid item xs={4}>
-         <OwnedStockItem></OwnedStockItem>
-        </Grid>
-        <Grid item xs={4}>
-         <OwnedStockItem></OwnedStockItem>
-        </Grid>
-      </React.Fragment>
-        </Grid>
-
-      </Grid>
+        <OwnedStocks></OwnedStocks>
         </Container>
       </div>
     );
