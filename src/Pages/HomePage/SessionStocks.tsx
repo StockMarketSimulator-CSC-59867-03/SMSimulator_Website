@@ -4,6 +4,7 @@ import { Grid, Paper, List, ListItem, Card, GridList, GridListTile, ListItemText
 import StockGraph from '../../Components/StockGraph/stockGraph';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToWatchList } from '../../redux/actions';
+import { lightBlue } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -83,7 +84,7 @@ function SessionStocks(props:any) {
       <div style={{display: 'flex', borderTop: '1px solid black'}}>
           <div>
             <p>{tickerSymbol}</p>
-            <p style={{backgroundColor: isGain ? 'green' : 'red', color: 'white', padding: '2px', borderRadius: 3}}>
+            <p style={{backgroundColor: isGain ? lightBlue[300] : 'red', color: 'white', padding: '2px', borderRadius: 3}}>
               {percentageChange}%</p>
           </div>
           <div style={{flexGrow: 1}}/>

@@ -22,9 +22,10 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { Paper, Grid, Card, Container, Fab, Divider } from '@material-ui/core';
 import WatchedStocks from '../HomePage/WatchedStocks';
 import Typography from '@material-ui/core/Typography';
-import OwnedStocks from './OwnedStocks';
 import PortfolioStockGraph from './PortfolioStockGraph';
 import OwnedStockItem from './OwnedStockItem';
+import { useSelector } from 'react-redux';
+import { lightBlue } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -88,11 +89,59 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
+function calculatePercentageGain(initialValue: number, value: number ){
+    let percentageGain = 0;
+    if(initialValue != null && initialValue != NaN && initialValue != 0){ // Only calculate when we can
+        percentageGain = (value - initialValue) / initialValue * 100;
+    }
+    return percentageGain;
+}
+
 function PortfolioPage(props:any) {
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-    
+    let sessionStocks = useSelector((state: any) => state.stockData);
+    let userStocks = useSelector((state: any) => state.userStocks);
 
+    let stockItems: JSX.Element[] = [];
+
+    // Go through the array of userStocks 
+    // Calculate the value of stock they have and percentage gain and pass into OwnerStockItem
+    let totalValue = 0; // While going through the array add up the value of all stocks which give total portofolio value
+    let totalInitialValue = 0;
+    Object.entries(userStocks).forEach((stock:any) => {
+        if(sessionStocks != null || sessionStocks != {}){
+            if(sessionStocks.hasOwnProperty(stock[0])){
+                let stockData = sessionStocks[stock[0]];
+                if(stockData.history != null && stockData.domain != null){
+                    let stockQuantity = stock[1]["quantity"];
+                    let initialValue = stock[1]["initialValue"];
+                    let stockName = stockData["data"]["name"]
+                    let price = Number(
+                        stockData.history[stockData.history.length - 1]["price"].toFixed(2)
+                      );
+
+                    let value = stockQuantity * price;
+                    if(initialValue != null && initialValue >= 0){
+                        totalInitialValue += initialValue;
+                    }
+                    
+                    let percentageGain = calculatePercentageGain(initialValue, value);
+
+                    totalValue += value;
+                    stockItems.push(( 
+                        <Grid item xs={4}>
+                            <OwnedStockItem name={stockName} quantity={stockQuantity} price={price} value={value} graphDomain={stockData.domain} stockHistory={stockData.history} gain={percentageGain}></OwnedStockItem>
+                         </Grid>
+                    ));
+                }
+            }
+        }
+       
+    });
+
+    let portfolioGain = calculatePercentageGain(totalInitialValue, totalValue);
+    let isGain = portfolioGain > 0;
     return (
       <div className={classes.root}>
         <Container maxWidth="lg" className={classes.container}>
@@ -103,19 +152,33 @@ function PortfolioPage(props:any) {
             alignItems="center"
           >
             <Typography variant="h2" component="h2">
-              $50,000
+              ${totalValue.toLocaleString()}
             </Typography>
-            <Typography variant="caption" display="block" >
+            <Typography variant="caption" display="block">
               Total Portfolio
             </Typography>
-            <Typography style={{ color: "green" }} variant="subtitle1" display="block" >
-              +2.31%
+            <Typography
+             style= {{
+                color: isGain ? lightBlue[300]: "red",
+              }}
+              variant="subtitle1"
+              display="block"
+            >
+                
+              {portfolioGain > 0 ? '+' : ''}{portfolioGain.toFixed(2)}%
             </Typography>
             <div>
               <PortfolioStockGraph />
             </div>
           </Grid>
-        <OwnedStocks></OwnedStocks>
+          <div>
+            <Typography variant="h4" gutterBottom>
+              Your Stocks:
+            </Typography>
+            <Grid container spacing={3}>
+              {stockItems}
+            </Grid>
+          </div>
         </Container>
       </div>
     );

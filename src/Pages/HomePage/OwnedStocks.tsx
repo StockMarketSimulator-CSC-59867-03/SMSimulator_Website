@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import StockGraph from '../../Components/StockGraph/stockGraph';
 import { GridList } from '@material-ui/core';
+import { lightBlue } from '@material-ui/core/colors';
 
 function OwnedStocks(props:any){
     let sessionStocks = useSelector((state: any) => state.stockData);
@@ -41,7 +42,7 @@ function OwnedStocks(props:any){
                 <div style={{display: 'flex', borderTop: '1px solid black'}}>
                     <div>
                         <p>{tickerSymbol} ({ownedStock})</p>
-                        <p style={{backgroundColor: isGain ? 'green' : 'red', color: 'white', padding: '2px', borderRadius: 3, alignSelf: 'center'}}>{percentageChange}%</p>
+                        <p style={{backgroundColor: isGain ? lightBlue[300] : 'red', color: 'white', padding: '2px', borderRadius: 3, alignSelf: 'center'}}>{percentageChange}%</p>
                     </div>
                     <div style={{flexGrow: 1}}/>
                     <div style={{display: 'flex'}}>
