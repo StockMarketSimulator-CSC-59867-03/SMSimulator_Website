@@ -23,12 +23,24 @@ function OwnedStocks(props:any){
 
         let ownedStock = stockmap.get(tickerSymbol);
 
+        let stockData = sessionStocks[tickerSymbol];
+        var percentageChange = '0';
+        var isGain = true;
+        if(stockData != null && stockData.history != null){
+          var lastStockPrice = (stockData.history[stockData.history.length - 1]["price"]);
+          var firstStockPrice = (stockData.history[0]["price"]);
+          var priceDiff = (lastStockPrice - firstStockPrice);
+          percentageChange = ((priceDiff/firstStockPrice)*100).toFixed(2);
+          var isGain = (priceDiff > 0);
+        }
+
         if(ownedStock !== undefined)
         {
             stockGraphs.push(
                 <div style={{display: 'flex', borderTop: '1px solid black'}}>
                     <div>
                         <p>{tickerSymbol} ({ownedStock})</p>
+                        <p style={{backgroundColor: isGain ? 'green' : 'red', color: 'white', padding: '2px', borderRadius: 3, alignSelf: 'center'}}>{percentageChange}%</p>
                     </div>
                     <div style={{flexGrow: 1}}/>
                     <div style={{display: 'flex'}}>
