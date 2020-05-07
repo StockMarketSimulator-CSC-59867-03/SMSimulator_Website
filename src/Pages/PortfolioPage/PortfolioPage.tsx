@@ -24,6 +24,7 @@ import WatchedStocks from '../HomePage/WatchedStocks';
 import Typography from '@material-ui/core/Typography';
 import OwnedStocks from './OwnedStocks';
 import PortfolioStockGraph from './PortfolioStockGraph';
+import OwnedStockItem from './OwnedStockItem';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -90,38 +91,33 @@ const useStyles = makeStyles((theme: Theme) =>
 function PortfolioPage(props:any) {
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+    
 
     return (
-        <div className={classes.root}>
-            <Container maxWidth="lg" className={classes.container}>
-                <Grid container spacing={3}>
-                    {/* MarketGraph */}
-                    <Grid item xs={12} md={8} lg={9}>
-                        <Paper className={fixedHeightPaper}>
-                            <div className={classes.titleDiv}>
-                                <Typography variant="h5">YOUR PORTFOLIO</Typography>
-                                <Typography variant="h6" className={classes.return}>(+ XX.XX%)</Typography>
-                            </div>
-                            <PortfolioStockGraph/>
-                        </Paper>
-                    </Grid>
-                    {/* Right Side Panel */}
-                    <Grid item xs={12} md={4} lg={3}>
-                        <Paper className={fixedHeightPaper}>
-                            <Typography variant="subtitle2">STOCKS YOU OWN</Typography>
-                            <div className={classes.sessionStocks}><OwnedStocks/></div>
-                        </Paper>
-                    </Grid>
-                    {/* Watched Stocks */}
-                    <Grid item xs={12}>
-                        <Paper className={classes.paper}>
-                            <Typography variant="subtitle2">Watch List</Typography>
-                            <WatchedStocks sessionData={props.sessionData} currentUserData={props.currentUserData}/>
-                        </Paper>
-                    </Grid>
-                </Grid>
-            </Container>
-        </div>
+      <div className={classes.root}>
+        <Container maxWidth="lg" className={classes.container}>
+          <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+          >
+            <Typography variant="h2" component="h2">
+              $50,000
+            </Typography>
+            <Typography variant="caption" display="block" >
+              Total Portfolio
+            </Typography>
+            <Typography style={{ color: "green" }} variant="subtitle1" display="block" >
+              +2.31%
+            </Typography>
+            <div>
+              <PortfolioStockGraph />
+            </div>
+          </Grid>
+        <OwnedStocks></OwnedStocks>
+        </Container>
+      </div>
     );
 }
 
