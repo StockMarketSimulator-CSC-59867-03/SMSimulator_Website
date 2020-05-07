@@ -72,7 +72,7 @@ function ManagePage(props: ManagePageProps){
 
         function seedQuerySnapshot(doc: any){
           return new Promise((resolve, reject) => {
-            if(doc.data()?.type == "player"){
+            if(doc.data()){
               doc.ref.collection('Stocks').get().then((stockDoc: any) => {
                 playerStockArray.push([]);
                 stockDoc.forEach((stocks: any) => {
@@ -82,10 +82,10 @@ function ManagePage(props: ManagePageProps){
                     </div>
                   )
                 })
-
+                let userName = (doc.data()?.username != null) ? "PLAYER" : "Admin";
                 playerDataArray.push(
                   <Grid item xs={12} md={3} lg={3}>
-                    <p>{doc.data()?.username} currently has <span className="liquid"><b>${doc.data()?.liquid}</b></span></p>
+                    <p>{userName} currently has <span className="liquid"><b>${doc.data()?.liquid}</b></span></p>
                     {playerStockArray[index]}
                     <p><AddStocks id={doc.data()?.id} /></p>
                   </Grid>

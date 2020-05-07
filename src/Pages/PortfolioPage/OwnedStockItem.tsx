@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import StockGraph from '../../Components/StockGraph/stockGraph';
 import { green } from '@material-ui/core/colors';
 import { useSelector } from "react-redux";
+import { lightBlue } from '@material-ui/core/colors';
 
 import { Paper, Grid, Card, Container, Fab, Divider } from '@material-ui/core';
 
@@ -10,13 +11,13 @@ function OwnedStockItem(props: any) {
 
   
   let stockPrice = "0.00";
-
+  let isGain = props.gain > 0;
   
 
   
 
   return (
-    <Paper  elevation={2}>
+    <Paper elevation={2}>
       <Grid
         container
         direction="row"
@@ -29,27 +30,34 @@ function OwnedStockItem(props: any) {
       >
         <div>
           <Typography variant="h6" component="h6">
-            Apple Inc.
+            {props.name}
           </Typography>
           <Typography style={{ color: "gray" }} variant="caption">
-            5 Shares - $400.00
+            {props.quantity} Shares - ${props.price}
           </Typography>
         </div>
 
         <StockGraph
+          domain={props.graphDomain}
+          data={props.stockHistory}
           width={100}
           height={80}
           animationOn={false}
           showToolTip={false}
         ></StockGraph>
         <div>
-        <Typography style={{ color: "lightblue" }} variant="h6">
-            $10,000
+          <Typography style={{ color: "white" }} variant="h6">
+            ${props.value.toLocaleString()}
           </Typography>
-        <Typography style={{ color: "green" }} variant="subtitle1" component="h6">
-         +2.31%
-        </Typography>
+          <div>
+            <Typography style={{
+                  color: isGain ? lightBlue[300] : "red",
+                }} variant="body2" component="h6">
 
+                {props.gain > 0 ? "+" : ""}
+                {props.gain.toFixed(2)}%
+            </Typography>
+          </div>
         </div>
       </Grid>
     </Paper>

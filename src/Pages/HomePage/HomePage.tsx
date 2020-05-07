@@ -23,7 +23,6 @@ import { Paper, Grid, Card, Container, Fab, Divider, ButtonGroup } from '@materi
 import WatchedStocks from './WatchedStocks';
 import Typography from '@material-ui/core/Typography';
 import SessionStocks from './SessionStocks';
-import OwnedStocks from '../PortfolioPage/OwnedStocks';
 import MainStockGraph from './MainStockGraph';
 import firebase from 'firebase';
 import { TransactionBoard } from '../../Components/TransactionBoard/transactionBoard';

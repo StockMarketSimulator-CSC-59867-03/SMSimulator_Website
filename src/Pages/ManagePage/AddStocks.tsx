@@ -10,10 +10,28 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import firebase from 'firebase';
 import { useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom";
+import store from '../../redux/store';
+import { addNotification } from '../../redux/actions';
 
 type AddStocksProps = {
     id: any;
 };
+
+function showNotification(text: string){
+  store.dispatch(addNotification({
+      type:"SNACKINFO",
+      title:text,
+      body:""
+  }));
+}
+
+function showError(errorText: string){
+  store.dispatch(addNotification({
+      type:"INSTANT",
+      title:"Unable to Set Stocks",
+      body:errorText
+  }));
+}
 
 // this is "Addstock" component but its function is "Setstock"
 export default function AddStocks(props: AddStocksProps) {
@@ -26,6 +44,7 @@ export default function AddStocks(props: AddStocksProps) {
   });
   const sessionID = useSelector((state: any) => state.sessionData.id);
   let history = useHistory();
+  let sessionStocks = useSelector((state: any) => state.stockData);
 
 
   const handleChange = (event: any) =>{
@@ -50,18 +69,50 @@ export default function AddStocks(props: AddStocksProps) {
   const handleSubmit = () =>{
     console.log(formState);
     let stocks = formState.stocks.split(" ");
-
+    let batch = db.batch();
+    let stockNameError: any = null;
+    let priceError = false;
     stocks.forEach((stockSymbol: string)=>{
-      db.collection("Sessions").doc(sessionID).collection("Users").doc(formState.userIDs).collection("Stocks").doc(stockSymbol)
-        .set({
-          "initialValue":10000, 
+      if(sessionStocks.hasOwnProperty(stockSymbol)){
+      let newStocks =  db.collection("Sessions").doc(sessionID).collection("Users").doc(formState.userIDs).collection("Stocks").doc(stockSymbol);
+      let stockData = sessionStocks[stockSymbol];
+      let stockPrice = 0;
+
+      if(stockData.history != null && stockData.history.length > 0 ){
+        stockPrice = Number(
+          stockData.history[stockData.history.length - 1]["price"].toFixed(2)
+        );
+      }
+      else{
+        priceError = true;
+      }
+
+      batch.set(newStocks,{
+          "initialValue":parseInt(formState.quantity) * stockPrice, 
           "quantity": parseInt(formState.quantity)
-        }).then(() => {
-          handleClose();
-          alert(parseInt(formState.quantity) + " of " + stockSymbol + " added!");
-          window.location.reload();
         })
+      }
+      else{
+        stockNameError = stockSymbol;
+      }
     });
+
+    if(stockNameError == null){
+      if(!priceError){
+        batch.commit().then(function () {
+          handleClose();
+          showNotification("Sucessfully Set Stocks");
+        }).catch((err: any)=>{
+          showError(err);
+        });
+      }
+      else{
+        showError(`Stock price error`);
+      }
+    }
+    else{
+      showError(`${stockNameError} isn't a stock in the session`);
+    }
     
 
 }
