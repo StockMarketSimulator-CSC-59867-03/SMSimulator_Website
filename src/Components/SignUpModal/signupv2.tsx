@@ -147,9 +147,15 @@ function SignUpModalv2(props:any){
                 <div className={classes.modalBackground}>
                     <IconButton className={classes.closeIcon} onClick={handleOpenClose}><CloseIcon/></IconButton>
                     <Grid container className={classes.grid} direction="column">
-                        <TextField id="standard-basic" label="Email" name="email" onChange={handleChange} autoComplete="off"/>
-                        <TextField id="standard-basic" label="Username" name="username" onChange={handleChange} autoComplete="off"/>
-                        <TextField id="standard-basic" type="password" label="Password" name="password" onChange={handleChange}/>
+                        <br/>
+                        <h1>Sign Up</h1>
+                        <br/>
+                        <TextField id="outlined-required" variant = "outlined" label="Email" name="email" onChange={handleChange} autoComplete="off"/>
+                        <br/>
+                        <TextField id="outlined-required" variant = "outlined" label="Username" name="username" onChange={handleChange} autoComplete="off"/>
+                        <br/>
+                        <TextField id="outlined-required" variant = "outlined" type="password" label="Password" name="password" onChange={handleChange}/>
+                        <br/>
                         <Button className={classes.submitButton} color="primary" variant="contained" onClick={handleSubmit}>Sign Up</Button>
                     </Grid>
                 </div>

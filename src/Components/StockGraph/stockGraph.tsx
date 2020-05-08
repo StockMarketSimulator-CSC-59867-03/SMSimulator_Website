@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { LineChart, XAxis, YAxis, CartesianGrid, Line, Tooltip, ResponsiveContainer } from 'recharts';
 import { Link } from 'react-router-dom';
+import { lightBlue } from '@material-ui/core/colors';
 
 import {
     RadioGroup,
@@ -22,12 +23,12 @@ function StockGraph(props: any){
     let animationOn = !(props.animationOn == false) ;
     let showToolTip = !(props.showToolTip == false);
 
-    let lineColor = "#008006";
+    let lineColor = lightBlue[300];
     
     if(props.data != null && !showToolTip){
         // Probably not the way to do it but
         let trend = props.data[props.data.length - 1].price - props.data[0].price
-        lineColor = (trend > 0) ? "#008006" : "#FF0000";
+        lineColor = (trend > 0) ? lightBlue[300] : "#FF0000";
 
     }
     

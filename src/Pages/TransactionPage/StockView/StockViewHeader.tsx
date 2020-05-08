@@ -3,12 +3,13 @@ import { Grid } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import "./StockView.scss"
 import { useSelector } from "react-redux";
+import { lightBlue } from '@material-ui/core/colors';
 
 function StockViewHeader(props: any) {
   const allStockData = useSelector((state: any) => state.stockData);
   let stockData = allStockData[props.symbol];
-  var lastStockPrice = (stockData.history[stockData.history.length - 1]["price"]).toFixed(2);
-  var firstStockPrice = (stockData.history[0]["price"]).toFixed(2);
+  var lastStockPrice = (stockData.history[stockData.history.length - 1]["price"]);
+  var firstStockPrice = (stockData.history[0]["price"]);
   var priceDiff = (lastStockPrice - firstStockPrice);
   var actualChange = priceDiff.toFixed(2);
   var percentageChange = ((priceDiff/firstStockPrice)*100).toFixed(2);
@@ -50,11 +51,11 @@ function StockViewHeader(props: any) {
           alignItems="center"
         >
           <Typography variant="subtitle1" component="h6">
-            <span style={isGain ? { color: "green" } : {color: "red"}}>{actualChange} ({percentageChange}%)</span>
+            <span style={isGain ? { color: lightBlue[300] } : {color: "red"}}>{actualChange} ({percentageChange}%)</span>
             <span> TODAY</span>
           </Typography>
           <Typography variant="subtitle1" component="h6">
-            <span style={{ color: "green" }}>{props.name}</span>
+            <span style={{ color: lightBlue[300] }}>{props.name}</span>
             <span> | {props.sector}</span>
           </Typography>
         </Grid>

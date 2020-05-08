@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import StockGraph from '../../Components/StockGraph/stockGraph';
 import { GridList } from '@material-ui/core';
+import { lightBlue } from '@material-ui/core/colors';
 
 function OwnedStocks(props:any){
     let sessionStocks = useSelector((state: any) => state.stockData);
@@ -23,13 +24,25 @@ function OwnedStocks(props:any){
 
         let ownedStock = stockmap.get(tickerSymbol);
 
+        let stockData = sessionStocks[tickerSymbol];
+        var percentageChange = '0';
+        var isGain = false;
+        if(stockData != null && stockData.history != null){
+          var lastStockPrice = (stockData.history[stockData.history.length - 1]["price"]);
+          var firstStockPrice = (stockData.history[0]["price"]);
+          var priceDiff = (lastStockPrice - firstStockPrice);
+          percentageChange = ((priceDiff/firstStockPrice)*100).toFixed(2);
+          var isGain = (priceDiff > 0);
+        }
+  
+
         if(ownedStock !== undefined)
         {
             stockGraphs.push(
                 <div style={{display: 'flex', borderTop: '1px solid black'}}>
                     <div>
                         <p>{tickerSymbol} ({ownedStock})</p>
-                        <p style={{backgroundColor: 'red', color: 'white', padding: '2px', borderRadius: 3, alignSelf: 'center'}}>-6.21%</p>
+                        <p style={{backgroundColor: isGain ? lightBlue[300] : 'red', color: 'white', padding: '2px', borderRadius: 3, alignSelf: 'center'}}>{percentageChange}%</p>
                     </div>
                     <div style={{flexGrow: 1}}/>
                     <div style={{display: 'flex'}}>
