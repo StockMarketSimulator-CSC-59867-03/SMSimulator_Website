@@ -5,7 +5,8 @@ import { collection, collectionData, collectionChanges } from 'rxfire/firestore'
 import store from '../redux/store';
 import { addNotification } from "../redux/actions";
 
-import { setStockData,clearStockData } from '../redux/actions';
+import { setStockData,clearStockData, setPortfolioData } from '../redux/actions';
+
 
 function showError(errorText: string){
     store.dispatch(addNotification({
@@ -26,11 +27,11 @@ function msToDateString(ms: number){
     return formatted_date;
 }
 
-function calculateDomain(value : Array<any>){
+function calculateDomain(value : Array<any>, key: string = "price"){
     let min = 1000000;
     let max = 0;
     for(let i = 0; i < value.length; i++){
-        let price = value[i]["price"]
+        let price = value[i][key]
         if(price < min){
             min = price;
         }
@@ -56,7 +57,7 @@ export class StockDataService{
     private stockDocumentMap: Map<string,Map<string,Array<any>>> = new Map();
     private stockDocumentMapSubject = new Subject<any>();
     private newStockListner: any;
-
+    private portoflioData: any = [];
     constructor(){
         if(calls > 0){
             showError("BUG: Mutliple StockDataServices are being initialized. Only one should exist");
@@ -65,9 +66,41 @@ export class StockDataService{
 
         this.stockDataMap = new Map();
         this.db = firebase.firestore();
+        
         this.stockDataSubject.subscribe((value: Map<any,any>)=>{
+            let userStockData = store.getState()?.userStocks;
+            let portfolioValue = 0;
+            let stocksInPortfolio = Object.entries(userStockData).length; // The amount of stocks to calculate value for
+        
             let mapToObject = Array.from(value).reduce((obj: any, [key, value]) => {
                 obj[key] = value;
+                if(userStockData != null && userStockData.hasOwnProperty(key)){
+                    let history = value.history;
+                    if(history != null){
+                        let price = history[history.length - 1]?.price;
+                        console.log(price);
+                        if(price  != null){
+                            let quantity =  Number(userStockData[key]["quantity"]);
+                            portfolioValue += quantity * Number(price);
+                            stocksInPortfolio--;
+                        }
+                    }
+                }
+                if(stocksInPortfolio == 0){ // This is to make sure portfolioValue include every stock the user has. Somethimes value doesn't 
+                    let date = new Date();
+                    let lastValue = 0;
+                    if(this.portoflioData.length > 0){
+                        lastValue = this.portoflioData[this.portoflioData.length - 1].value;
+                    }
+                    if(lastValue != portfolioValue && portfolioValue != 0){
+                        this.portoflioData.push({dateTime: date.getTime(), value: portfolioValue  });
+                        this.savePortfolioData(this.sessionID);
+                        let domain = calculateDomain(this.portoflioData, "value");
+                        store.dispatch(setPortfolioData({data:this.portoflioData, domain: domain}));
+                    }
+                    
+                }
+                
                 return obj;
               }, {});
             store.dispatch(setStockData(mapToObject));
@@ -107,6 +140,11 @@ export class StockDataService{
 
     private createStockListner = (sessionID: string, stockName: string) => {
         this.stockDocumentMap.set(stockName, new Map());
+        this.portoflioData = this.getPortfolioData(sessionID); // Get local data stored
+        
+        let domain = calculateDomain(this.portoflioData, "value");
+        store.dispatch(setPortfolioData({data:this.portoflioData, domain: domain}));
+
         let newListner = this.db.collection("Sessions").doc(sessionID).collection("Stocks").doc(stockName).collection("Stock History")
         .onSnapshot((snapshot: any) => {
             snapshot.docChanges().forEach((change: any) => {
@@ -129,6 +167,21 @@ export class StockDataService{
             });
         });
         this.stockListners.push(newListner);
+    }
+
+    public getPortfolioData = (sessionID: string) =>{
+        let savedData = localStorage.getItem(sessionID + "Portfolio");
+        if(savedData != null && savedData != ""){
+            console.log(savedData);
+            return JSON.parse(savedData);
+        }
+        return [];
+    }
+
+    public savePortfolioData = (sessionID: string) => {
+        if(this.portoflioData.length > 0){
+            localStorage.setItem(sessionID + "Portfolio", JSON.stringify(this.portoflioData));
+        }
     }
 
     // Set up the listneres for a session for each stock 

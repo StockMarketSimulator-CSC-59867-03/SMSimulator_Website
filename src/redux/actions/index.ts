@@ -4,6 +4,11 @@ import { Transaction } from "../../DataModels/transaction";
 import { Event } from "../../DataModels/event";
 
 
+export const setPortfolioData = (data: any) => ({
+    type: "SET_USER_PORTFOLIO_DATA",
+    payload: data
+});
+
 export const changeSessionID = (id: string) => ({
     type: "CHANGE_SESSION_ID",
     payload: id

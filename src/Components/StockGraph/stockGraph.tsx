@@ -31,7 +31,7 @@ function StockGraph(props: any){
         lineColor = (trend > 0) ? lightBlue[300] : "#FF0000";
 
     }
-    
+    console.log(props.data);
 
    return  (
         <div style={{border: '0px solid black'}} onClick={clickedStock}>
@@ -40,7 +40,7 @@ function StockGraph(props: any){
                  {showToolTip ?  <Tooltip /> : <div></div>}
                  <XAxis dataKey="dateTime" tick={false} stroke="#FFFFFF" hide={true}/>
                  <YAxis domain={props.domain} tick={false} stroke="#FFFFFF" hide={true}/>
-                 <Line  dataKey="price" stroke={lineColor} dot={false} isAnimationActive={animationOn} />
+                 <Line  dataKey={props.dataKey} stroke={lineColor} dot={false} isAnimationActive={animationOn} />
              </LineChart>
              </ResponsiveContainer>
          </div>
@@ -48,6 +48,7 @@ function StockGraph(props: any){
 }
 
 StockGraph.defaultProps = {
+    dataKey: "price",
     width: 300,
     height: 150,
     name: "",
