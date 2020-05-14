@@ -36,8 +36,8 @@ const StyledTableRow = withStyles((theme: Theme) =>
   }),
 )(TableRow);
 
-function createData(orderID:any,stockSymbol: any,stockPrice: any,stockQuantity: any) {
-    return { orderID : orderID, stockSymbol: stockSymbol,stockPrice: stockPrice,stockQuantity: stockQuantity};
+function createData(orderID:any,orderType : any,stockSymbol: any,stockPrice: any,stockQuantity: any) {
+    return { orderID : orderID, orderType : orderType,stockSymbol: stockSymbol,stockPrice: stockPrice,stockQuantity: stockQuantity};
 }
 
 const useStyles = makeStyles({
@@ -47,26 +47,26 @@ const useStyles = makeStyles({
     },
 });
 
-function addDocToArray(doc : any,orderArray : object[]){
+function addDocToArray(doc : any,orderType : any,orderArray : object[]){
     const docData = doc.data();
     if(docData!= null){
         const orderID = doc.id;
         const price = docData.price;
         const quantity = docData.quantity;
         const stockSymbol = docData.stock;
-        orderArray.push(createData(orderID,stockSymbol,price,quantity))
+        orderArray.push(createData(orderID,orderType,stockSymbol,price,quantity))
     }
-    
 }
 
   export function OrderBoard(){
     const classes = useStyles();
     const db = firebase.firestore();
-    let buyOrders : object[] = [], sellOrders : object[] = [];
+    let orders : object[] = [];
     const currentUser = useSelector((state: any)=> state.currentUserData);
     const currentSessionID = useSelector((state: any) => state.sessionData.id);
     const currentUserID = currentUser.id;
-    buyOrders.push(createData(1,'AMZN',15.55,5));
+    orders.push(createData(1,'BUY','AMZN',15.55,5));
+    orders.push(createData(1,'SELL','AMZN',1000,3));
 
     db.collection("BuyOrders")
     .where('sessionID','==',currentSessionID)
@@ -74,8 +74,9 @@ function addDocToArray(doc : any,orderArray : object[]){
     .get()
     .then((querySnapshot : any)=>{
         querySnapshot.forEach((doc : any) =>{
-            addDocToArray(doc,buyOrders);
+            addDocToArray(doc,'BUY',orders);
         });
+        console.log(orders)
     });
     
     db.collection("SellOrders")
@@ -84,8 +85,9 @@ function addDocToArray(doc : any,orderArray : object[]){
     .get()
     .then((querySnapshot : any)=>{
         querySnapshot.forEach((doc : any) =>{
-            addDocToArray(doc,sellOrders);
+            addDocToArray(doc,'SELL',orders);
         });
+        console.log(orders);
     });
 
     return (
@@ -93,6 +95,7 @@ function addDocToArray(doc : any,orderArray : object[]){
           <Table className={classes.table} aria-label="customized table">
             <TableHead>
               <TableRow>
+                <StyledTableCell align="center">Order Type</StyledTableCell>
                 <StyledTableCell align="center">Stock</StyledTableCell>
                 <StyledTableCell align="center">Price</StyledTableCell>
                 <StyledTableCell align="center">Quantity</StyledTableCell>
@@ -100,13 +103,14 @@ function addDocToArray(doc : any,orderArray : object[]){
               </TableRow>
             </TableHead>
             <TableBody>
-              {buyOrders.map((buyOrder : any) => (
-                <StyledTableRow key={buyOrder.name}>
+              {orders.map((order : any) => (
+                <StyledTableRow key={order.name}>
                   <StyledTableCell component="th" scope="row" align="center">
-                    {buyOrder.stockSymbol}
+                    {order.orderType}
                   </StyledTableCell>
-                  <StyledTableCell align="center">{buyOrder.stockPrice}</StyledTableCell>
-                  <StyledTableCell align="center">{buyOrder.stockQuantity}</StyledTableCell>
+                  <StyledTableCell align="center">{order.stockSymbol}</StyledTableCell>
+                  <StyledTableCell align="center">{order.stockPrice}</StyledTableCell>
+                  <StyledTableCell align="center">{order.stockQuantity}</StyledTableCell>
                   <StyledTableCell align="center"><Button disableElevation color="secondary" variant="contained">Cancel</Button></StyledTableCell>
                 </StyledTableRow>
               ))}
