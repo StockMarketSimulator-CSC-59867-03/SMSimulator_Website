@@ -61,8 +61,6 @@ function addDocToArray(doc : any,orderType : any,orderArray : object[]){
 
 function handleCancel(orderID : string, orderType : string){
   const db = firebase.firestore();
-  console.log('Order ID: ' + orderID)
-  console.log('Order Type: ' + orderType)
   if(orderType === 'BUY'){
     db.collection('BuyOrders')
       .doc(orderID)
