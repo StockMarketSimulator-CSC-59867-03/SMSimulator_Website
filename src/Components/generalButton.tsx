@@ -1,6 +1,7 @@
 import React from 'react';
 import MarketWindow from '../Pages/OldPages/MarketWindow/marketwindow';
 import { Link } from 'react-router-dom';
+import { createStyles, makeStyles, Theme, Typography, Grid, Container, Paper, Divider, Button } from '@material-ui/core';
 
 
 type gBprops = {
@@ -30,14 +31,10 @@ class generalButton extends React.Component<gBprops,gBstate> {
     }
     render() {
         return (
-            <div>
-                <button 
-                    style={{ height: "56px", width: "100%" }}
-                    onClick={this.handleClick}>
-                    {this.props.text}
-                </button>
-             </div>
-               );
+            <Button style={{ height: "56px", width: "70%", marginBottom: 1 }} variant="contained" color="secondary" onClick={this.handleClick}>
+                {this.props.text}
+            </Button>
+        );
     }
 }
 export default generalButton;
