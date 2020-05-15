@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import { withStyles, makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -55,40 +55,115 @@ function addDocToArray(doc : any,orderType : any,orderArray : object[]){
         const quantity = docData.quantity;
         const stockSymbol = docData.stock;
         orderArray.push(createData(orderID,orderType,stockSymbol,price,quantity))
+       
     }
+}
+
+function handleCancel(orderID : string, orderType : string){
+  const db = firebase.firestore();
+  console.log('Order ID: ' + orderID)
+  console.log('Order Type: ' + orderType)
+  if(orderType === 'BUY'){
+    db.collection('BuyOrders')
+      .doc(orderID)
+      .delete()
+      .catch(function(error){
+        console.error("Error occured when attempting to remove the BUY ORDER: " + orderID)
+      })
+  }else if(orderType === 'SELL'){
+    db.collection('SellOrders')
+    .doc(orderID)
+    .delete()
+    .catch(function(error){
+      console.error("Error occured when attempting to remove the BUY ORDER: " + orderID)
+    })
+  }
+}
+
+class OrderObject{
+  orderID:any;
+  orderType : any;
+  stockSymbol: any;
+  stockPrice: any;
+  stockQuantity: any;
 }
 
   export function OrderBoard(){
     const classes = useStyles();
+    let [orders, setOrders] = useState<OrderObject[]>([]);
     const db = firebase.firestore();
-    let orders : object[] = [];
     const currentUser = useSelector((state: any)=> state.currentUserData);
     const currentSessionID = useSelector((state: any) => state.sessionData.id);
     const currentUserID = currentUser.id;
-    orders.push(createData(1,'BUY','AMZN',15.55,5));
-    orders.push(createData(1,'SELL','AMZN',1000,3));
 
-    db.collection("BuyOrders")
-    .where('sessionID','==',currentSessionID)
-    .where('user', '==', currentUserID)
-    .get()
-    .then((querySnapshot : any)=>{
-        querySnapshot.forEach((doc : any) =>{
-            addDocToArray(doc,'BUY',orders);
+
+    useEffect(()=>{
+      db.collection("BuyOrders")
+        .onSnapshot(snapshot =>{
+          let changes = snapshot.docChanges();
+          changes.forEach(change =>{
+            let order = change.doc.data();
+            let user = order.user;
+            let sessionID = order.sessionID;
+            const orderID = change.doc.id;
+            if(currentUserID == user && currentSessionID == sessionID){
+              if(change.type == 'added'){
+                const price = order.price;
+                const quantity = order.quantity;
+                const stockSymbol = order.stock;
+                orders.push((createData(orderID,'BUY',stockSymbol,price,quantity)))
+                setOrders(
+                  [...orders]
+                );
+              }
+              else if(change.type == 'removed'){
+                for(var c = 0; c < orders.length;c++){
+                  if(orderID === orders[c].orderID && orders[c].orderType === 'BUY'){
+                    orders.splice(c,1);
+                  }
+                  setOrders(
+                    [...orders]
+                  )
+                }
+              }
+            }
+          });
         });
-        console.log(orders)
-    });
-    
-    db.collection("SellOrders")
-    .where('sessionID','==',currentSessionID)
-    .where('user', '==', currentUserID)
-    .get()
-    .then((querySnapshot : any)=>{
-        querySnapshot.forEach((doc : any) =>{
-            addDocToArray(doc,'SELL',orders);
-        });
-        console.log(orders);
-    });
+
+        db.collection("SellOrders")
+          .onSnapshot(snapshot =>{
+            let changes = snapshot.docChanges();
+            changes.forEach(change =>{
+              let order = change.doc.data();
+              let user = order.user;
+              let sessionID = order.sessionID;
+              const orderID = change.doc.id;
+              if(currentUserID == user && currentSessionID == sessionID){
+                if(change.type == 'added'){
+                  const price = order.price;
+                  const quantity = order.quantity;
+                  const stockSymbol = order.stock;
+                  orders.push((createData(orderID,'SELL',stockSymbol,price,quantity)))
+                  setOrders(
+                    [...orders]
+                  );
+                }
+                else if(change.type == 'removed'){
+                  for(var c = 0; c < orders.length;c++){
+                    if(orderID === orders[c].orderID && orders[c].orderType === 'SELL'){
+                      orders.splice(c,1);
+                    }
+                    setOrders(
+                      [...orders]
+                    )
+                  }
+                }
+              }
+            });
+          });
+        },[]);
+
+
 
     return (
         <TableContainer component={Paper}>
@@ -104,14 +179,14 @@ function addDocToArray(doc : any,orderType : any,orderArray : object[]){
             </TableHead>
             <TableBody>
               {orders.map((order : any) => (
-                <StyledTableRow key={order.name}>
+                <StyledTableRow key={order.orderID}>
                   <StyledTableCell component="th" scope="row" align="center">
                     {order.orderType}
                   </StyledTableCell>
                   <StyledTableCell align="center">{order.stockSymbol}</StyledTableCell>
                   <StyledTableCell align="center">{order.stockPrice}</StyledTableCell>
                   <StyledTableCell align="center">{order.stockQuantity}</StyledTableCell>
-                  <StyledTableCell align="center"><Button disableElevation color="secondary" variant="contained">Cancel</Button></StyledTableCell>
+                  <StyledTableCell align="center"><Button disableElevation color="secondary" variant="contained" onClick={() =>{handleCancel(order.orderID,order.orderType)}}>Cancel</Button></StyledTableCell>
                 </StyledTableRow>
               ))}
             </TableBody>
