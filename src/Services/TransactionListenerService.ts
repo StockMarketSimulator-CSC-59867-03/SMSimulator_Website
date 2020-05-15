@@ -20,6 +20,7 @@ export class TransactionListenerService{
     private db : any;
     private transListener: any;
     private sessionID: any;
+    private transactionArray: any = [];
     constructor(){
         if(TransactionInstances > 0){
             showError("BUG: Mutliple StockDataServices are being initialized. Only one should exist");
@@ -51,7 +52,7 @@ export class TransactionListenerService{
         this.detachTransactionListener();
         console.log("transAttached");
         console.log(sessionId);
-        
+        this.transactionArray = [];
         this.transListener = this.db.collection("Sessions").doc(sessionId).collection("CompletedOrders").orderBy("time").limitToLast(30)
         .onSnapshot((snapshot:any) => {
             snapshot.docChanges().forEach((change: any) => {
@@ -65,7 +66,18 @@ export class TransactionListenerService{
                     };
                 console.log("addedTrans");
                 console.log(transaction);
-                store.dispatch(setTransactionData(transaction));
+
+                this.transactionArray.push(transaction);
+
+                if(this.transactionArray != null){
+                    if(this.transactionArray.length > 30){
+                        store.dispatch(setTransactionData(this.transactionArray.splice(0,29)));
+                    }
+                    else {
+                        store.dispatch(setTransactionData(this.transactionArray));
+                    }
+                }
+                
                 }
             });
         });
