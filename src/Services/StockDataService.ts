@@ -95,8 +95,7 @@ export class StockDataService{
                     if(lastValue != portfolioValue && portfolioValue != 0){
                         this.portoflioData.push({dateTime: date.getTime(), value: portfolioValue  });
                         this.savePortfolioData(this.sessionID);
-                        let domain = calculateDomain(this.portoflioData, "value");
-                        store.dispatch(setPortfolioData({data:this.portoflioData, domain: domain}));
+                        
                     }
                     
                 }
@@ -104,6 +103,8 @@ export class StockDataService{
                 return obj;
               }, {});
             store.dispatch(setStockData(mapToObject));
+            let domain = calculateDomain(this.portoflioData, "value");
+            store.dispatch(setPortfolioData({data:[...this.portoflioData], domain: [...domain]}));
         });
 
 
