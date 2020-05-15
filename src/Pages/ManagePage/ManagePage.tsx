@@ -82,7 +82,7 @@ function ManagePage(props: ManagePageProps){
                     </div>
                   )
                 })
-                let userName = (doc.data()?.username != null) ? "PLAYER" : "Admin";
+                let userName = (doc.data()?.username != null) ? doc.data()?.username : "Admin";
                 playerDataArray.push(
                   <Grid item xs={12} md={3} lg={3}>
                     <p>{userName} currently has <span className="liquid"><b>${doc.data()?.liquid}</b></span></p>
