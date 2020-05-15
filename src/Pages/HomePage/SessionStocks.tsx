@@ -98,7 +98,7 @@ function SessionStocks(props:any) {
               <StockGraph domain={graphDomain} data={stockHistory}  width={100} height={80} animationOn={false} showToolTip={false}></StockGraph>  
               <div>
           <Typography style={{ color: "white" }} variant="h6">
-            ${lastStockPrice}
+            ${(lastStockPrice != null) ? lastStockPrice.toFixed(2) : lastStockPrice}
           </Typography>
           <div>
             <Typography style={{

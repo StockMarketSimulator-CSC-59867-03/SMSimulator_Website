@@ -181,7 +181,7 @@ function PortfolioPage(props:any) {
               {portfolioGain > 0 ? '+' : ''}{portfolioGain.toFixed(2)}%
             </Typography>
             <div>
-              <PortfolioStockGraph domain={domain} data={data} />
+              <StockGraph  dataKey="value" handleClick={() => {}} domain={domain} data={data} width={800} height={500}/>
             </div>
           </Grid>
           <div>

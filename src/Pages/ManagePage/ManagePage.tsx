@@ -76,11 +76,13 @@ function ManagePage(props: ManagePageProps){
               doc.ref.collection('Stocks').get().then((stockDoc: any) => {
                 playerStockArray.push([]);
                 stockDoc.forEach((stocks: any) => {
-                  playerStockArray[index].push(
-                    <div>
-                      {stocks.id}: {stocks.data()?.quantity}
-                    </div>
-                  )
+                  if(playerStockArray != null){
+                    playerStockArray[index].push(
+                      <div>
+                        {stocks.id}: {stocks.data()?.quantity}
+                      </div>
+                    )
+                  }
                 })
                 let userName = (doc.data()?.username != null) ? doc.data()?.username : "Admin";
                 playerDataArray.push(
