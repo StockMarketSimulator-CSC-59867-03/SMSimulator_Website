@@ -29,6 +29,7 @@ import { TransactionBoard } from '../../Components/TransactionBoard/transactionB
 import PortfolioStockGraph from '../PortfolioPage/PortfolioStockGraph';
 import store from '../../redux/store';
 import { addNotification } from '../../redux/actions';
+import OrderBoard from '../../Components/OrderBoard/OrderBoard'
 
 
 // type HomePageProps = {
@@ -213,15 +214,10 @@ if(props.currentUserData.id != null){
             <Container maxWidth="xl" className={classes.container}>
               {authenticationFlag ?
                 <Grid container spacing={3}>
-                    <Grid item xs={12} md={4} lg={3}>
-                      <Paper className={fixedHeightPaper}>
-                        <TransactionBoard/>
-                      </Paper>
-                    </Grid>
                     {/* MarketGraph */}
                     <Grid item xs={10} md={6} lg={6} className ={classes.container}>
                         <Paper className={fixedHeightGraphPaper}>
-                            <Typography variant="h5">MARKET GRAPH</Typography>
+                            <Typography variant="h5">Market Graph</Typography>
                             <MainStockGraph/>
                         </Paper>
                         <Paper className={fixedSectors} style={{marginTop:15}}>
@@ -243,15 +239,27 @@ if(props.currentUserData.id != null){
                           </ButtonGroup>
                         </Paper>
                     </Grid>
-                    {/* Right Side Panel */}
-                    <Grid item xs={12} md={4} lg={3}>
+                    <Grid item xs={12} md={6} lg={6}>
                         <Paper className={fixedHeightPaper}>
-                            <Typography variant="subtitle2">MARKET STOCKS</Typography>
+                        <Typography style={{marginBottom:10}} variant="h6">Market Stocks</Typography>
                             <div className={classes.sessionStocks}>
                               <SessionStocks sessionData={props.sessionData} currentUserData={props.currentUserData}/>
                             </div>
                         </Paper>
                     </Grid>
+                    <Grid item xs={12} md={6} lg={6}>
+                      <Paper className={fixedHeightPaper}>
+                      <Typography style={{marginBottom:10}} variant="h6">All Completed Orders</Typography>
+                        <TransactionBoard/>
+                      </Paper>
+                    </Grid>
+                    <Grid item xs={12} md={6} lg={6}>
+                      <Paper className={fixedHeightPaper}>
+                      <Typography style={{marginBottom:10}} variant="h6">Your Pending Orders</Typography>
+                        <OrderBoard/>
+                      </Paper>
+                    </Grid>
+                    {/* Right Side Panel */}
                 </Grid>
                 :
                 <div className='input-wrapper'>

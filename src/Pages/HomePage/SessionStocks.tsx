@@ -5,6 +5,7 @@ import StockGraph from '../../Components/StockGraph/stockGraph';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToWatchList } from '../../redux/actions';
 import { lightBlue } from '@material-ui/core/colors';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -80,20 +81,41 @@ function SessionStocks(props:any) {
     else
       isWatched = false;
 
-    stockGraphs.push(
-      <div style={{display: 'flex', borderTop: '1px solid black'}}>
+      stockGraphs.push(
+        <Paper style={{marginTop:10}} elevation={3} variant="outlined">
+    
+        <Grid
+          container
+          direction="row"
+          justify="space-around"
+          alignItems="center"
+          style={{ padding: 10 }}
+        >
+              <Typography variant="h6" component="h6">
+                  {tickerSymbol}
+              </Typography>
+  
+              <StockGraph domain={graphDomain} data={stockHistory}  width={100} height={80} animationOn={false} showToolTip={false}></StockGraph>  
+              <div>
+          <Typography style={{ color: "white" }} variant="h6">
+            ${lastStockPrice}
+          </Typography>
           <div>
-            <p>{tickerSymbol}</p>
-            <p style={{backgroundColor: isGain ? lightBlue[300] : 'red', color: 'white', padding: '2px', borderRadius: 3}}>
-              {percentageChange}%</p>
+            <Typography style={{
+                  color: isGain ? lightBlue[300] : "red",
+                }} variant="body2" component="h6">
+
+                {props.gain > 0 ? "+" : ""}
+                {percentageChange}%
+            </Typography>
           </div>
-          <div style={{flexGrow: 1}}/>
-          <div style={{display: 'flex'}}>
-            <StockGraph name={tickerSymbol} domain={graphDomain} data={stockHistory} handleClick={() => {}} width={100} height={80} animationOn={false} showToolTip={false}/>
-            <input name={tickerSymbol} type="checkbox" onChange={handleChange} checked={isWatched}/>
           </div>
-      </div>
-    )
+        </Grid>
+        </Paper>
+      )
+
+
+    
   })
 
   return (

@@ -26,50 +26,11 @@ function calcAvg(arr_points:[]){
 function PortfolioStockGraph(props:any){
     let stocks = useSelector((state:any) => state.stockData);
     let ownedStocks = useSelector((state: any) => state.userStocks);
+    
     let graph_points = new Map<any, any>();
     let stockmap = new Map<any, any>();
 
-    //insertting userStocks into a map, Symbol => Quantity
-    Object.entries(ownedStocks).forEach((stock:any) => {
-        stockmap.set(stock[0], stock[1].quantity);
-    });
 
-    Object.entries(stocks).forEach((stock:any) => {
-        let tickerSymbol = stock[1].data['symbol'];
-        if(stockmap.get(tickerSymbol) !== undefined)
-        {
-            let stockHistory = stock[1].history;
-            if(stockHistory !== null){
-                stockHistory.forEach((entry:any) => {
-                    let temp = graph_points.get(entry['dateTime']);
-                    if(temp === null || temp === undefined)
-                    {
-                        graph_points.set(entry['dateTime'], [entry['price']]);
-                    }
-                    else
-                    {
-                        temp.push(entry['price']);
-                        graph_points.set(entry['dateTime'], temp);
-                    }
-                })
-            }
-        }
-        // console.log(graph_points);
-    })
-
-    let history = new Array;
-
-    graph_points.forEach((value:any, key:any) => {
-        // console.log(calcAvg(value));
-        let avgPrice = calcAvg(value);
-        history.push({dateTime: key, price: avgPrice});
-    })
-
-    history.sort((a, b) => (a.dateTime > b.dateTime) ? 1 : -1);
-
-    console.log(history);
-    console.log(min, max);
-
-    return(<div><StockGraph  handleClick={() => {}} width={800} height={500}/></div>)
+    return(<div><StockGraph  dataKey="value" handleClick={() => {}} domain={props.domain} data={props.data} width={800} height={500}/></div>)
 }
 export default PortfolioStockGraph;

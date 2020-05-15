@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
         modalBackground: {
             position: 'relative',
             width: '25%',
-            height: '35%',
+            height: '65%',
             backgroundColor: theme.palette.background.default,
         },
         grid: {

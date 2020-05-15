@@ -9,6 +9,7 @@ import currentUserData from './userReducer';
 import userStocks from './userStockDataReducers';
 import transactionData from './transactionDataReducer';
 import queuedEvents from './queuedEventReducer';
+import portfolioData from './portfolioDataReducer';
 
 const rootReducer = combineReducers({
     sessionData: sessionData,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     userStocks: userStocks,
     transactionData: transactionData,
     queuedEvents: queuedEvents,
+    portfolioData: portfolioData
 });
 
 export default rootReducer;

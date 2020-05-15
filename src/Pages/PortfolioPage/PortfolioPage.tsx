@@ -102,7 +102,7 @@ function PortfolioPage(props:any) {
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     let sessionStocks = useSelector((state: any) => state.stockData);
     let userStocks = useSelector((state: any) => state.userStocks);
-
+    let portfolioData = useSelector((state: any) => state.portfolioData);
     let stockItems: JSX.Element[] = [];
 
     // Go through the array of userStocks 
@@ -140,6 +140,19 @@ function PortfolioPage(props:any) {
        
     });
 
+    let domain = [0,0];
+    let data: any = [];
+
+    if(Object.entries(portfolioData).length > 0 ){
+        domain = portfolioData.domain;
+        data = portfolioData.data;
+    }
+    console.log(domain);
+    console.log(data);
+
+
+
+
     let portfolioGain = calculatePercentageGain(totalInitialValue, totalValue);
     let isGain = portfolioGain > 0;
     return (
@@ -168,7 +181,7 @@ function PortfolioPage(props:any) {
               {portfolioGain > 0 ? '+' : ''}{portfolioGain.toFixed(2)}%
             </Typography>
             <div>
-              <PortfolioStockGraph />
+              <PortfolioStockGraph domain={domain} data={data} />
             </div>
           </Grid>
           <div>
