@@ -29,6 +29,7 @@ import { TransactionBoard } from '../../Components/TransactionBoard/transactionB
 import PortfolioStockGraph from '../PortfolioPage/PortfolioStockGraph';
 import store from '../../redux/store';
 import { addNotification } from '../../redux/actions';
+import OrderBoard from '../../Components/OrderBoard/OrderBoard'
 
 
 // type HomePageProps = {
@@ -216,6 +217,11 @@ if(props.currentUserData.id != null){
                     <Grid item xs={12} md={4} lg={3}>
                       <Paper className={fixedHeightPaper}>
                         <TransactionBoard/>
+                      </Paper>
+                    </Grid>
+                    <Grid item xs={12} md={4} lg={3}>
+                      <Paper className={fixedHeightPaper}>
+                        <OrderBoard/>
                       </Paper>
                     </Grid>
                     {/* MarketGraph */}
