@@ -2,6 +2,12 @@
 
 This is the repo for the website of the stock market simulator.
 
+![SMS Image 1](https://i.imgur.com/6w4wm2t.png)
+
+![SMS Image 2](https://i.imgur.com/v8BxBq5.png)
+
+![SMS Image 3](https://i.imgur.com/MH3AaD0.png)
+
 ## Available Scripts
 
 In the project directory, you can run:
