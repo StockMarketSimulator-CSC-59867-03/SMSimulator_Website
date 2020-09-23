@@ -1,6 +1,6 @@
 # Stock Market Simulator
 
-This is the repo for the website of the stock market simulator.
+This is the repo for the website of the stock market simulator, A Website that creates sessions of a stock market environment where users can trade stocks and view interactions with the market. 
 
 ![SMS Image 1](https://i.imgur.com/6w4wm2t.png)
 
